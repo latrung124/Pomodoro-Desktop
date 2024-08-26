@@ -1,0 +1,7 @@
+module HomeScreen
+linktarget HomeScreenplugin
+optional plugin HomeScreenplugin
+classname HomeScreenPlugin
+typeinfo HomeScreen.qmltypes
+
+HomeScreen 1.0 HomeScreen.qml
