@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     QObject::connect(&engine, &QQmlApplicationEngine::quit, &app, &QGuiApplication::quit);
 
-    engine.loadFromModule("HomeScreen", "HomeScreen");
+    engine.loadFromModule("LoginScreen", "LoginScreen");
 
     return app.exec();
 }

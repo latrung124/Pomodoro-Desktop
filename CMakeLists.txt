@@ -18,14 +18,18 @@ qt_add_executable(untitled
   main.cpp
 )
 
+add_subdirectory(CommonComponent)
 add_subdirectory(HomeScreen)
+add_subdirectory(LoginScreen)
 
 target_link_libraries(untitled PRIVATE
     Qt6::Core
     Qt6::Gui
     Qt6::Qml
     Qt6::Quick
-    HomeScreenplugin)
+    HomeScreenplugin
+    LoginScreenplugin
+    )
 
 include(GNUInstallDirs)
 install(TARGETS untitled
