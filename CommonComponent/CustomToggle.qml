@@ -24,8 +24,14 @@ import QtQuick.Controls
 Item {
     id: root
 
-    property bool checked: false
     property alias radius: backgroundRect.radius
+
+    property bool checked: false
+    property int aniDuration: 200
+    property color backgroundColor: "#F2F2F2"
+    property color checkedColor: "#2196F3"
+    property color borderBgColor: "#E5E5E5"
+    property color toggleColor: "#FFFFFF"
 
     implicitWidth: 40
     implicitHeight: 20
@@ -34,14 +40,14 @@ Item {
         id: backgroundRect
 
         anchors.fill: parent
-        color: checked ? "#2196F3" : "#F2F2F2"
+        color: checked ? checkedColor : backgroundColor
         radius: 36.5
-        border.color: "#E5E5E5"
+        border.color: borderBgColor
         border.width: 1
 
         Behavior on color {
             ColorAnimation {
-                duration: 200
+                duration: aniDuration
             }
         }
     }
@@ -61,14 +67,14 @@ Item {
             width: parent.width/5 * 4
             height: parent.height/5 * 4
             radius: parent.height/5 * 4 / 2
-            color: "#FFFFFF"
-            border.color: "#E5E5E5"
+            color: toggleColor
+            border.color: borderBgColor
             border.width: 1
         }
 
         Behavior on x {
             NumberAnimation {
-                duration: 200
+                duration: aniDuration
             }
         }
     }

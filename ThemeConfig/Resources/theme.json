@@ -1,0 +1,60 @@
+{
+    "themes": {
+        "dark": {
+            "HomeScreen": {
+                "backgroundColor": "#121212",
+                "font": {
+                    "family": "Arial",
+                    "pixelSize": 14,
+                    "weight": "Bold"
+                }
+            },
+            "LoginScreen": {
+                "backgroundColor": "#333333",
+                "font": {
+                    "family": "Courier",
+                    "pixelSize": 12,
+                    "weight": "Normal"
+                }
+            }
+        },
+        "light": {
+            "HomeScreen": {
+                "backgroundColor": "#FFFFFF",
+                "font": {
+                    "family": "Arial",
+                    "pixelSize": 14,
+                    "weight": "Normal"
+                }
+            },
+            "LoginScreen": {
+                "color": "#333333",
+                "backgroundColor": "#F0F0F0",
+                "font": {
+                    "family": "Courier",
+                    "pixelSize": 12,
+                    "weight": "Normal"
+                }
+            }
+        },
+        "matcha": {
+            "HomeScreen": {
+                "backgroundColor": "#FFFFFF",
+                "font": {
+                    "family": "Arial",
+                    "pixelSize": 14,
+                    "weight": "Normal"
+                }
+            },
+            "LoginScreen": {
+                "color": "#333333",
+                "backgroundColor": "#F0F0F0",
+                "font": {
+                    "family": "Courier",
+                    "pixelSize": 12,
+                    "weight": "Normal"
+                }
+            }
+        }
+    }
+}

@@ -35,6 +35,8 @@ ApplicationWindow {
 
     title: qsTr("Pomodoro")
 
+    property string gFont: "Helvetica"
+
     Component.onCompleted: {
         x = Screen.width / 2 - width / 2
         y = Screen.height / 2 - height / 2

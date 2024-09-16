@@ -18,6 +18,8 @@ qt_add_executable(untitled
   main.cpp
 )
 
+add_subdirectory(ThemeConfig)
+
 add_subdirectory(CommonComponent)
 add_subdirectory(HomeScreen)
 add_subdirectory(LoginScreen)
@@ -27,6 +29,7 @@ target_link_libraries(untitled PRIVATE
     Qt6::Gui
     Qt6::Qml
     Qt6::Quick
+    ThemeConfig
     HomeScreenplugin
     LoginScreenplugin
     )
