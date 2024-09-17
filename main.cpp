@@ -13,8 +13,7 @@ int main(int argc, char *argv[])
     QObject::connect(&engine, &QQmlApplicationEngine::quit, &app, &QGuiApplication::quit);
 
     // Create an instance of ThemeConfig
-    ThemeConfig themeConfig("qrc:/Resources/theme.json");
-
+    ThemeConfig themeConfig(":/Resources/theme.json");
     // Expose ThemeConfig to QML
     engine.rootContext()->setContextProperty("themeConfig", &themeConfig);
 

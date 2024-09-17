@@ -29,7 +29,7 @@
 #include <QFontDatabase>
 
 namespace ThemeConfigSpace {
-    const QString kFontPath = "qrc:/Resources/Fonts/";
+    const QString kFontPath = ":/Resources/Fonts/";
 };
 class ThemeConfig : public QObject
 {

@@ -1,7 +1,7 @@
 {
     "themes": {
         "dark": {
-            "HomeScreen": {
+            "homescreen": {
                 "backgroundColor": "#121212",
                 "font": {
                     "family": "Arial",
@@ -9,7 +9,7 @@
                     "weight": "Bold"
                 }
             },
-            "LoginScreen": {
+            "loginscreen": {
                 "backgroundColor": "#333333",
                 "font": {
                     "family": "Poppins-SemiBold",
@@ -19,7 +19,7 @@
             }
         },
         "light": {
-            "HomeScreen": {
+            "homescreen": {
                 "backgroundColor": "#FFFFFF",
                 "font": {
                     "family": "Arial",
@@ -27,7 +27,7 @@
                     "weight": "Normal"
                 }
             },
-            "LoginScreen": {
+            "loginscreen": {
                 "color": "#333333",
                 "backgroundColor": "#F0F0F0",
                 "font": {
@@ -38,7 +38,7 @@
             }
         },
         "matcha": {
-            "HomeScreen": {
+            "homescreen": {
                 "backgroundColor": "#FFFFFF",
                 "font": {
                     "family": "Arial",
@@ -46,7 +46,7 @@
                     "weight": "Normal"
                 }
             },
-            "LoginScreen": {
+            "loginscreen": {
                 "color": "#333333",
                 "backgroundColor": "#F0F0F0",
                 "font": {

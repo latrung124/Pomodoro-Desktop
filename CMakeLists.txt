@@ -14,8 +14,12 @@ find_package(Qt6 6.5 REQUIRED COMPONENTS Core Gui Qml Quick)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
+# Add resources.qrc
+qt6_add_resources(APP_RESOURCES resources.qrc)
+
 qt_add_executable(untitled
   main.cpp
+  ${APP_RESOURCES}
 )
 
 add_subdirectory(ThemeConfig)

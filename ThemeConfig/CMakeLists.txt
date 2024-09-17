@@ -1,13 +1,9 @@
 # CMakeLists.txt for ThemeConfig
 
-# Add resources.qrc
-qt6_add_resources(APP_RESOURCES resources.qrc)
-
 # Create a library for the ThemeConfig class
 add_library(ThemeConfig STATIC
     ThemeConfig.cpp
     ThemeConfig.h
-    ${APP_RESOURCES}
 )
 
 # Link necessary Qt libraries

@@ -21,6 +21,7 @@
 #include "ThemeConfig.h"
 
 #include <QFile>
+#include <QDebug>
 #include <QJsonArray>
 
 ThemeConfig::ThemeConfig(const QString &configPath,QObject *parent)
@@ -92,7 +93,7 @@ void ThemeConfig::convertTheme(const QString &theme)
 bool ThemeConfig::loadConfig(const QString &filePath)
 {
     QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    if (!file.open(QIODevice::ReadOnly)) {
         qWarning() << "Unable to open file:" << filePath;
         return false;
     }
@@ -118,39 +119,41 @@ void ThemeConfig::parseConfig(Theme theme) {
 
         QString selectedTheme = m_theme;  // Determine selected theme
 
-        if (themesObject.contains(selectedTheme) && themesObject[selectedTheme].isObject()) {
+        if (themesObject.contains(selectedTheme)) {
+
             QJsonObject themeObject = themesObject[selectedTheme].toObject();
 
-            // Load HomeScreen properties for the selected theme
-            if (themeObject.contains("HomeScreen") && themeObject["HomeScreen"].isObject()) {
-                QJsonObject homeScreenObject = themeObject["HomeScreen"].toObject();
+            if (themeObject.contains("homescreen")) {
+                QJsonObject homeScreenObject = themeObject["homescreen"].toObject();
                 m_homeBgColor = QColor(homeScreenObject["backgroundColor"].toString());
                 emit homeBgColorChanged();
 
-                if (homeScreenObject.contains("font") && homeScreenObject["font"].isObject()) {
+                if (homeScreenObject.contains("font")) {
                     QJsonObject fontObject = homeScreenObject["font"].toObject();
                     QString family = fontObject["family"].toString();
-                    int pixelSize = fontObject["pixelSize"].toInt(12);
+                    int pixelSize = fontObject["pixelSize"].toInt();
                     m_homeTextFont = QFont(family, pixelSize);
                     emit homeTextFontChanged();
                 }
             }
 
-            // Load LoginScreen properties for the selected theme
-            if (themeObject.contains("LoginScreen") && themeObject["LoginScreen"].isObject()) {
-               QJsonObject loginScreenObject = themeObject["HomeScreen"].toObject();
+            if (themeObject.contains("loginscreen")) {
+                QJsonObject loginScreenObject = themeObject["loginscreen"].toObject();
                 m_loginBgColor = QColor(loginScreenObject["backgroundColor"].toString());
                 emit loginBgColorChanged();
 
-                if (loginScreenObject.contains("font") && loginScreenObject["font"].isObject()) {
+                if (loginScreenObject.contains("font")) {
                     QJsonObject fontObject = loginScreenObject["font"].toObject();
 
                     QString family = fontObject["family"].toString();
                     QString fontPath = ThemeConfigSpace::kFontPath + family + ".ttf";
                     int id = QFontDatabase::addApplicationFont(fontPath);
-                    family = QFontDatabase::applicationFontFamilies(id).at(0);
 
-                    int pixelSize = fontObject["pixelSize"].toInt(12);
+                    if (id == -1) {
+                        return;
+                    }
+
+                    int pixelSize = fontObject["pixelSize"].toInt();
 
                     m_loginTextFont = QFont(family, pixelSize);
                     emit loginTextFontChanged();
