@@ -26,7 +26,11 @@
 #include <QFont>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QFontDatabase>
 
+namespace ThemeConfigSpace {
+    const QString kFontPath = "qrc:/Resources/Fonts/";
+};
 class ThemeConfig : public QObject
 {
     Q_OBJECT

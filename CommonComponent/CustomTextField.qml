@@ -25,6 +25,9 @@ import QtQuick.Layouts
 TextField {
     id: root
 
+	// Change this to textfieldstyle because warning of line 43
+	// QML Rectangle: The current style does not support customization of this control
+
     property int textSize: 15
     property int backgroundRadius: 6
     property string textFont: "Roboto"

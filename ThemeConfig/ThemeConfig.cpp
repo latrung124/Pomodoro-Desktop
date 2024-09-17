@@ -130,8 +130,8 @@ void ThemeConfig::parseConfig(Theme theme) {
                 if (homeScreenObject.contains("font") && homeScreenObject["font"].isObject()) {
                     QJsonObject fontObject = homeScreenObject["font"].toObject();
                     QString family = fontObject["family"].toString();
-                    int pointSize = fontObject["pointSize"].toInt(12);
-                    m_homeTextFont = QFont(family, pointSize);
+                    int pixelSize = fontObject["pixelSize"].toInt(12);
+                    m_homeTextFont = QFont(family, pixelSize);
                     emit homeTextFontChanged();
                 }
             }
@@ -144,9 +144,15 @@ void ThemeConfig::parseConfig(Theme theme) {
 
                 if (loginScreenObject.contains("font") && loginScreenObject["font"].isObject()) {
                     QJsonObject fontObject = loginScreenObject["font"].toObject();
+
                     QString family = fontObject["family"].toString();
-                    int pointSize = fontObject["pointSize"].toInt(12);
-                    m_loginTextFont = QFont(family, pointSize);
+                    QString fontPath = ThemeConfigSpace::kFontPath + family + ".ttf";
+                    int id = QFontDatabase::addApplicationFont(fontPath);
+                    family = QFontDatabase::applicationFontFamilies(id).at(0);
+
+                    int pixelSize = fontObject["pixelSize"].toInt(12);
+
+                    m_loginTextFont = QFont(family, pixelSize);
                     emit loginTextFontChanged();
                 }
             }

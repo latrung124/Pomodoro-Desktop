@@ -12,7 +12,7 @@
             "LoginScreen": {
                 "backgroundColor": "#333333",
                 "font": {
-                    "family": "Courier",
+                    "family": "Poppins-SemiBold",
                     "pixelSize": 12,
                     "weight": "Normal"
                 }
@@ -31,7 +31,7 @@
                 "color": "#333333",
                 "backgroundColor": "#F0F0F0",
                 "font": {
-                    "family": "Courier",
+                    "family": "Poppins-SemiBold",
                     "pixelSize": 12,
                     "weight": "Normal"
                 }
@@ -50,7 +50,7 @@
                 "color": "#333333",
                 "backgroundColor": "#F0F0F0",
                 "font": {
-                    "family": "Courier",
+                    "family": "Poppins-SemiBold",
                     "pixelSize": 12,
                     "weight": "Normal"
                 }
