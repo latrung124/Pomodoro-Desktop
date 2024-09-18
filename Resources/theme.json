@@ -48,7 +48,7 @@
             },
             "loginscreen": {
                 "color": "#333333",
-                "backgroundColor": "#F0F0F0",
+                "backgroundColor": "#E8EAE0",
                 "font": {
                     "family": "Poppins-SemiBold",
                     "pixelSize": 12,

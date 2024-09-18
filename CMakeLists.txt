@@ -20,10 +20,15 @@ qt6_add_resources(APP_RESOURCES resources.qrc)
 qt_add_executable(untitled
   main.cpp
   ${APP_RESOURCES}
+
   Utils/CommonSettingsDefine.h
+
   Controller/SystemController.h
+  Controller/ModuleController/BaseModuleController.h
+  Controller/ModuleController/LoginModuleController.h
 
   Controller/SystemController.cpp
+  Controller/ModuleController/LoginModuleController.cpp
 )
 
 add_subdirectory(ThemeConfig)

@@ -20,6 +20,7 @@
 
 #include "Controller/SystemController.h"
 #include "Utils/CommonSettingsDefine.h"
+#include "Controller/ModuleController/LoginModuleController.h"
 
 SystemController::SystemController(QObject *parent)
     : QObject(parent)
@@ -70,4 +71,11 @@ void SystemController::themeSetup()
     m_themeConfig = std::make_shared<ThemeConfig>(Utils::ThemeDefine::themePath);
     // Expose ThemeConfig to QML
     m_engine.rootContext()->setContextProperty("themeConfig", m_themeConfig.get());
+}
+
+void SystemController::initModuleControllers()
+{
+    // Create an instance of LoginModuleController
+    m_loginModuleController = std::make_unique<LoginModuleController>(m_engine.rootContext());
+    m_loginModuleController->initSettings();
 }

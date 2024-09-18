@@ -35,7 +35,7 @@ ApplicationWindow {
 
     title: qsTr("Pomodoro")
 
-    property string gFont: "Helvetica"
+    property font gFont: themeConfig.loginTextFont
 
     Component.onCompleted: {
         x = Screen.width / 2 - width / 2
@@ -46,8 +46,7 @@ ApplicationWindow {
         id: background
 
         anchors.fill: parent
-        color: "#E8EAE0"
-        border.color: "red"
+        color: themeConfig.loginBgColor
 
         MouseArea {
             id: backgroundMA

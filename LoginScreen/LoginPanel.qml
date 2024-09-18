@@ -31,6 +31,12 @@ Item {
     implicitWidth: 488
     implicitHeight: 650
 
+    property font gFont: themeConfig.loginTextFont
+
+    onGFontChanged: {
+        console.log("family: ", gFont.family)
+    }
+
     Rectangle {
         id: backgroundRect
 
@@ -43,8 +49,6 @@ Item {
 
         anchors.margins: internal.contentMargin
         anchors.fill: parent
-
-        border.color: "green"
 
         ColumnLayout {
             id: contentLayout
@@ -59,13 +63,12 @@ Item {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignTop
                 implicitHeight: 32
-                border.color: "red"
 
                 Text {
                     id: greetText
 
                     text: qsTr("Nice to see you again")
-                    font.family: "Poppins"
+                    font.family: gFont.family
                     font.pixelSize: 20
                     font.bold: true
                 }

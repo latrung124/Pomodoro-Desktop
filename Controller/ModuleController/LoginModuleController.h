@@ -20,39 +20,18 @@
 
 #pragma once
 
-#include <QObject>
-#include <QQmlApplicationEngine>
-#include <QQmlContext>
-#include <memory>
+#include "Controller/ModuleController/BaseModuleController.h"
 
-#include "ThemeConfig/ThemeConfig.h"
-
-class LoginModuleController;
-class SystemController : public QObject
+class LoginModuleController : public BaseModuleController
 {
     Q_OBJECT
 
 public:
-    SystemController(QObject *parent = nullptr);
-    ~SystemController();
+    explicit LoginModuleController(QQmlContext *context, QObject *parent = nullptr);
+    ~LoginModuleController();
 
-public slots:
-    void start();
-    void stop();
+    void open() override;
+    void close() override;
 
-signals:
-    void quit();
-
-private:
-    void init();
-    void cleanup();
-    void setupConnections();
-
-    void themeSetup();
-    void loadModule();
-    void initModuleControllers();
-
-    QQmlApplicationEngine m_engine;
-    std::shared_ptr<ThemeConfig> m_themeConfig;
-    std::unique_ptr<LoginModuleController> m_loginModuleController;
+    void initSettings() override;
 };
