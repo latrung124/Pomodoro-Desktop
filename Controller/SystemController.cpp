@@ -19,6 +19,7 @@
  */
 
 #include "Controller/SystemController.h"
+#include "Utils/CommonSettingsDefine.h"
 
 SystemController::SystemController(QObject *parent)
     : QObject(parent)
@@ -57,13 +58,16 @@ void SystemController::setupConnections()
 
 void SystemController::loadModule()
 {
-    m_engine.loadFromModule("LoginScreen", "LoginScreen");
+    // Load LoginScreen module
+    using namespace Utils::SystemScreenSettings;
+    m_engine.loadFromModule(moduleSettingsMap[LoginScreen].modulePath
+                            , moduleSettingsMap[LoginScreen].moduleName);
 }
 
 void SystemController::themeSetup()
 {
     // Create an instance of ThemeConfig
-    m_themeConfig = std::make_shared<ThemeConfig>(":/Resources/theme.json");
+    m_themeConfig = std::make_shared<ThemeConfig>(Utils::ThemeDefine::themePath);
     // Expose ThemeConfig to QML
     m_engine.rootContext()->setContextProperty("themeConfig", m_themeConfig.get());
 }
