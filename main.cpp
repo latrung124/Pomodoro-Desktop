@@ -1,23 +1,14 @@
 #include <QGuiApplication>
-#include <QCoreApplication>
-#include <QQmlContext>
-#include <QQmlApplicationEngine>
-
-#include "ThemeConfig/ThemeConfig.h"
+#include "Controller/SystemController.h"
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+    
+    SystemController systemController;
+    QObject::connect(&systemController, &SystemController::quit, &app, &QGuiApplication::quit);
 
-    QQmlApplicationEngine engine;
-    QObject::connect(&engine, &QQmlApplicationEngine::quit, &app, &QGuiApplication::quit);
-
-    // Create an instance of ThemeConfig
-    ThemeConfig themeConfig(":/Resources/theme.json");
-    // Expose ThemeConfig to QML
-    engine.rootContext()->setContextProperty("themeConfig", &themeConfig);
-
-    engine.loadFromModule("LoginScreen", "LoginScreen");
+    systemController.start();
 
     return app.exec();
 }

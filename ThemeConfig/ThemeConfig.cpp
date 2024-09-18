@@ -161,4 +161,6 @@ void ThemeConfig::parseConfig(Theme theme) {
             }
         }
     }
+
+    qDebug() << "Theme parsed successfully";
 }
