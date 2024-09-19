@@ -68,7 +68,7 @@ void SystemController::loadModule()
 void SystemController::themeSetup()
 {
     // Create an instance of ThemeConfig
-    m_themeConfig = std::make_shared<ThemeConfig>(Utils::ThemeDefine::themePath);
+    m_themeConfig = std::make_shared<ThemeConfig>();
     // Expose ThemeConfig to QML
     m_engine.rootContext()->setContextProperty("themeConfig", m_themeConfig.get());
 }

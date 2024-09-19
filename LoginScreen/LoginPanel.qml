@@ -31,11 +31,14 @@ Item {
     implicitWidth: 488
     implicitHeight: 650
 
-    property font gFont: themeConfig.loginTextFont
-
-    onGFontChanged: {
-        console.log("family: ", gFont.family)
-    }
+    property font greetingFont: themeConfig.loginGreetingFont
+    property color greetingColor: themeConfig.loginGreetingColor
+    property font loginButtonFont: themeConfig.loginButtonFont
+    property color loginButtonColor: themeConfig.loginButtonColor
+    property font loginRegularFont: themeConfig.loginRegularFont
+    property color loginRegularColor: themeConfig.loginRegularColor
+    property font loginPlaceholderFont: themeConfig.loginPlaceholderFont
+    property color loginPlaceholderColor: themeConfig.loginPlaceholderColor
 
     Rectangle {
         id: backgroundRect
@@ -68,8 +71,8 @@ Item {
                     id: greetText
 
                     text: qsTr("Nice to see you again")
-                    font.family: gFont.family
-                    font.pixelSize: 20
+                    font.family: greetingFont.family
+                    font.pixelSize: greetingFont.pixelSize
                     font.bold: true
                 }
             }
@@ -106,8 +109,8 @@ Item {
                             Text {
                                 id: emailTitleText
                                 text: qsTr("Login")
-                                font.family: "Inter"
-                                font.pixelSize: 11
+                                font.family: loginRegularFont.family
+                                font.pixelSize: loginRegularFont.pixelSize
                             }
                         }
 
@@ -144,8 +147,8 @@ Item {
                             Text {
                                 id: pwTitleText
                                 text: qsTr("Password")
-                                font.family: "Inter"
-                                font.pixelSize: 11
+                                font.family: loginRegularFont.family
+                                font.pixelSize: loginRegularFont.pixelSize
                             }
                         }
 

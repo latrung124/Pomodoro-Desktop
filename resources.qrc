@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>Resources/theme.json</file>
-        <file>Resources/Fonts/Poppins-SemiBold.ttf</file>
-    </qresource>
-</RCC>

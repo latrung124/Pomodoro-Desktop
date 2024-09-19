@@ -47,12 +47,37 @@
                 }
             },
             "loginscreen": {
-                "color": "#333333",
+                "loginPanelBgColor": "#FFFFFF",
                 "backgroundColor": "#E8EAE0",
-                "font": {
-                    "family": "Poppins-SemiBold",
-                    "pixelSize": 12,
-                    "weight": "Normal"
+                "text": {
+                    "greeting": {
+                        "color": "#000000",
+                        "font": {
+                            "family": "Poppins-SemiBold",
+                            "pixelSize": 20
+                        }
+                    },
+                    "regular": {
+                        "color": "#000000",
+                        "font": {
+                            "family": "Inter_24pt-Regular",
+                            "pixelSize": 11
+                        }
+                    },
+                    "button": {
+                        "color": "#FFFFFF",
+                        "font": {
+                            "family": "Roboto-Bold",
+                            "pixelSize": 15
+                        }
+                    },
+                    "placeholder": {
+                        "color": "#808080",
+                        "font": {
+                            "family": "Roboto-Regular",
+                            "pixelSize": 15
+                        }
+                    }
                 }
             }
         }

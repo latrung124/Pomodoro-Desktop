@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QObject>
 #include <QString>
 #include <QColor>
@@ -28,9 +30,6 @@
 #include <QJsonDocument>
 #include <QFontDatabase>
 
-namespace ThemeConfigSpace {
-    const QString kFontPath = ":/Resources/Fonts/";
-};
 class ThemeConfig : public QObject
 {
     Q_OBJECT
@@ -41,12 +40,19 @@ class ThemeConfig : public QObject
     Q_PROPERTY(QFont homeTextFont READ homeTextFont NOTIFY homeTextFontChanged)
 
     Q_PROPERTY(QColor loginBgColor READ loginBgColor NOTIFY loginBgColorChanged)
-    Q_PROPERTY(QColor loginTextColor READ loginTextColor NOTIFY loginTextColorChanged)
-    Q_PROPERTY(QFont loginTextFont READ loginTextFont NOTIFY loginTextFontChanged)
+    Q_PROPERTY(QColor loginGreetingColor READ loginGreetingColor NOTIFY loginGreetingColorChanged)
+    Q_PROPERTY(QFont loginGreetingFont READ loginGreetingFont NOTIFY loginGreetingFontChanged)
+    Q_PROPERTY(QColor loginButtonColor READ loginButtonColor NOTIFY loginButtonColorChanged)
+    Q_PROPERTY(QFont loginButtonFont READ loginButtonFont NOTIFY loginButtonFontChanged)
+    Q_PROPERTY(QColor loginRegularColor READ loginRegularColor NOTIFY loginRegularColorChanged)
+    Q_PROPERTY(QFont loginRegularFont READ loginRegularFont NOTIFY loginRegularFontChanged)
+    Q_PROPERTY(QColor loginPlaceholderColor READ loginPlaceholderColor NOTIFY loginPlaceholderColorChanged)
+    Q_PROPERTY(QFont loginPlaceholderFont READ loginPlaceholderFont NOTIFY loginPlaceholderFontChanged)
 
 public:
 
-    explicit ThemeConfig(const QString &configPath, QObject *parent = nullptr);
+    explicit ThemeConfig(QObject *parent = nullptr);
+    ~ThemeConfig();
 
     enum Theme {
         Light,
@@ -61,8 +67,14 @@ public:
     QFont homeTextFont() const;
 
     QColor loginBgColor() const;
-    QColor loginTextColor() const;
-    QFont loginTextFont() const;
+    QColor loginGreetingColor() const;
+    QFont loginGreetingFont() const;
+    QColor loginButtonColor() const;
+    QFont loginButtonFont() const;
+    QColor loginRegularColor() const;
+    QFont loginRegularFont() const;
+    QColor loginPlaceholderColor() const;
+    QFont loginPlaceholderFont() const;
 
     void setTheme(const QString &theme);
 
@@ -77,12 +89,19 @@ signals:
     void homeTextFontChanged();
     
     void loginBgColorChanged();
-    void loginTextColorChanged();
-    void loginTextFontChanged();
+    void loginGreetingColorChanged();
+    void loginGreetingFontChanged();
+    void loginButtonColorChanged();
+    void loginButtonFontChanged();
+    void loginRegularColorChanged();
+    void loginRegularFontChanged();
+    void loginPlaceholderColorChanged();
+    void loginPlaceholderFontChanged();
 
 private:
     void parseConfig(Theme theme);
     void convertTheme(const QString &theme);
+    void parseFont(const QJsonObject &fontObject, QFont &font);
 
     QColor m_homeBgColor;
     QColor m_textColor;
@@ -91,8 +110,15 @@ private:
     Theme m_currentTheme;
 
     QColor m_loginBgColor;
-    QColor m_loginTextColor;
-    QFont m_loginTextFont;
+    QColor m_loginGreetingColor;
+    QFont m_loginGreetingFont;
+    QColor m_loginButtonColor;
+    QFont m_loginButtonFont;
+    QColor m_loginRegularColor;
+    QFont m_loginRegularFont;
+    QColor m_loginPlaceholderColor;
+    QFont m_loginPlaceholderFont;
 
     QJsonDocument m_jsonDocument;
+    std::shared_ptr<QFontDatabase> m_fontDatabase;
 };

@@ -19,31 +19,12 @@
  */
 
 #pragma once
-
 #include <QString>
-#include <map>
+namespace ThemeConfigSpace {
+    const QString kFontPath = ":/Resources/Fonts/";
+    const QString kThemePath = ":/Resources/theme.json";
 
-namespace Utils {
-    namespace SystemScreenSettings {
-        enum ScreenType : uint8_t {
-            LoginScreen = 0,
-            HomeScreen
-        };
-
-        struct ModuleSettings {
-            ModuleSettings() {}
-            ModuleSettings(QString moduleName, QString modulePath)
-             : moduleName(moduleName), modulePath(modulePath) {}
-
-            ~ModuleSettings() {}
-            
-            QString moduleName;
-            QString modulePath;
-        };
-
-        std::map<ScreenType, ModuleSettings> moduleSettingsMap = {
-            {LoginScreen, {"LoginScreen", "LoginScreen"}},
-            {HomeScreen, {"HomeScreen", "HomeScreen"}}
-        };
+    enum ThemeError {
+        InvalidFont = -1
     };
 };
