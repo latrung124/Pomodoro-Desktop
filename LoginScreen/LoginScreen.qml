@@ -35,7 +35,7 @@ ApplicationWindow {
 
     title: qsTr("Pomodoro")
 
-    property font gFont: themeConfig.loginTextFont
+    property string bgColor: themeConfig ? themeConfig.loginBgColor : internal.defaultBgColor
 
     Component.onCompleted: {
         x = Screen.width / 2 - width / 2
@@ -46,7 +46,7 @@ ApplicationWindow {
         id: background
 
         anchors.fill: parent
-        color: themeConfig.loginBgColor
+        color: bgColor
 
         MouseArea {
             id: backgroundMA
@@ -87,5 +87,11 @@ ApplicationWindow {
                 Layout.alignment: Qt.AlignLeft
             }
         }
+    }
+
+    QtObject {
+        id: internal
+
+        property string defaultBgColor: "#FFFFFF"
     }
 }

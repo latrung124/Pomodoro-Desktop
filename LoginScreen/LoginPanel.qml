@@ -31,14 +31,8 @@ Item {
     implicitWidth: 488
     implicitHeight: 650
 
-    property font greetingFont: themeConfig.loginGreetingFont
-    property color greetingColor: themeConfig.loginGreetingColor
-    property font loginButtonFont: themeConfig.loginButtonFont
-    property color loginButtonColor: themeConfig.loginButtonColor
-    property font loginRegularFont: themeConfig.loginRegularFont
-    property color loginRegularColor: themeConfig.loginRegularColor
-    property font loginPlaceholderFont: themeConfig.loginPlaceholderFont
-    property color loginPlaceholderColor: themeConfig.loginPlaceholderColor
+    property font loginRegularFont: themeConfig ? themeConfig.loginRegularFont : internal.defaultFont
+    property font loginGreetingFont: themeConfig ? themeConfig.loginGreetingFont : internal.defaultFont
 
     Rectangle {
         id: backgroundRect
@@ -47,32 +41,40 @@ Item {
         color: "#FFFFFF"
     }
     
-    Rectangle {
+    ColumnLayout {
         id: contentRect
 
         anchors.margins: internal.contentMargin
         anchors.fill: parent
 
         ColumnLayout {
+            id: headerLayout
+
+            width: parent.width
+            height: 80
+        }
+
+        ColumnLayout {
             id: contentLayout
 
-            anchors.fill: parent
+            width: parent.width
+            height: 244
 
-            spacing: 0
+            spacing: 24
 
             Rectangle {
                 id: greetTextItem
 
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignTop
-                implicitHeight: 32
+                implicitHeight: 28
 
                 Text {
                     id: greetText
 
                     text: qsTr("Nice to see you again")
-                    font.family: greetingFont.family
-                    font.pixelSize: greetingFont.pixelSize
+                    font.family: loginGreetingFont.family
+                    font.pixelSize: loginGreetingFont.pixelSize
                     font.bold: true
                 }
             }
@@ -103,14 +105,20 @@ Item {
 
                             Layout.fillWidth: true
                             Layout.alignment: Qt.AlignTop
-                            Layout.leftMargin: 16
                             implicitHeight: 12
 
                             Text {
                                 id: emailTitleText
                                 text: qsTr("Login")
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.left: parent.left
+                                verticalAlignment: Text.AlignVCenter
+                                anchors.leftMargin: 16
                                 font.family: loginRegularFont.family
                                 font.pixelSize: loginRegularFont.pixelSize
+                                font.letterSpacing: 0.3
+                                lineHeightMode:Text.FixedHeight
+                                lineHeight: 12
                             }
                         }
 
@@ -127,7 +135,6 @@ Item {
                     id: passwordFillItem
 
                     Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignTop
                     implicitHeight: 68
 
                     ColumnLayout {
@@ -141,14 +148,20 @@ Item {
 
                             Layout.fillWidth: true
                             Layout.alignment: Qt.AlignTop
-                            Layout.leftMargin: 16
                             implicitHeight: 12
 
                             Text {
                                 id: pwTitleText
                                 text: qsTr("Password")
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.left: parent.left
+                                verticalAlignment: Text.AlignVCenter
+                                anchors.leftMargin: 16
                                 font.family: loginRegularFont.family
                                 font.pixelSize: loginRegularFont.pixelSize
+                                font.letterSpacing: 0.3
+                                lineHeightMode: Text.FixedHeight
+                                lineHeight: 12
                             }
                         }
 
@@ -161,17 +174,119 @@ Item {
                     }
                 }
 
-                Item {
-                    id: rememberItem
+                RowLayout {
+                    id: rememberLayout
 
                     Layout.fillWidth: true
+                    Layout.topMargin: 4
                     implicitHeight: 20
 
-                    CustomToggle {
-                        id: rememberToggle
+                    RowLayout {
+                        id: rememberToggleLayout
+
+                        Layout.fillHeight: true
+                        Layout.alignment: Qt.AlignLeft
+                        implicitWidth: 188
+                        spacing: 8
+
+                        Item {
+                            id: rememberItem
+
+                            Layout.fillHeight: true
+                            Layout.alignment: Qt.AlignLeft
+                            implicitWidth: 40
+
+                            CustomToggle {
+                                id: rememberToggle
+
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                        }
+
+                        Item {
+                            id: rememberTextItem
+
+                            Layout.fillHeight: true
+                            implicitWidth: 140
+                            
+                            Text {
+                                id: rememberText
+
+                                text: qsTr("Remember me")
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.left: parent.left
+                                verticalAlignment: Text.AlignVCenter
+                                anchors.leftMargin: 8
+                                font.family: loginRegularFont.family
+                                font.pixelSize: loginRegularFont.pixelSize
+                                font.letterSpacing: 0.3
+                                lineHeightMode: Text.FixedHeight
+                                lineHeight: 12
+                            }
+                        }
+                    }
+
+                    RowLayout {
+                        id: forgotLayout
+
+                        Layout.fillHeight: true
+                        // Layout.alignment: Qt.AlignRight
+                        implicitWidth: 204
+
+                        Item {
+                            id: forgotItem
+
+                            Layout.fillHeight: true
+                            Layout.fillWidth: true
+                            Layout.alignment: Qt.AlignRight
+
+                            Text {
+                                id: forgotText
+
+                                text: qsTr("Forgot password?")
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.right: parent.right
+                                verticalAlignment: Text.AlignVCenter
+                                anchors.rightMargin: 0
+                                font.family: loginRegularFont.family
+                                font.pixelSize: loginRegularFont.pixelSize
+                                font.letterSpacing: 0.3
+                                lineHeightMode: Text.FixedHeight
+                                lineHeight: 12
+                                font.underline: true
+                                color: internal.blueColor
+                                
+                            }
+
+                            MouseArea {
+                                id: forgotMouseArea
+
+                                anchors.fill: forgotText
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: {
+                                    console.log("Forgot password clicked")
+                                }
+                            }
+                        }
                     }
                 }
             }
+
+            ColumnLayout {
+                id: loginButtonLayout
+
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignTop
+                implicitHeight: internal.buttonHeight
+
+            }
+        }
+
+        ColumnLayout {
+            id: footerLayout
+
+            width: parent.width
+            height: 176.5
         }
     }
 
@@ -179,5 +294,8 @@ Item {
         id: internal
 
         property int contentMargin: 48
+        property font defaultFont: ({ family: "Helvetica", pointSize: 13, bold: true})
+        property color blueColor: "#007AFF"
+        property int buttonHeight: 40
     }
 }
