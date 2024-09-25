@@ -13,4 +13,5 @@ qt_add_qml_module(CommonComponent
     QML_FILES
         CustomTextField.qml
         CustomToggle.qml
+        CustomIconButton.qml
 )

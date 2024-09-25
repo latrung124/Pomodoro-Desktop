@@ -42,7 +42,7 @@ Item {
     }
     
     ColumnLayout {
-        id: contentRect
+        id: panelLayout
 
         anchors.margins: internal.contentMargin
         anchors.fill: parent
@@ -50,16 +50,16 @@ Item {
         ColumnLayout {
             id: headerLayout
 
-            width: parent.width
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignTop
             height: 80
         }
 
         ColumnLayout {
             id: contentLayout
 
-            width: parent.width
+            Layout.fillWidth: true
             height: 244
-
             spacing: 24
 
             Rectangle {
@@ -271,22 +271,69 @@ Item {
                     }
                 }
             }
-
-            ColumnLayout {
-                id: loginButtonLayout
-
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignTop
-                implicitHeight: internal.buttonHeight
-
-            }
         }
+
+
 
         ColumnLayout {
             id: footerLayout
 
-            width: parent.width
-            height: 176.5
+            Layout.fillWidth: true
+            height: 220.5
+
+            ColumnLayout {
+                id: signInBtnLayout
+
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignTop
+                Layout.preferredHeight: 72
+
+                Item {
+                    id: signInBtnItem
+
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBottom
+                    Layout.preferredHeight: 40
+
+                    CustomIconButton {
+                        id: signInIconBtn
+
+                        text: qsTr("Login")
+                        Layout.fillWidth: true
+                    }
+                }
+            }
+
+            ColumnLayout {
+                id: googleSignInBtnLayout
+
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignTop
+                Layout.preferredHeight: 72
+
+                Item {
+                    id: googleSignInBtnItem
+
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBottom
+                    Layout.preferredHeight: 40
+
+                    CustomIconButton {
+                        id: googleSignInIconBtn
+
+                        contentText: qsTr("Sign in with Google")
+                        iconBtnSource: `Resources/google-logo-240x240.png`
+                        Layout.fillWidth: true
+                    }
+                }
+            }
+
+            ColumnLayout {
+                id: signUpLayout
+
+                Layout.fillWidth: true
+                
+            }
         }
     }
 
