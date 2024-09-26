@@ -19,5 +19,4 @@ qt_add_qml_module(LoginScreen
         LoginPanel.qml
     RESOURCES
         "Resources/showcase-image.png"
-        "Resources/google-logo-240x240.png"
 )

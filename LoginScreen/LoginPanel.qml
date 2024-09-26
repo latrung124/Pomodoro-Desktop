@@ -295,11 +295,28 @@ Item {
                     Layout.alignment: Qt.AlignBottom
                     Layout.preferredHeight: 40
 
-                    CustomIconButton {
-                        id: signInIconBtn
+                    Button {
+                        id: signInBtn
 
-                        text: qsTr("Login")
-                        Layout.fillWidth: true
+                        anchors.fill: parent
+
+                        background: Rectangle {
+                            color: "#007AFF"
+                            radius: 6
+                        }
+
+                        contentItem: Item {
+                            Text {
+                                text: qsTr("Sign in")
+                                color: "white"
+                                font.pixelSize: 16
+                                font.family: loginRegularFont.family
+                                font.bold: true
+                                anchors.fill: parent
+                                verticalAlignment: Text.AlignVCenter
+                                horizontalAlignment: Text.AlignHCenter
+                            }
+                        }
                     }
                 }
             }
@@ -322,8 +339,10 @@ Item {
                         id: googleSignInIconBtn
 
                         contentText: qsTr("Sign in with Google")
-                        iconBtnSource: `Resources/google-logo-240x240.png`
+                        iconBtnSource: `Resources/google-logo-1040x1040.png`
+                        iconSize: 20
                         Layout.fillWidth: true
+                        backgroundColor: "#333333"
                     }
                 }
             }

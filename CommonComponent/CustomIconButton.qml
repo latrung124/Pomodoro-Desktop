@@ -38,7 +38,7 @@ AbstractButton {
     implicitWidth: 392
     topPadding: Math.floor((root.height - contentLayout.height) / 2)
     bottomPadding: Math.floor((root.height - contentLayout.height) / 2)
-    leftPadding: Math.floor((root.width - contentLayout.width) / 2)
+    leftPadding: Math.floor((root.width - (contentLayout.width)) / 2)
     rightPadding: Math.floor((root.width - contentLayout.width) / 2)
     topInset: 0
     leftInset: 0
@@ -53,8 +53,6 @@ AbstractButton {
         Released
     }
 
-
-
     background: Rectangle {
         id: backgroundRect
 
@@ -64,23 +62,17 @@ AbstractButton {
 
     contentItem: Item {
         id: contentItem
-        
-        Rectangle {
-            anchors.fill: parent
-            color: "transparent"
-            border.color: "red"
-        }
+
         RowLayout {
             id: contentLayout
-            // anchors.fill: parent
 
             Item {
                 id: iconItem
 
-                Layout.preferredHeight: 20
-                Layout.preferredWidth: 20
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                visible: iconImage.source !== ""
+                Layout.preferredHeight: internal.preferIconSize
+                Layout.preferredWidth: internal.preferIconSize
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+                visible: iconBtnSource !== ""
 
                 Image {
                     id: iconImage
@@ -93,23 +85,20 @@ AbstractButton {
             Item {
                 id: textItem
 
-                Layout.preferredHeight: 20
-                Layout.preferredWidth: 60
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                Layout.preferredWidth: internal.defaultBtnWidth
+                Layout.preferredHeight: internal.defaultBtnHeight
+                Layout.alignment: Qt.AlignVCenter
 
                 Text {
                     id: contentText
                     text: qsTr("Button")
                     color: "white"
                     font.pixelSize: 16
-                    anchors {
-                        left: parent.left
-                        verticalCenter: parent.verticalCenter
-                    }
-
-                    verticalAlignment: Text.AlignVCenter | Text.AlignLeft
+                    anchors.fill: parent
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
                 }
-            }  
+            }
         }
     }
 
@@ -117,5 +106,8 @@ AbstractButton {
         id: internal
 
         property color defaultBgColor: "#007AFF"
+        property int preferIconSize: (iconSize < root.height && iconSize < root.width) ? iconSize : 20
+        property int defaultBtnWidth: 140
+        property int defaultBtnHeight: 20
     }
 }
