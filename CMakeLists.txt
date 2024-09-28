@@ -40,7 +40,7 @@ target_link_libraries(untitled PRIVATE
     ThemeConfig
     HomeScreenplugin
     LoginScreenplugin
-    )
+)
 
 include(GNUInstallDirs)
 install(TARGETS untitled

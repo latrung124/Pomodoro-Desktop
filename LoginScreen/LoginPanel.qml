@@ -19,7 +19,6 @@
  */
 
 import QtQuick
-import QtQuick.Window
 import QtQuick.Controls
 import QtQuick.Layouts
 
@@ -33,6 +32,8 @@ Item {
 
     property font loginRegularFont: themeConfig ? themeConfig.loginRegularFont : internal.defaultFont
     property font loginGreetingFont: themeConfig ? themeConfig.loginGreetingFont : internal.defaultFont
+
+    signal signUp(string pageName)
 
     Rectangle {
         id: backgroundRect
@@ -52,14 +53,14 @@ Item {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignTop
-            height: 80
+            height: internal.headerLayoutHeight
         }
 
         ColumnLayout {
             id: contentLayout
 
             Layout.fillWidth: true
-            height: 244
+            height: internal.contentLayoutHeight
             spacing: 24
 
             Rectangle {
@@ -230,7 +231,6 @@ Item {
                         id: forgotLayout
 
                         Layout.fillHeight: true
-                        // Layout.alignment: Qt.AlignRight
                         implicitWidth: 204
 
                         Item {
@@ -263,6 +263,7 @@ Item {
 
                                 anchors.fill: forgotText
                                 cursorShape: Qt.PointingHandCursor
+
                                 onClicked: {
                                     console.log("Forgot password clicked")
                                 }
@@ -273,27 +274,26 @@ Item {
             }
         }
 
-
-
         ColumnLayout {
             id: footerLayout
 
             Layout.fillWidth: true
-            height: 220.5
+            height: internal.footerLayoutHeight
+            spacing: 0
 
             ColumnLayout {
                 id: signInBtnLayout
 
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignTop
-                Layout.preferredHeight: 72
+                Layout.preferredHeight: internal.btnLayoutHeight
 
                 Item {
                     id: signInBtnItem
 
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBottom
-                    Layout.preferredHeight: 40
+                    Layout.preferredHeight: internal.buttonHeight
 
                     Button {
                         id: signInBtn
@@ -318,6 +318,23 @@ Item {
                             }
                         }
                     }
+                }
+            }
+
+            ColumnLayout {
+                id: lineLayout
+
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignBottom
+                Layout.preferredHeight: 32
+
+                Rectangle {
+                    id: lineRect
+
+                    Layout.fillWidth: true
+                    implicitHeight: 0.5
+                    Layout.alignment: Qt.AlignBottom
+                    color: "#E5E5E5"
                 }
             }
 
@@ -351,7 +368,87 @@ Item {
                 id: signUpLayout
 
                 Layout.fillWidth: true
-                
+                Layout.preferredHeight: 43.5
+
+                Item {
+                    id: signUpItem
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+
+                    RowLayout {
+                        id: signUpTxtLayout
+
+                        implicitWidth: 250
+                        height: parent.height
+                        anchors.horizontalCenter: parent.horizontalCenter
+
+                        Item {
+                            id: dontHaveAccountRect
+
+                            height: 20
+                            width: 170
+                            Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+
+                            Text {
+                                id: signUpText
+
+                                text: qsTr("Don't have an account?")
+                                anchors {
+                                    bottom: parent.bottom
+                                    left: parent.left
+                                }
+                                verticalAlignment: Text.AlignBottom
+                                horizontalAlignment: Text.AlignLeft
+                                anchors.leftMargin: 0
+                                font.family: loginRegularFont.family
+                                font.pixelSize: loginRegularFont.pixelSize
+                                font.letterSpacing: 0.3
+                                lineHeightMode: Text.FixedHeight
+                                lineHeight: 12
+                            }
+                        }
+
+                        Item {
+                            id: signUpNowRect
+
+                            height: 20
+                            width: 80
+                            Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+
+                            Text {
+                                id: signUpNowText
+
+                                text: qsTr("Sign up now")
+                                anchors {
+                                    bottom: parent.bottom
+                                    left: parent.left
+                                }
+                                verticalAlignment: Text.AlignBottom
+                                horizontalAlignment: Text.AlignLeft
+                                anchors.leftMargin: 0
+                                font.family: loginRegularFont.family
+                                font.pixelSize: loginRegularFont.pixelSize
+                                font.letterSpacing: 0.3
+                                lineHeightMode: Text.FixedHeight
+                                lineHeight: 12
+                                font.underline: true
+                                color: internal.blueColor
+                            }
+
+                            MouseArea {
+                                id: signUpNowMouseArea
+
+                                anchors.fill: signUpNowText
+                                cursorShape: Qt.PointingHandCursor
+
+                                onClicked: function() {
+                                    console.log("Sign Up Now Button clicked");
+                                    root.signUp("AccountPanel");
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -363,5 +460,9 @@ Item {
         property font defaultFont: ({ family: "Helvetica", pointSize: 13, bold: true})
         property color blueColor: "#007AFF"
         property int buttonHeight: 40
+        property int btnLayoutHeight: 72
+        property double footerLayoutHeight: 220.5
+        property int headerLayoutHeight: 80
+        property int contentLayoutHeight: 244
     }
 }

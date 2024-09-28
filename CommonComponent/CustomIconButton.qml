@@ -22,7 +22,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-AbstractButton {
+Button {
     id: root
 
     property alias contentText: contentText.text

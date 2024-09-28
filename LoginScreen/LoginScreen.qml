@@ -42,6 +42,22 @@ ApplicationWindow {
         y = Screen.height / 2 - height / 2
     }
 
+    Component {
+        id: actPanelComponent
+
+        AccountPanel {
+            id: accountPanel
+
+            Component.onDestruction: function() {
+                console.log("AccountPanel destroyed");
+            }
+
+            Component.onCompleted: function() {
+                console.log("AccountPanel completed");
+            }
+        }
+    }
+
     Rectangle {
         id: background
 
@@ -81,11 +97,86 @@ ApplicationWindow {
                 }
             }
 
-            LoginPanel {
-                id: loginRect
+            Item {
+                id: stackViewItem
 
                 Layout.alignment: Qt.AlignLeft
+                implicitWidth: 488
+                implicitHeight: 650
+
+                StackView {
+                    id: stackView
+
+                    anchors.fill: parent
+
+                    initialItem: LoginPanel {
+                        id: loginPanel
+
+                        Component.onDestruction: function() {
+                            console.log("LoginPanel destroyed");
+                        }
+
+                        Component.onCompleted: function() {
+                            console.log("LoginPanel completed")
+                        }
+                    }
+
+                    pushEnter: pushEnterTransition
+                    pushExit: pushExitTransition
+                }
             }
+        }
+    }
+
+    Transition {
+        id: pushEnterTransition
+
+        ParallelAnimation {
+            PropertyAnimation {
+                property: "x"
+                from: stackView.width
+                to: 0
+                duration: 300
+                easing.type: Easing.InOutQuad
+            }
+
+            NumberAnimation {
+                property: "opacity"
+                from: 0; to: 1
+                duration: 200
+                easing.type: Easing.OutCubic
+            }
+        }
+    }
+
+    Transition {
+        id: pushExitTransition
+
+        ParallelAnimation {
+            PropertyAnimation {
+                property: "x"
+                from: 0
+                to: 0
+                duration: 300
+                easing.type: Easing.InOutQuad
+            }
+
+            NumberAnimation {
+                property: "opacity"
+                from: 1
+                to: 0
+                duration: 450
+                easing.type: Easing.OutCubic
+            }
+        }
+    }
+
+    Connections {
+        target: loginPanel
+
+        function onSignUp(pageName) {
+            console.log("onSignUp!");
+            internal.pushPage(pageName);
         }
     }
 
@@ -93,5 +184,15 @@ ApplicationWindow {
         id: internal
 
         property string defaultBgColor: "#FFFFFF"
+
+        function pushPage(pageName) {
+            var component = Qt.createComponent(pageName + ".qml");
+            if (component.status === Component.Ready) {
+                var page = component.createObject(stackView);
+                stackView.push(page);
+            } else {
+                console.log("Error loading component:", component.errorString());
+            }
+        }
     }
 }
