@@ -104,6 +104,13 @@ ApplicationWindow {
                 implicitWidth: 488
                 implicitHeight: 650
 
+                Rectangle {
+                    id: bgStackViewRect
+
+                    anchors.fill: parent
+                    color: "#FFFFFF"
+                }
+
                 StackView {
                     id: stackView
 
@@ -152,22 +159,12 @@ ApplicationWindow {
     Transition {
         id: pushExitTransition
 
-        ParallelAnimation {
-            PropertyAnimation {
-                property: "x"
-                from: 0
-                to: 0
-                duration: 300
-                easing.type: Easing.InOutQuad
-            }
-
-            NumberAnimation {
-                property: "opacity"
-                from: 1
-                to: 0
-                duration: 450
-                easing.type: Easing.OutCubic
-            }
+        NumberAnimation {
+            property: "opacity"
+            from: 1
+            to: 0
+            duration: 300
+            easing.type: Easing.OutCubic
         }
     }
 
