@@ -27,13 +27,15 @@ import CommonComponent
 Item {
     id: root
 
+    objectName: "LoginPanel"
+
     implicitWidth: 488
     implicitHeight: 650
 
     property font loginRegularFont: themeConfig ? themeConfig.loginRegularFont : internal.defaultFont
     property font loginGreetingFont: themeConfig ? themeConfig.loginGreetingFont : internal.defaultFont
 
-    signal signUp(string pageName)
+    signal signUp()
 
     Rectangle {
         id: backgroundRect
@@ -443,7 +445,7 @@ Item {
 
                                 onClicked: function() {
                                     console.log("Sign Up Now Button clicked");
-                                    root.signUp("AccountPanel");
+                                    root.signUp();
                                 }
                             }
                         }

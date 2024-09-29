@@ -27,6 +27,8 @@ import CommonComponent
 Item {
     id: root
 
+    objectName: "AccountPanel"
+
     implicitWidth: 488
     implicitHeight: 650
 
@@ -279,7 +281,7 @@ Item {
             }
         }
     }
-
+    
     QtObject {
         id: internal
 

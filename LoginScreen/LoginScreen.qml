@@ -43,17 +43,17 @@ ApplicationWindow {
     }
 
     Component {
-        id: actPanelComponent
+        id: registrationComponent
 
-        AccountPanel {
-            id: accountPanel
+        UserRegistrationPanel {
+            id: userRegistrationPanel
 
             Component.onDestruction: function() {
-                console.log("AccountPanel destroyed");
+                console.log("UserRegistrationPanel destroyed");
             }
 
             Component.onCompleted: function() {
-                console.log("AccountPanel completed");
+                console.log("UserRegistrationPanel completed");
             }
         }
     }
@@ -97,83 +97,20 @@ ApplicationWindow {
                 }
             }
 
-            Item {
-                id: stackViewItem
+            Loader {
+                id: panelLoader
 
-                Layout.alignment: Qt.AlignLeft
-                implicitWidth: 488
-                implicitHeight: 650
+                Layout.alignment: Qt.AlignRight
+                source: "LoginPanel.qml"
 
-                Rectangle {
-                    id: bgStackViewRect
-
-                    anchors.fill: parent
-                    color: "#FFFFFF"
-                }
-
-                StackView {
-                    id: stackView
-
-                    anchors.fill: parent
-
-                    initialItem: LoginPanel {
-                        id: loginPanel
-
-                        Component.onDestruction: function() {
-                            console.log("LoginPanel destroyed");
-                        }
-
-                        Component.onCompleted: function() {
-                            console.log("LoginPanel completed")
-                        }
+                onLoaded: function() {
+                    var obj = panelLoader.item;
+                    if (!obj) {
+                        return
                     }
-
-                    pushEnter: pushEnterTransition
-                    pushExit: pushExitTransition
+                    internal.connections(obj);
                 }
             }
-        }
-    }
-
-    Transition {
-        id: pushEnterTransition
-
-        ParallelAnimation {
-            PropertyAnimation {
-                property: "x"
-                from: stackView.width
-                to: 0
-                duration: 300
-                easing.type: Easing.InOutQuad
-            }
-
-            NumberAnimation {
-                property: "opacity"
-                from: 0; to: 1
-                duration: 200
-                easing.type: Easing.OutCubic
-            }
-        }
-    }
-
-    Transition {
-        id: pushExitTransition
-
-        NumberAnimation {
-            property: "opacity"
-            from: 1
-            to: 0
-            duration: 300
-            easing.type: Easing.OutCubic
-        }
-    }
-
-    Connections {
-        target: loginPanel
-
-        function onSignUp(pageName) {
-            console.log("onSignUp!");
-            internal.pushPage(pageName);
         }
     }
 
@@ -182,13 +119,20 @@ ApplicationWindow {
 
         property string defaultBgColor: "#FFFFFF"
 
-        function pushPage(pageName) {
-            var component = Qt.createComponent(pageName + ".qml");
-            if (component.status === Component.Ready) {
-                var page = component.createObject(stackView);
-                stackView.push(page);
-            } else {
-                console.log("Error loading component:", component.errorString());
+        property var pageList: ["LoginPanel"
+                            , "UserRegistrationPanel"]
+
+        function handleSignUp() {
+            console.log("handle Sign Up!")
+            panelLoader.source = "UserRegistrationPanel.qml";
+        }
+
+        function connections(obj) {
+            if (obj.objectName === internal.pageList[0]) {
+                console.log(internal.pageList[0]);
+                obj.signUp.connect(handleSignUp);
+            } else if (obj.objectName === internal.pageList[1]){
+                obj.pageAppearTrans();
             }
         }
     }
