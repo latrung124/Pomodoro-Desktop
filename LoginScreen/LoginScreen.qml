@@ -42,22 +42,6 @@ ApplicationWindow {
         y = Screen.height / 2 - height / 2
     }
 
-    Component {
-        id: registrationComponent
-
-        UserRegistrationPanel {
-            id: userRegistrationPanel
-
-            Component.onDestruction: function() {
-                console.log("UserRegistrationPanel destroyed");
-            }
-
-            Component.onCompleted: function() {
-                console.log("UserRegistrationPanel completed");
-            }
-        }
-    }
-
     Rectangle {
         id: background
 
@@ -97,18 +81,34 @@ ApplicationWindow {
                 }
             }
 
-            Loader {
-                id: panelLoader
+            Item {
+                id: panelContainer
 
                 Layout.alignment: Qt.AlignRight
-                source: "LoginPanel.qml"
+                width: 488
+                height: 650
 
-                onLoaded: function() {
-                    var obj = panelLoader.item;
-                    if (!obj) {
-                        return
+                LoginPanel {
+                    id: loginPanel
+
+                    objectName: "LoginPanel"
+                    anchors.fill: parent
+
+                    onOpenPanel: function(name) {
+                        internal.handleOpenPanel(name);
                     }
-                    internal.connections(obj);
+                }
+
+                Loader {
+                    id: panelLoader
+
+                    anchors.fill: parent
+                    source: ""
+
+                    onLoaded: {
+                        panelLoader.item.panelAppearTrans();
+                        internal.connectionEstablished(panelLoader.item);
+                    }
                 }
             }
         }
@@ -118,22 +118,22 @@ ApplicationWindow {
         id: internal
 
         property string defaultBgColor: "#FFFFFF"
+        property var pageList: ["UserRegistrationPanel", "ForgotPasswordPanel"]
 
-        property var pageList: ["LoginPanel"
-                            , "UserRegistrationPanel"]
-
-        function handleSignUp() {
-            console.log("handle Sign Up!")
-            panelLoader.source = "UserRegistrationPanel.qml";
+        function handleClosePanel() {
+            panelLoader.source = "";
         }
 
-        function connections(obj) {
-            if (obj.objectName === internal.pageList[0]) {
-                console.log(internal.pageList[0]);
-                obj.signUp.connect(handleSignUp);
-            } else if (obj.objectName === internal.pageList[1]){
-                obj.pageAppearTrans();
+        function connectionEstablished(obj) {
+            if (obj.objectName === pageList[0]) {
+                panelLoader.item.closePanel.connect(internal.handleClosePanel);
+                console.log("Connection " + pageList[0] + " established!");
             }
+        }
+
+        function handleOpenPanel(name) {
+            console.log("handle Sign Up!")
+            panelLoader.source = name + ".qml";
         }
     }
 }

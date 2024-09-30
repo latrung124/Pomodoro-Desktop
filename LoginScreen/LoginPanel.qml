@@ -35,7 +35,7 @@ Item {
     property font loginRegularFont: themeConfig ? themeConfig.loginRegularFont : internal.defaultFont
     property font loginGreetingFont: themeConfig ? themeConfig.loginGreetingFont : internal.defaultFont
 
-    signal signUp()
+    signal openPanel(string name)
 
     Rectangle {
         id: backgroundRect
@@ -445,7 +445,7 @@ Item {
 
                                 onClicked: function() {
                                     console.log("Sign Up Now Button clicked");
-                                    root.signUp();
+                                    root.openPanel("UserRegistrationPanel");
                                 }
                             }
                         }

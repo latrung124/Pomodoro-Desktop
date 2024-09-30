@@ -19,6 +19,8 @@ qt_add_qml_module(LoginScreen
         LoginPanel.qml
         AccountPanel.qml
         UserRegistrationPanel.qml
+        PasswordPanel.qml
     RESOURCES
+        "Resources/arrow-left-large.png"
         "Resources/showcase-image.png"
 )

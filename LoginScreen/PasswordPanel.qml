@@ -27,7 +27,7 @@ import CommonComponent
 Item {
     id: root
 
-    objectName: "AccountPanel"
+    objectName: "PasswordPanel"
 
     implicitWidth: 488
     implicitHeight: 650
@@ -47,7 +47,7 @@ Item {
     ColumnLayout {
         id: panelLayout
 
-        height: 485
+        height: 308.5
         anchors {
             left: parent.left
             leftMargin: internal.contentMargin
@@ -73,7 +73,7 @@ Item {
             spacing: 24
 
             Rectangle {
-                id: greetTextItem
+                id: passwordTextItem
 
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignTop
@@ -82,7 +82,7 @@ Item {
                 Text {
                     id: greetText
 
-                    text: qsTr("Your details")
+                    text: qsTr("Your password")
                     font.family: loginGreetingFont.family
                     font.pixelSize: loginGreetingFont.pixelSize
                     font.bold: true
@@ -94,7 +94,7 @@ Item {
             }
 
             ColumnLayout {
-                id: detailFillLayout
+                id: pwLayout
 
                 Layout.alignment: Qt.AlignTop
                 Layout.fillWidth: true
@@ -102,28 +102,28 @@ Item {
                 spacing: 16
 
                 Item {
-                    id: nicknameFillItem
+                    id: pwFillItem
 
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignTop
                     implicitHeight: 68
 
                     ColumnLayout {
-                        id: nicknameFillLayout
+                        id: pwFillLayout
 
                         anchors.fill: parent
                         spacing: 8
 
                         Item {
-                            id: nicknameTitleItem
+                            id: pwTitleItem
 
                             Layout.fillWidth: true
                             Layout.alignment: Qt.AlignTop
                             implicitHeight: 12
 
                             Text {
-                                id: nicknameTitleText
-                                text: qsTr("Nickname*")
+                                id: pwTitleText
+                                text: qsTr("Password*")
                                 anchors.verticalCenter: parent.verticalCenter
                                 anchors.left: parent.left
                                 verticalAlignment: Text.AlignVCenter
@@ -137,36 +137,36 @@ Item {
                         }
 
                         CustomTextField {
-                            id: nicknameTextField
+                            id: pwTextField
 
-                            backgroundText: qsTr("Your nickname")
+                            backgroundText: qsTr("Your password")
                             Layout.alignment: Qt.AlignTop
                         }
                     }
                 }
 
                 Item {
-                    id: emailFillItem
+                    id: confirmPwFillItem
 
                     Layout.fillWidth: true
                     implicitHeight: 68
 
                     ColumnLayout {
-                        id: emailFillLayout
+                        id: confirmPwFillLayout
 
                         anchors.fill: parent
                         spacing: 8
 
                         Item {
-                            id: emailTitleItem
+                            id: confirmPwTitleItem
 
                             Layout.fillWidth: true
                             Layout.alignment: Qt.AlignTop
                             implicitHeight: 12
 
                             Text {
-                                id: emailTitleText
-                                text: qsTr("Email*")
+                                id: confirmPwTitleText
+                                text: qsTr("Confirm password*")
                                 anchors.verticalCenter: parent.verticalCenter
                                 anchors.left: parent.left
                                 verticalAlignment: Text.AlignVCenter
@@ -180,9 +180,9 @@ Item {
                         }
 
                         CustomTextField {
-                            id: pwTextField
+                            id: confirmPwTextField
 
-                            backgroundText: qsTr("Your email")
+                            backgroundText: qsTr("Confirm your password")
                             Layout.alignment: Qt.AlignTop
                         }
                     }
@@ -223,7 +223,7 @@ Item {
 
                         contentItem: Item {
                             Text {
-                                text: qsTr("Continue")
+                                text: qsTr("Sign up")
                                 color: "white"
                                 font.pixelSize: 16
                                 font.family: loginRegularFont.family
@@ -233,53 +233,6 @@ Item {
                                 horizontalAlignment: Text.AlignHCenter
                             }
                         }
-
-                        onClicked: function() {
-                            nextPage("PasswordPanel");
-                        }
-                    }
-                }
-            }
-
-            ColumnLayout {
-                id: lineLayout
-
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignBottom
-                Layout.preferredHeight: 32
-
-                Rectangle {
-                    id: lineRect
-
-                    Layout.fillWidth: true
-                    implicitHeight: 0.5
-                    Layout.alignment: Qt.AlignBottom
-                    color: "#E5E5E5"
-                }
-            }
-
-            ColumnLayout {
-                id: googleSignUpBtnLayout
-
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignTop
-                Layout.preferredHeight: 72
-
-                Item {
-                    id: googleSignUpBtnItem
-
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignBottom
-                    Layout.preferredHeight: 40
-
-                    CustomIconButton {
-                        id: googleSignInIconBtn
-
-                        contentText: qsTr("Sign up with Google")
-                        iconBtnSource: `Resources/google-logo-1040x1040.png`
-                        iconSize: 20
-                        Layout.fillWidth: true
-                        backgroundColor: "#333333"
                     }
                 }
             }
@@ -294,7 +247,7 @@ Item {
         property color blueColor: "#007AFF"
         property int buttonHeight: 40
         property int btnLayoutHeight: 72
-        property double footerLayoutHeight: 220.5
+        property double footerLayoutHeight: 116
         property int headerLayoutHeight: 80
         property int contentLayoutHeight: 244
     }
