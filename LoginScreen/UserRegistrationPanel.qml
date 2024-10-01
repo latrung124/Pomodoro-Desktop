@@ -49,8 +49,10 @@ Item {
 
         anchors.fill: parent
 
-        initialItem: AccountPanel {
-            id: accountPanel
+        initialItem: AccountPage {
+            id: accountPage
+
+            StackView.visible: true
         }
 
         Component.onCompleted: {
@@ -63,7 +65,9 @@ Item {
         }
 
         pushEnter: pushEnterTransition
-        pushExit: null
+        pushExit: pushExitTransition
+        popEnter: popEnterTransition
+        popExit: popExitTransition
     }
 
     Button {
@@ -115,33 +119,28 @@ Item {
     Transition {
         id: pushExitTransition
 
-        NumberAnimation {
-            property: "opacity"
-            from: 1; to: 0
-            duration: 500
-            easing.type: Easing.OutCubic
+        PropertyAction {
+            property: "x"
+            value: 0
+        }
+
+        PropertyAction {
+            property: "y"
+            value: 0
         }
     }
 
     Transition {
         id: popEnterTransition
 
-        ParallelAnimation {
-            PropertyAnimation {
-                property: "x"
-                from: 0
-                to: 0
-                duration: 250
-                easing.type: Easing.InOutQuad
-            }
-
-            NumberAnimation {
-                property: "opacity"
-                from: 0; to: 1
-                duration: 100
-                easing.type: Easing.OutCubic
-            }
-        }  
+        PropertyAction {
+            property: "x"
+            value: 0
+        }
+        PropertyAction {
+            property: "y"
+            value: 0
+        }
     }
 
     Transition {
@@ -216,7 +215,7 @@ Item {
     QtObject {
         id: internal
 
-        property var pageList: ["AccountPanel", "PasswordPanel"]
+        property var pageList: ["AccountPage", "PasswordPage"]
 
         function pushPage(pageName) {
             var component = Qt.createComponent(pageName + ".qml");
