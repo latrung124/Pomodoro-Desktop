@@ -285,7 +285,52 @@ Item {
             }
         }
     }
-    
+
+    PageIndicator {
+        id: pageIndicator
+
+        anchors {
+            bottom: parent.bottom
+            bottomMargin: 48
+            horizontalCenter: parent.horizontalCenter
+        }
+
+        count: 3
+        currentIndex: 0
+
+        delegate: Component {
+            id: pageIndicatorDelegate
+
+            Rectangle {
+                id: pageIndicatorRect
+
+                property bool isHighlight: index === 0
+
+                width: 20
+                height: 10
+                color: "transparent"
+
+                Rectangle {
+                    id: circleIndicatorRect
+
+                    width: isHighlight ? 20 : 8
+                    height: 8
+                    anchors.centerIn: parent
+                    color: isHighlight ? "#007AFF" : "#D9D9D9"
+                    radius: isHighlight ? 4 : circleIndicatorRect.width*0.5
+                }
+            }
+        }
+    }
+
+    Component.onDestruction: function() {
+        console.log("Account Page onDestruction!");
+    }
+
+    Component.onCompleted: function() {
+        console.log("Account Page onCompleted!");
+    }
+
     QtObject {
         id: internal
 

@@ -46,22 +46,17 @@ Item {
 
     StackView {
         id: pageStack
-
+        
         anchors.fill: parent
 
         initialItem: AccountPage {
             id: accountPage
 
             StackView.visible: true
-        }
 
-        Component.onCompleted: {
-            console.log("Panel loaded completely");
-            internal.connectionEstablished(initialItem);
-        }
-
-        Component.onDestruction: {
-            console.log("Panel destroyed");
+            Component.onCompleted: function(currentIndex) {
+                internal.connectionEstablished(accountPage, currentIndex);
+            }
         }
 
         pushEnter: pushEnterTransition
@@ -215,9 +210,10 @@ Item {
     QtObject {
         id: internal
 
-        property var pageList: ["AccountPage", "PasswordPage"]
+        property var pageList: ["AccountPage", "PasswordPage", "ThankyouPage"]
 
         function pushPage(pageName) {
+            console.log("pushPage: " + pageName);
             var component = Qt.createComponent(pageName + ".qml");
             if (component.status === Component.Ready) {
                 var page = component.createObject(pageStack);
@@ -238,6 +234,13 @@ Item {
         function connectionEstablished(obj) {
             if (!obj) return;
             obj.nextPage.connect(internal.pushPage);
+            console.log("Connection nextPage from " + obj.objectName + " to pushPage()!");
+        }
+
+        function disconnection(obj) {
+            if (!obj) return;
+            obj.nextPage.disconnect(internal.pushPage);
+            console.log("Disconnect nextPage from " + obj.objectName + " to pushPage()!");
         }
     }
 }
