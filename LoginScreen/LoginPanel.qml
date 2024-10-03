@@ -269,6 +269,7 @@ Item {
 
                                 onClicked: {
                                     console.log("Forgot password clicked")
+                                    root.openPanel("ForgotPasswordPanel");
                                 }
                             }
                         }
