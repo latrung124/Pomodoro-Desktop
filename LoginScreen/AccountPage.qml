@@ -21,6 +21,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Controls.Basic
 
 import CommonComponent
 
@@ -35,8 +36,6 @@ Item {
     property font loginRegularFont: themeConfig ? themeConfig.loginRegularFont : internal.defaultFont
     property font loginGreetingFont: themeConfig ? themeConfig.loginGreetingFont : internal.defaultFont
 
-    signal nextPage(string name)
-
     Rectangle {
         id: backgroundRect
 
@@ -47,17 +46,15 @@ Item {
     ColumnLayout {
         id: panelLayout
 
-        height: 485
         anchors {
-            left: parent.left
+            fill: parent
             leftMargin: internal.contentMargin
-            right: parent.right
             rightMargin: internal.contentMargin
-            top: parent.top
             topMargin: internal.contentMargin
+            bottomMargin: internal.contentBotMargin
         }
 
-        ColumnLayout {
+        RowLayout {
             id: headerLayout
 
             Layout.fillWidth: true
@@ -235,7 +232,7 @@ Item {
                         }
 
                         onClicked: function() {
-                            nextPage("PasswordPage");
+                            pageStack.nextPage("PasswordPage");
                         }
                     }
                 }
@@ -335,6 +332,7 @@ Item {
         id: internal
 
         property int contentMargin: 48
+        property int contentBotMargin: 117
         property font defaultFont: ({ family: "Helvetica", pointSize: 13, bold: true})
         property color blueColor: "#007AFF"
         property int buttonHeight: 40

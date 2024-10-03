@@ -18,6 +18,7 @@
  * Author: La Trung
  */
 
+import QtQuick.Controls.Basic
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts

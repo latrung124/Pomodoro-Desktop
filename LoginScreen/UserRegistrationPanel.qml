@@ -21,6 +21,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Controls.Basic
 
 import CommonComponent
 
@@ -46,6 +47,8 @@ Item {
 
     StackView {
         id: pageStack
+
+        signal nextPage(string pageName)
         
         anchors.fill: parent
 
@@ -53,10 +56,12 @@ Item {
             id: accountPage
 
             StackView.visible: true
+            parent: pageStack
+            objectName: "AccountPage"
+        }
 
-            Component.onCompleted: function(currentIndex) {
-                internal.connectionEstablished(accountPage, currentIndex);
-            }
+        onNextPage: function(pageName) {
+            internal.pushPage(pageName);
         }
 
         pushEnter: pushEnterTransition
@@ -216,7 +221,7 @@ Item {
             console.log("pushPage: " + pageName);
             var component = Qt.createComponent(pageName + ".qml");
             if (component.status === Component.Ready) {
-                var page = component.createObject(pageStack);
+                var page = component.createObject(pageStack, {parent:pageStack, objectName: pageName});
                 pageStack.push(page);
             } else {
                 console.log("Error loading component:", component.errorString());
@@ -229,18 +234,6 @@ Item {
             } else {
                 panelDisappearTrans();
             }
-        }
-
-        function connectionEstablished(obj) {
-            if (!obj) return;
-            obj.nextPage.connect(internal.pushPage);
-            console.log("Connection nextPage from " + obj.objectName + " to pushPage()!");
-        }
-
-        function disconnection(obj) {
-            if (!obj) return;
-            obj.nextPage.disconnect(internal.pushPage);
-            console.log("Disconnect nextPage from " + obj.objectName + " to pushPage()!");
         }
     }
 }

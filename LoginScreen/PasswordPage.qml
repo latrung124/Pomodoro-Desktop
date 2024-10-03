@@ -21,6 +21,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Controls.Basic
 
 import CommonComponent
 
@@ -31,11 +32,10 @@ Item {
 
     implicitWidth: 488
     implicitHeight: 650
+    StackView.visible: true
 
     property font loginRegularFont: themeConfig ? themeConfig.loginRegularFont : internal.defaultFont
     property font loginGreetingFont: themeConfig ? themeConfig.loginGreetingFont : internal.defaultFont
-
-    signal nextPage(string name)
 
     Rectangle {
         id: backgroundRect
@@ -235,7 +235,7 @@ Item {
                         }
 
                         onClicked: function() {
-                            nextPage("ThankyouPage");
+                            pageStack.nextPage("ThankyouPage");
                         }
                     }
                 }
