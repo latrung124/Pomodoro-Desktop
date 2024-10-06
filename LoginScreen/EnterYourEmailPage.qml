@@ -33,6 +33,8 @@ Item {
     implicitWidth: 488
     implicitHeight: 650
 
+    StackView.visible: true
+
     property font loginRegularFont: themeConfig ? themeConfig.loginRegularFont : internal.defaultFont
     property font loginGreetingFont: themeConfig ? themeConfig.loginGreetingFont : internal.defaultFont
 

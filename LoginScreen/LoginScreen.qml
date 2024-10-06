@@ -106,6 +106,7 @@ ApplicationWindow {
                     source: ""
 
                     onLoaded: {
+                        console.log("onLoaded: " + panelLoader.source)
                         panelLoader.item.panelAppearTrans();
                         internal.connectionEstablished(panelLoader.item);
                     }
@@ -121,19 +122,22 @@ ApplicationWindow {
         property var pageList: ["UserRegistrationPanel", "ForgotPasswordPanel"]
 
         function handleClosePanel() {
+            console.log("handleClosePanel(): " + panelLoader.source);
             panelLoader.source = "";
         }
 
         function connectionEstablished(obj) {
-            if (obj.objectName === pageList[0]) {
-                panelLoader.item.closePanel.connect(internal.handleClosePanel);
-                console.log("Connection " + pageList[0] + " established!");
+            for (let i = 0; i < pageList.length; ++i) {
+                if (obj.objectName === pageList[i]) {
+                    panelLoader.item.closePanel.connect(internal.handleClosePanel);
+                    console.log("Connection " + pageList[i] + " established!");
+                }
             }
         }
 
         function handleOpenPanel(name) {
-            console.log("handle Sign Up!")
             panelLoader.source = name + ".qml";
+            console.log("handleOpenPanel: " + panelLoader.source);
         }
     }
 }
