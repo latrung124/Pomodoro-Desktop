@@ -44,7 +44,7 @@ Item {
         color: "#FFFFFF"
     }
     
-    ColumnLayout {
+        ColumnLayout {
         id: panelLayout
 
         anchors {
@@ -54,125 +54,139 @@ Item {
             topMargin: internal.contentMargin
             bottomMargin: internal.contentBotMargin
         }
-
-        RowLayout {
-            id: headerLayout
-
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignTop
-            height: internal.headerLayoutHeight
-        }
+        spacing: 0
 
         ColumnLayout {
             id: contentLayout
 
             Layout.fillWidth: true
-            height: internal.contentLayoutHeight
-            spacing: 24
+            Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
+            Layout.preferredHeight: 250
+            Layout.maximumHeight: 250
 
-            Rectangle {
-                id: greetTextItem
+            spacing: 42
 
-                Layout.fillWidth: true
+            ColumnLayout {
+                id: headerTextLayout
+
                 Layout.alignment: Qt.AlignTop
-                implicitHeight: 28
+                Layout.topMargin: 23
+                Layout.leftMargin: 16
+                Layout.rightMargin: 16
+                Layout.preferredHeight: 56
+                Layout.maximumHeight: 56
 
-                Text {
-                    id: greetText
+                spacing: 0
 
-                    text: qsTr("OTP Verification")
-                    font.family: loginGreetingFont.family
-                    font.pixelSize: loginGreetingFont.pixelSize
-                    font.bold: true
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
+                Item {
+                    id: headerTextRect
+
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 28
+                    Layout.maximumHeight: 28
+
+                    Text {
+                        id: headerText
+
+                        text: qsTr("OTP Verification")
+                        font: loginGreetingFont
+                        color: "black"
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+                }
+                Item {
+                    id: headerExTextRect
+
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 28
+                    Layout.maximumHeight: 28
+
+                    Text {
+                        id: headerExText
+
+                        text: qsTr("Check your email to see the verification code")
+                        font: loginRegularFont
+                        color: "#1A1A1A"
+                        opacity: 0.7
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                    }
                 }
             }
 
             ColumnLayout {
-                id: detailFillLayout
+                id: otpLayout
 
                 Layout.alignment: Qt.AlignTop
                 Layout.fillWidth: true
-                implicitHeight: 192
-                spacing: 16
+                height: 152
 
                 Item {
-                    id: nicknameFillItem
+                    id: otpFillItem
+
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignTop
+                    implicitHeight: 50
+
+                    RowLayout {
+                        id: otpRowLayout
+
+                        anchors.fill: parent
+
+                        spacing: 15
+
+                        Repeater {
+                            id: keyRepeater
+
+                            model: 6
+                            Item {
+                                id: keyItem
+
+                                width: 50
+                                height: 50
+
+                                TextField {
+                                    anchors.fill: parent
+                                    background: Rectangle {
+                                        color: "#E5E5E5"
+                                        opacity: 0.8
+                                        radius: 4
+                                    }
+                                    maximumLength: 1
+                                    validator: RegularExpressionValidator {
+                                        regularExpression: /^[a-zA-Z0-9]$/
+                                    }
+                                    font.pixelSize: 25
+                                    font.capitalization: Font.AllUppercase
+                                    horizontalAlignment: TextInput.AlignHCenter
+                                    verticalAlignment: TextInput.AlignVCenter
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Item {
+                    id: continueButtonItem
 
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignTop
                     implicitHeight: 68
 
-                    ColumnLayout {
-                        id: nicknameFillLayout
-
-                        anchors.fill: parent
-                        spacing: 8
-
-                        Item {
-                            id: nicknameTitleItem
-
-                            Layout.fillWidth: true
-                            Layout.alignment: Qt.AlignTop
-                            implicitHeight: 12
-
-                            Text {
-                                id: nicknameTitleText
-                                text: qsTr("Email*")
-                                anchors.verticalCenter: parent.verticalCenter
-                                anchors.left: parent.left
-                                verticalAlignment: Text.AlignVCenter
-                                anchors.leftMargin: 16
-                                font.family: loginRegularFont.family
-                                font.pixelSize: loginRegularFont.pixelSize
-                                font.letterSpacing: 0.3
-                                lineHeightMode:Text.FixedHeight
-                                lineHeight: 12
-                            }
-                        }
-
-                        CustomTextField {
-                            id: nicknameTextField
-
-                            backgroundText: qsTr("Your email")
-                            Layout.alignment: Qt.AlignTop
-                        }
-                    }
-                }
-            }
-        }
-
-        ColumnLayout {
-            id: footerLayout
-
-            Layout.fillWidth: true
-            height: internal.footerLayoutHeight
-            spacing: 0
-
-            ColumnLayout {
-                id: signInBtnLayout
-
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignTop
-                Layout.preferredHeight: internal.btnLayoutHeight
-
-                Item {
-                    id: continueBtnItem
-
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignBottom
-                    Layout.preferredHeight: internal.buttonHeight
-
                     Button {
                         id: continueBtn
 
-                        anchors.fill: parent
+                        width: parent.width
+                        height: internal.buttonHeight
+                        anchors.centerIn: parent
 
                         background: Rectangle {
-                            color: "#007AFF"
+                            color: internal.blueColor
                             radius: 6
                         }
 
@@ -251,9 +265,5 @@ Item {
         property font defaultFont: ({ family: "Helvetica", pointSize: 13, bold: true})
         property color blueColor: "#007AFF"
         property int buttonHeight: 40
-        property int btnLayoutHeight: 72
-        property double footerLayoutHeight: 220.5
-        property int headerLayoutHeight: 80
-        property int contentLayoutHeight: 244
     }
 }
