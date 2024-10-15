@@ -22,6 +22,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Controls.Basic
+import QtQml.Models
 
 import CommonComponent
 
@@ -44,7 +45,7 @@ Item {
         color: "#FFFFFF"
     }
     
-        ColumnLayout {
+    ColumnLayout {
         id: panelLayout
 
         anchors {
@@ -61,7 +62,6 @@ Item {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
-            Layout.preferredHeight: 250
             Layout.maximumHeight: 250
 
             spacing: 42
@@ -73,7 +73,6 @@ Item {
                 Layout.topMargin: 23
                 Layout.leftMargin: 16
                 Layout.rightMargin: 16
-                Layout.preferredHeight: 56
                 Layout.maximumHeight: 56
 
                 spacing: 0
@@ -82,7 +81,6 @@ Item {
                     id: headerTextRect
 
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 28
                     Layout.maximumHeight: 28
 
                     Text {
@@ -97,11 +95,11 @@ Item {
                         horizontalAlignment: Text.AlignHCenter
                     }
                 }
+
                 Item {
                     id: headerExTextRect
 
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 28
                     Layout.maximumHeight: 28
 
                     Text {
@@ -131,43 +129,26 @@ Item {
 
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignTop
+                    Layout.leftMargin: 120
+                    Layout.rightMargin: 120
                     implicitHeight: 50
 
-                    RowLayout {
-                        id: otpRowLayout
-
+                    TextField {
                         anchors.fill: parent
 
-                        spacing: 15
-
-                        Repeater {
-                            id: keyRepeater
-
-                            model: 6
-                            Item {
-                                id: keyItem
-
-                                width: 50
-                                height: 50
-
-                                TextField {
-                                    anchors.fill: parent
-                                    background: Rectangle {
-                                        color: "#E5E5E5"
-                                        opacity: 0.8
-                                        radius: 4
-                                    }
-                                    maximumLength: 1
-                                    validator: RegularExpressionValidator {
-                                        regularExpression: /^[a-zA-Z0-9]$/
-                                    }
-                                    font.pixelSize: 25
-                                    font.capitalization: Font.AllUppercase
-                                    horizontalAlignment: TextInput.AlignHCenter
-                                    verticalAlignment: TextInput.AlignVCenter
-                                }
-                            }
+                        background: Rectangle {
+                            color: "#E5E5E5"
+                            opacity: 0.8
+                            radius: 4
                         }
+
+                        text: ""
+                        maximumLength: 6
+                        font.pixelSize: 25
+                        font.capitalization: Font.AllUppercase
+                        horizontalAlignment: TextInput.AlignHCenter
+                        verticalAlignment: TextInput.AlignVCenter
+                        inputMethodHints: Qt.ImhDigitsOnly
                     }
                 }
 
