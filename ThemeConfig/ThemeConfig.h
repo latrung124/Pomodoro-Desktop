@@ -21,6 +21,7 @@
 #pragma once
 
 #include <memory>
+#include <functional>
 
 #include <QObject>
 #include <QString>
@@ -29,6 +30,9 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QFontDatabase>
+
+class FontPalette;
+class ColorPalette;
 
 class ThemeConfig : public QObject
 {
@@ -49,10 +53,15 @@ class ThemeConfig : public QObject
     Q_PROPERTY(QColor loginPlaceholderColor READ loginPlaceholderColor NOTIFY loginPlaceholderColorChanged)
     Q_PROPERTY(QFont loginPlaceholderFont READ loginPlaceholderFont NOTIFY loginPlaceholderFontChanged)
 
+    Q_PROPERTY(QObject *colorPalette READ colorPalette NOTIFY colorPaletteChanged)
+    Q_PROPERTY(QObject *fontPalette READ fontPalette NOTIFY fontPaletteChanged)
+
 public:
 
     explicit ThemeConfig(QObject *parent = nullptr);
     ~ThemeConfig();
+
+    void initialize();
 
     enum Theme {
         Light,
@@ -61,6 +70,9 @@ public:
     };Q_ENUM(Theme)
 
     QString theme() const;
+
+    QObject *colorPalette() const;
+    QObject *fontPalette() const;
 
     QColor homeBgColor() const;
     QColor textColor() const;
@@ -98,6 +110,9 @@ signals:
     void loginPlaceholderColorChanged();
     void loginPlaceholderFontChanged();
 
+    void colorPaletteChanged();
+    void fontPaletteChanged();
+
 private:
     void parseConfig(Theme theme);
     void convertTheme(const QString &theme);
@@ -118,6 +133,12 @@ private:
     QFont m_loginRegularFont;
     QColor m_loginPlaceholderColor;
     QFont m_loginPlaceholderFont;
+
+    QScopedPointer<ColorPalette> m_colorPalette;
+    QScopedPointer<FontPalette> m_fontPalette;
+
+    QMap<QString, std::function<void(const QColor&)>> m_colorLayerSetters;
+    QMap<QString, std::function<void(const QFont&)>> m_fontLayerSetters;
 
     QJsonDocument m_jsonDocument;
     std::shared_ptr<QFontDatabase> m_fontDatabase;

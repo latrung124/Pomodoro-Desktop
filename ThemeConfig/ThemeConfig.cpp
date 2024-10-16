@@ -21,13 +21,22 @@
 #include "ThemeConfig.h"
 #include "Utils/ThemeDefined.h"
 
+#include "FontPalette.h"
+#include "ColorPalette.h"
+
 #include <QFile>
 #include <QDebug>
 #include <QJsonArray>
+#include <QMetaObject>
+#include <QMetaMethod>
 
 ThemeConfig::ThemeConfig(QObject *parent)
-    : QObject(parent), m_fontDatabase(std::make_shared<QFontDatabase>())
+    : QObject(parent),
+      m_fontDatabase(std::make_shared<QFontDatabase>()),
+      m_colorPalette(new ColorPalette(this)),
+      m_fontPalette(new FontPalette(this))
 {
+    initialize();
     loadConfig(ThemeConfigSpace::kThemePath);
 
     setTheme("matcha");
@@ -36,6 +45,12 @@ ThemeConfig::ThemeConfig(QObject *parent)
 ThemeConfig::~ThemeConfig()
 {
     qDebug() << Q_FUNC_INFO;
+}
+
+void ThemeConfig::initialize()
+{
+    // initialize color layer setters
+    // initialize font layer setters
 }
 
 QString ThemeConfig::theme() const
@@ -54,6 +69,17 @@ void ThemeConfig::setTheme(const QString &theme)
 
     parseConfig(m_currentTheme);
 }
+
+QObject *ThemeConfig::colorPalette() const
+{
+    return m_colorPalette.get();
+}
+
+QObject *ThemeConfig::fontPalette() const
+{
+    return m_fontPalette.get();
+}
+
 
 QColor ThemeConfig::homeBgColor() const
 {
@@ -199,6 +225,32 @@ void ThemeConfig::parseConfig(Theme theme)
                     int pixelSize = fontObject["pixelSize"].toInt();
                     m_homeTextFont = QFont(family, pixelSize);
                     emit homeTextFontChanged();
+                }
+            }
+
+            if (themeObject.contains("colors"))
+            {
+                QJsonObject colorsObject = themeObject["colors"].toObject();
+                for (auto it = m_colorLayerSetters.begin(); it != m_colorLayerSetters.end(); ++it)
+                {
+                    if (colorsObject.contains(it.key()))
+                    {
+                        it.value()(QColor(colorsObject[it.key()].toString()));
+                    }
+                }
+            }
+
+            if (themeObject.contains("fonts"))
+            {
+                QJsonObject fontsObject = themeObject["fonts"].toObject();
+                for (auto it = m_fontLayerSetters.begin(); it != m_fontLayerSetters.end(); ++it)
+                {
+                    if (fontsObject.contains(it.key()))
+                    {
+                        QFont font;
+                        parseFont(fontsObject[it.key()].toObject(), font);
+                        it.value()(font);
+                    }
                 }
             }
 

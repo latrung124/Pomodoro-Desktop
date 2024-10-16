@@ -16,6 +16,37 @@
                     "pixelSize": 12,
                     "weight": "Normal"
                 }
+            },
+            "colors": {
+                "layer1": "#FFFFFF",
+                "layer2": "#000000",
+                "layer3": "#121212",
+                "layer4": "#333333",
+                "layer5": "#F0F0F0",
+                "layer6": "#E8EAE0",
+                "layer7": "#808080"
+            },
+            "fonts": {
+                "layer1": {
+                    "family": "Poppins-SemiBold",
+                    "pixelSize": 12,
+                    "weight": "Normal"
+                },
+                "layer2": {
+                    "family": "Inter_24pt-Regular",
+                    "pixelSize": 11,
+                    "weight": "Normal"
+                },
+                "layer3": {
+                    "family": "Roboto-Bold",
+                    "pixelSize": 15,
+                    "weight": "Normal"
+                },
+                "layer4": {
+                    "family": "Roboto-Regular",
+                    "pixelSize": 15,
+                    "weight": "Normal"
+                }
             }
         },
         "light": {
