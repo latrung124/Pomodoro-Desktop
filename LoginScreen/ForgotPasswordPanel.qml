@@ -49,6 +49,7 @@ Item {
         id: pageStack
 
         signal nextPage(string pageName)
+        signal closePanel()
         
         anchors.fill: parent
 
@@ -209,6 +210,14 @@ Item {
 
         onStopped: {
             closePanel();
+        }
+    }
+
+    Connections {
+        target: pageStack
+
+        onClosePanel: function() {
+            panelDisappearTrans();
         }
     }
 

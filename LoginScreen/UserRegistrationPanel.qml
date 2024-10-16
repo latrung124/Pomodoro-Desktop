@@ -49,6 +49,7 @@ Item {
         id: pageStack
 
         signal nextPage(string pageName)
+        signal closePanel()
         
         anchors.fill: parent
 
@@ -212,6 +213,14 @@ Item {
         }
     }
 
+    Connections {
+        target: pageStack
+
+        onClosePanel: function() {
+            panelDisappearTrans();
+        }
+    }
+    
     QtObject {
         id: internal
 

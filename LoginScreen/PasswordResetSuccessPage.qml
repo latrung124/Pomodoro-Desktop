@@ -114,6 +114,10 @@ Item {
                         horizontalAlignment: Text.AlignHCenter
                     }
                 }
+
+                onClicked: function() {
+                    pageStack.closePanel();
+                }
             }
         }
     }
