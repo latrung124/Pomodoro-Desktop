@@ -216,7 +216,7 @@ Item {
     Connections {
         target: pageStack
 
-        onClosePanel: function() {
+        function onClosePanel() {
             panelDisappearTrans();
         }
     }

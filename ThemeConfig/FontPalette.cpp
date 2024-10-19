@@ -58,6 +58,43 @@ QFont FontPalette::layer4() const
     return m_layer4;
 }
 
+QStringList FontPalette::layerList() const
+{
+    return m_layerList;
+}
+
+void FontPalette::setLayer1(const QFont &font)
+{
+    if (m_layer1 != font)
+    {
+        m_layer1 = font;
+    }
+}
+
+void FontPalette::setLayer2(const QFont &font)
+{
+    if (m_layer2 != font)
+    {
+        m_layer2 = font;
+    }
+}
+
+void FontPalette::setLayer3(const QFont &font)
+{
+    if (m_layer3 != font)
+    {
+        m_layer3 = font;
+    }
+}
+
+void FontPalette::setLayer4(const QFont &font)
+{
+    if (m_layer4 != font)
+    {
+        m_layer4 = font;
+    }
+}
+
 void FontPalette::slotThemeChanged()
 {
     emit layer1Changed();

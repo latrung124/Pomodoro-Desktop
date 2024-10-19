@@ -28,10 +28,10 @@ class FontPalette : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QFont layer1 READ layer1 NOTIFY layer1Changed)
-    Q_PROPERTY(QFont layer2 READ layer2 NOTIFY layer2Changed)
-    Q_PROPERTY(QFont layer3 READ layer3 NOTIFY layer3Changed)
-    Q_PROPERTY(QFont layer4 READ layer4 NOTIFY layer4Changed)
+    Q_PROPERTY(QFont layer1 READ layer1 WRITE setLayer1 NOTIFY layer1Changed)
+    Q_PROPERTY(QFont layer2 READ layer2 WRITE setLayer2 NOTIFY layer2Changed)
+    Q_PROPERTY(QFont layer3 READ layer3 WRITE setLayer3 NOTIFY layer3Changed)
+    Q_PROPERTY(QFont layer4 READ layer4 WRITE setLayer4 NOTIFY layer4Changed)
 
 public:
     explicit FontPalette(QObject *parent = nullptr);
@@ -52,6 +52,11 @@ signals:
 
 public slots:
     void slotThemeChanged();
+
+    void setLayer1(const QFont &font);
+    void setLayer2(const QFont &font);
+    void setLayer3(const QFont &font);
+    void setLayer4(const QFont &font);
 
 private:
     QFont m_layer1;

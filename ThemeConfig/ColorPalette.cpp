@@ -23,13 +23,13 @@
 ColorPalette::ColorPalette(QObject *parent)
     : QObject(parent)
 {
-    m_layer1 = QColor("#FFFFFF");
-    m_layer2 = QColor("#000000");
-    m_layer3 = QColor("#121212");
-    m_layer4 = QColor("#333333");
-    m_layer5 = QColor("#F0F0F0");
-    m_layer6 = QColor("#E8EAE0");
-    m_layer7 = QColor("#808080");
+    m_layer1 = QColor(255, 255, 255);
+    m_layer2 = QColor(0, 0, 0);
+    m_layer3 = QColor(18, 18, 18);
+    m_layer4 = QColor(51, 51, 51);
+    m_layer5 = QColor(240, 240, 240);
+    m_layer6 = QColor(232, 234, 224);
+    m_layer7 = QColor(128, 128, 128);
 
     m_layerList = {"layer1",
                    "layer2",
@@ -77,6 +77,11 @@ QColor ColorPalette::layer6() const
 QColor ColorPalette::layer7() const
 {
     return m_layer7;
+}
+
+QStringList ColorPalette::layerList() const
+{
+    return m_layerList;
 }
 
 void ColorPalette::setLayer1(const QColor &color)

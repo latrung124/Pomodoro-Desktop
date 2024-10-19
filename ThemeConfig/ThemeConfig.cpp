@@ -26,6 +26,7 @@
 
 #include <QFile>
 #include <QDebug>
+#include <QList>
 #include <QJsonArray>
 #include <QMetaObject>
 #include <QMetaMethod>
@@ -49,8 +50,52 @@ ThemeConfig::~ThemeConfig()
 
 void ThemeConfig::initialize()
 {
-    // initialize color layer setters
-    // initialize font layer setters
+    colorRegistry();
+    fontRegistry();
+}
+
+void ThemeConfig::startConnection()
+{
+    connect(this, &ThemeConfig::themeChanged, m_fontPalette.get(), &FontPalette::slotThemeChanged);
+    connect(this, &ThemeConfig::themeChanged, m_colorPalette.get(), &ColorPalette::slotThemeChanged);
+}
+
+void ThemeConfig::fontRegistry()
+{
+    for (int i = 0; i < m_fontPalette->layerList().size(); ++i)
+    {
+        auto layer = m_fontPalette->layerList().at(i);
+        QByteArray methodName = QString("setLayer%1").arg(i + 1).toUtf8(); // Avoid repeated string conversion
+
+        m_fontLayerSetters[layer] = [this, methodName](const QFont &font) {
+            if (!QMetaObject::invokeMethod(m_fontPalette.get(),
+                                      methodName.constData(),
+                                           Q_ARG(QFont, font))) {
+                qWarning() << "Failed to registry font method: " << methodName;
+            } else {
+                qDebug() << "Registry successfully font method:" << methodName;
+            }
+        };
+    }
+}
+
+void ThemeConfig::colorRegistry()
+{
+    for (int i = 0; i < m_colorPalette->layerList().size(); ++i)
+    {
+        auto layer = m_colorPalette->layerList().at(i);
+        QByteArray methodName = QString("setLayer%1").arg(i + 1).toUtf8(); // Avoid repeated string conversion
+
+        m_colorLayerSetters[layer] = [this, methodName](const QColor &color) {
+            if(!QMetaObject::invokeMethod(m_colorPalette.get(),
+                                      methodName.constData(),
+                                      Q_ARG(QColor, color))) {
+                qWarning() << "Failed to registry font method: " << methodName;
+            } else {
+                qDebug() << "Registry successfully font method: " << methodName;
+            }
+        };
+    }
 }
 
 QString ThemeConfig::theme() const
@@ -64,10 +109,10 @@ void ThemeConfig::setTheme(const QString &theme)
         return;
 
     m_theme = theme;
-    emit themeChanged();
     convertTheme(theme);
-
     parseConfig(m_currentTheme);
+
+    emit themeChanged();
 }
 
 QObject *ThemeConfig::colorPalette() const
@@ -79,7 +124,6 @@ QObject *ThemeConfig::fontPalette() const
 {
     return m_fontPalette.get();
 }
-
 
 QColor ThemeConfig::homeBgColor() const
 {

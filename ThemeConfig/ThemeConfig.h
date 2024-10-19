@@ -69,6 +69,10 @@ public:
         Matcha
     };Q_ENUM(Theme)
 
+    void fontRegistry();
+    void colorRegistry();
+    void startConnection();
+
     QString theme() const;
 
     QObject *colorPalette() const;

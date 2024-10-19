@@ -48,14 +48,6 @@ public:
     QColor layer6() const;
     QColor layer7() const;
 
-    void setLayer1(const QColor &color);
-    void setLayer2(const QColor &color);
-    void setLayer3(const QColor &color);
-    void setLayer4(const QColor &color);
-    void setLayer5(const QColor &color);
-    void setLayer6(const QColor &color);
-    void setLayer7(const QColor &color);
-
     QStringList layerList() const;
 
 signals:
@@ -69,6 +61,14 @@ signals:
 
 public slots:
     void slotThemeChanged();
+
+    void setLayer1(const QColor &color);
+    void setLayer2(const QColor &color);
+    void setLayer3(const QColor &color);
+    void setLayer4(const QColor &color);
+    void setLayer5(const QColor &color);
+    void setLayer6(const QColor &color);
+    void setLayer7(const QColor &color);
 
 private:
     QColor m_layer1;
