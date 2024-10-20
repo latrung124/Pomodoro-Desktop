@@ -27,11 +27,13 @@ FontPalette::FontPalette(QObject *parent)
     m_layer2 = QFont("Arial", 12);
     m_layer3 = QFont("Arial", 12);
     m_layer4 = QFont("Arial", 12);
+    m_layer5 = QFont("Arial", 12);
 
     m_layerList = {"layer1",
                    "layer2",
                    "layer3",
-                   "layer4"};
+                   "layer4",
+                   "layer5"};
 }
 
 FontPalette::~FontPalette()
@@ -56,6 +58,11 @@ QFont FontPalette::layer3() const
 QFont FontPalette::layer4() const
 {
     return m_layer4;
+}
+
+QFont FontPalette::layer5() const
+{
+    return m_layer5;
 }
 
 QStringList FontPalette::layerList() const
@@ -95,10 +102,19 @@ void FontPalette::setLayer4(const QFont &font)
     }
 }
 
+void FontPalette::setLayer5(const QFont &font)
+{
+    if (m_layer5 != font)
+    {
+        m_layer5 = font;
+    }
+}
+
 void FontPalette::slotThemeChanged()
 {
     emit layer1Changed();
     emit layer2Changed();
     emit layer3Changed();
     emit layer4Changed();
+    emit layer5Changed();
 }

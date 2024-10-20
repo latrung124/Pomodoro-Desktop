@@ -32,6 +32,7 @@ class FontPalette : public QObject
     Q_PROPERTY(QFont layer2 READ layer2 WRITE setLayer2 NOTIFY layer2Changed)
     Q_PROPERTY(QFont layer3 READ layer3 WRITE setLayer3 NOTIFY layer3Changed)
     Q_PROPERTY(QFont layer4 READ layer4 WRITE setLayer4 NOTIFY layer4Changed)
+    Q_PROPERTY(QFont layer5 READ layer5 WRITE setLayer5 NOTIFY layer5Changed)
 
 public:
     explicit FontPalette(QObject *parent = nullptr);
@@ -41,6 +42,7 @@ public:
     QFont layer2() const;
     QFont layer3() const;
     QFont layer4() const;
+    QFont layer5() const;
 
     QStringList layerList() const;
 
@@ -49,6 +51,7 @@ signals:
     void layer2Changed();
     void layer3Changed();
     void layer4Changed();
+    void layer5Changed();
 
 public slots:
     void slotThemeChanged();
@@ -57,12 +60,14 @@ public slots:
     void setLayer2(const QFont &font);
     void setLayer3(const QFont &font);
     void setLayer4(const QFont &font);
+    void setLayer5(const QFont &font);
 
 private:
     QFont m_layer1;
     QFont m_layer2;
     QFont m_layer3;
     QFont m_layer4;
+    QFont m_layer5;
 
     QStringList m_layerList;
 };

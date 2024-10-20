@@ -1,22 +1,6 @@
 {
     "themes": {
         "dark": {
-            "homescreen": {
-                "backgroundColor": "#121212",
-                "font": {
-                    "family": "Arial",
-                    "pixelSize": 14,
-                    "weight": "Bold"
-                }
-            },
-            "loginscreen": {
-                "backgroundColor": "#333333",
-                "font": {
-                    "family": "Poppins-SemiBold",
-                    "pixelSize": 12,
-                    "weight": "Normal"
-                }
-            },
             "colors": {
                 "layer1": "#FFFFFF",
                 "layer2": "#000000",
@@ -33,16 +17,20 @@
                     "weight": "Normal"
                 },
                 "layer2": {
+                    "family": "Poppins-SemiBold",
+                    "pixelSize": 20
+                },
+                "layer3": {
                     "family": "Inter_24pt-Regular",
                     "pixelSize": 11,
                     "weight": "Normal"
                 },
-                "layer3": {
+                "layer4": {
                     "family": "Roboto-Bold",
                     "pixelSize": 15,
                     "weight": "Normal"
                 },
-                "layer4": {
+                "layer5": {
                     "family": "Roboto-Regular",
                     "pixelSize": 15,
                     "weight": "Normal"
@@ -50,23 +38,6 @@
             }
         },
         "light": {
-            "homescreen": {
-                "backgroundColor": "#FFFFFF",
-                "font": {
-                    "family": "Arial",
-                    "pixelSize": 14,
-                    "weight": "Normal"
-                }
-            },
-            "loginscreen": {
-                "color": "#333333",
-                "backgroundColor": "#F0F0F0",
-                "font": {
-                    "family": "Poppins-SemiBold",
-                    "pixelSize": 12,
-                    "weight": "Normal"
-                }
-            },
             "colors": {
                 "layer1": "#FFFFFF",
                 "layer2": "#000000",
@@ -83,16 +54,20 @@
                     "weight": "Normal"
                 },
                 "layer2": {
+                    "family": "Poppins-SemiBold",
+                    "pixelSize": 20
+                },
+                "layer3": {
                     "family": "Inter_24pt-Regular",
                     "pixelSize": 11,
                     "weight": "Normal"
                 },
-                "layer3": {
+                "layer4": {
                     "family": "Roboto-Bold",
                     "pixelSize": 15,
                     "weight": "Normal"
                 },
-                "layer4": {
+                "layer5": {
                     "family": "Roboto-Regular",
                     "pixelSize": 15,
                     "weight": "Normal"
@@ -100,48 +75,6 @@
             }
         },
         "matcha": {
-            "homescreen": {
-                "backgroundColor": "#FFFFFF",
-                "font": {
-                    "family": "Arial",
-                    "pixelSize": 14,
-                    "weight": "Normal"
-                }
-            },
-            "loginscreen": {
-                "loginPanelBgColor": "#FFFFFF",
-                "backgroundColor": "#E8EAE0",
-                "text": {
-                    "greeting": {
-                        "color": "#000000",
-                        "font": {
-                            "family": "Poppins-SemiBold",
-                            "pixelSize": 20
-                        }
-                    },
-                    "regular": {
-                        "color": "#000000",
-                        "font": {
-                            "family": "Inter_24pt-Regular",
-                            "pixelSize": 11
-                        }
-                    },
-                    "button": {
-                        "color": "#FFFFFF",
-                        "font": {
-                            "family": "Roboto-Bold",
-                            "pixelSize": 15
-                        }
-                    },
-                    "placeholder": {
-                        "color": "#808080",
-                        "font": {
-                            "family": "Roboto-Regular",
-                            "pixelSize": 15
-                        }
-                    }
-                }
-            },
             "colors": {
                 "layer1": "#FFFFFF",
                 "layer2": "#000000",
@@ -158,16 +91,20 @@
                     "weight": "Normal"
                 },
                 "layer2": {
+                    "family": "Poppins-SemiBold",
+                    "pixelSize": 20
+                },
+                "layer3": {
                     "family": "Inter_24pt-Regular",
                     "pixelSize": 11,
                     "weight": "Normal"
                 },
-                "layer3": {
+                "layer4": {
                     "family": "Roboto-Bold",
                     "pixelSize": 15,
                     "weight": "Normal"
                 },
-                "layer4": {
+                "layer5": {
                     "family": "Roboto-Regular",
                     "pixelSize": 15,
                     "weight": "Normal"

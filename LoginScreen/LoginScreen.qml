@@ -35,7 +35,7 @@ ApplicationWindow {
 
     title: qsTr("Pomodoro")
 
-    property string bgColor: themeConfig ? themeConfig.loginBgColor : internal.defaultBgColor
+    property string bgColor: themeConfig ? themeConfig.colorPalette.layer6 : internal.defaultBgColor
 
     Component.onCompleted: {
         x = Screen.width / 2 - width / 2

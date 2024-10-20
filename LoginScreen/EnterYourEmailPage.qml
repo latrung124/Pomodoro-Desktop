@@ -35,8 +35,8 @@ Item {
 
     StackView.visible: true
 
-    property font loginRegularFont: themeConfig ? themeConfig.loginRegularFont : internal.defaultFont
-    property font loginGreetingFont: themeConfig ? themeConfig.loginGreetingFont : internal.defaultFont
+    property font loginRegularFont: themeConfig ? themeConfig.fontPalette.layer3 : internal.defaultFont
+    property font loginGreetingFont: themeConfig ? themeConfig.fontPalette.layer2 : internal.defaultFont
 
     Rectangle {
         id: backgroundRect
@@ -90,7 +90,7 @@ Item {
                         id: headerText
 
                         text: qsTr("Enter your email")
-                        font: loginGreetingFont
+                        font: themeConfig.fontPalette.layer2
                         color: "black"
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.horizontalCenter: parent.horizontalCenter

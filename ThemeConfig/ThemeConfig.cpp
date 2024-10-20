@@ -50,6 +50,11 @@ ThemeConfig::~ThemeConfig()
 
 void ThemeConfig::initialize()
 {
+    m_themeProperties = {
+        "colors",
+        "fonts"
+    };
+
     colorRegistry();
     fontRegistry();
 }
@@ -125,66 +130,6 @@ QObject *ThemeConfig::fontPalette() const
     return m_fontPalette.get();
 }
 
-QColor ThemeConfig::homeBgColor() const
-{
-    return m_homeBgColor;
-}
-
-QColor ThemeConfig::textColor() const
-{
-    return m_textColor;
-}
-
-QFont ThemeConfig::homeTextFont() const
-{
-    return m_homeTextFont;
-}
-
-QColor ThemeConfig::loginBgColor() const
-{
-    return m_loginBgColor;
-}
-
-QColor ThemeConfig::loginGreetingColor() const
-{
-    return m_loginGreetingColor;
-}
-
-QFont ThemeConfig::loginGreetingFont() const
-{
-    return m_loginGreetingFont;
-}
-
-QColor ThemeConfig::loginButtonColor() const
-{
-    return m_loginButtonColor;
-}
-
-QFont ThemeConfig::loginButtonFont() const
-{
-    return m_loginButtonFont;
-}
-
-QColor ThemeConfig::loginRegularColor() const
-{
-    return m_loginRegularColor;
-}
-
-QFont ThemeConfig::loginRegularFont() const
-{
-    return m_loginRegularFont;
-}
-
-QColor ThemeConfig::loginPlaceholderColor() const
-{
-    return m_loginPlaceholderColor;
-}
-
-QFont ThemeConfig::loginPlaceholderFont() const
-{
-    return m_loginPlaceholderFont;
-}
-
 void ThemeConfig::convertTheme(const QString &theme)
 {
     if (theme == "light")
@@ -235,6 +180,39 @@ void ThemeConfig::parseFont(const QJsonObject &fontObject, QFont &font)
     }
 }
 
+void ThemeConfig::parseThemeProperties(const QJsonObject &themeObject)
+{
+    for (const auto &property : m_themeProperties)
+    {
+        if (themeObject.contains(property))
+        {
+            QJsonObject propertyObject = themeObject[property].toObject();
+            if (property == "colors")
+            {
+                for (auto it = m_colorLayerSetters.begin(); it != m_colorLayerSetters.end(); ++it)
+                {
+                    if (propertyObject.contains(it.key()))
+                    {
+                        it.value()(QColor(propertyObject[it.key()].toString()));
+                    }
+                }
+            }
+            else if (property == "fonts")
+            {
+                for (auto it = m_fontLayerSetters.begin(); it != m_fontLayerSetters.end(); ++it)
+                {
+                    if (propertyObject.contains(it.key()))
+                    {
+                        QFont font;
+                        parseFont(propertyObject[it.key()].toObject(), font);
+                        it.value()(font);
+                    }
+                }
+            }
+        }
+    }
+}
+
 void ThemeConfig::parseConfig(Theme theme)
 {
     if (m_jsonDocument.isNull() || m_jsonDocument.isEmpty() || !m_jsonDocument.isObject())
@@ -248,88 +226,12 @@ void ThemeConfig::parseConfig(Theme theme)
     if (jsonObject.contains("themes") && jsonObject["themes"].isObject())
     {
         QJsonObject themesObject = jsonObject["themes"].toObject();
-
         QString selectedTheme = m_theme; // Determine selected theme
 
         if (themesObject.contains(selectedTheme))
         {
-
             QJsonObject themeObject = themesObject[selectedTheme].toObject();
-
-            if (themeObject.contains("homescreen"))
-            {
-                QJsonObject homeScreenObject = themeObject["homescreen"].toObject();
-                m_homeBgColor = QColor(homeScreenObject["backgroundColor"].toString());
-                emit homeBgColorChanged();
-
-                if (homeScreenObject.contains("font"))
-                {
-                    QJsonObject fontObject = homeScreenObject["font"].toObject();
-                    QString family = fontObject["family"].toString();
-                    int pixelSize = fontObject["pixelSize"].toInt();
-                    m_homeTextFont = QFont(family, pixelSize);
-                    emit homeTextFontChanged();
-                }
-            }
-
-            if (themeObject.contains("colors"))
-            {
-                QJsonObject colorsObject = themeObject["colors"].toObject();
-                for (auto it = m_colorLayerSetters.begin(); it != m_colorLayerSetters.end(); ++it)
-                {
-                    if (colorsObject.contains(it.key()))
-                    {
-                        it.value()(QColor(colorsObject[it.key()].toString()));
-                    }
-                }
-            }
-
-            if (themeObject.contains("fonts"))
-            {
-                QJsonObject fontsObject = themeObject["fonts"].toObject();
-                for (auto it = m_fontLayerSetters.begin(); it != m_fontLayerSetters.end(); ++it)
-                {
-                    if (fontsObject.contains(it.key()))
-                    {
-                        QFont font;
-                        parseFont(fontsObject[it.key()].toObject(), font);
-                        it.value()(font);
-                    }
-                }
-            }
-
-            if (themeObject.contains("loginscreen"))
-            {
-                QJsonObject loginScreenObject = themeObject["loginscreen"].toObject();
-                m_loginBgColor = QColor(loginScreenObject["backgroundColor"].toString());
-                emit loginBgColorChanged();
-
-                QJsonObject textObject = loginScreenObject["text"].toObject();
-
-                QJsonObject greetingObject = textObject["greeting"].toObject();
-                m_loginGreetingColor = QColor(greetingObject["color"].toString());
-                emit loginGreetingColorChanged();
-                parseFont(greetingObject["font"].toObject(), m_loginGreetingFont);
-                emit loginGreetingFontChanged();
-
-                QJsonObject buttonObject = textObject["button"].toObject();
-                m_loginButtonColor = QColor(buttonObject["color"].toString());
-                emit loginButtonColorChanged();
-                parseFont(buttonObject["font"].toObject(), m_loginButtonFont);
-                emit loginButtonFontChanged();
-
-                QJsonObject regularObject = textObject["regular"].toObject();
-                m_loginRegularColor = QColor(regularObject["color"].toString());
-                emit loginRegularColorChanged();
-                parseFont(regularObject["font"].toObject(), m_loginRegularFont);
-                emit loginRegularFontChanged();
-
-                QJsonObject placeholderObject = textObject["placeholder"].toObject();
-                m_loginPlaceholderColor = QColor(placeholderObject["color"].toString());
-                emit loginPlaceholderColorChanged();
-                parseFont(placeholderObject["font"].toObject(), m_loginPlaceholderFont);
-                emit loginPlaceholderFontChanged();
-            }
+            parseThemeProperties(themeObject);
         }
     }
 
