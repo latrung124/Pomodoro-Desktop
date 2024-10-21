@@ -36,6 +36,9 @@ Item {
     property font loginRegularFont: themeConfig ? themeConfig.fontPalette.layer3 : internal.defaultFont
     property font loginGreetingFont: themeConfig ? themeConfig.fontPalette.layer2 : internal.defaultFont
 
+    property bool isNicknameValid: true
+    property bool isEmailValid: true
+
     Rectangle {
         id: backgroundRect
 
@@ -131,12 +134,29 @@ Item {
                                 lineHeightMode:Text.FixedHeight
                                 lineHeight: 12
                             }
+
+                            Text {
+                                id: nicknameTitleErrorText
+
+                                text: qsTr("Nickname is invalid")
+                                anchors.verticalCenter: parent.verticalCenter
+                                verticalAlignment: Text.AlignVCenter
+                                anchors.left: nicknameTitleText.right
+                                anchors.leftMargin: 10
+                                color: "red"
+                                font.family: loginRegularFont.family
+                                font.pixelSize: loginRegularFont.pixelSize
+                                font.letterSpacing: 0.3
+                                lineHeightMode: Text.FixedHeight
+                                lineHeight: 12
+                                visible: !isNicknameValid
+                            }
                         }
 
                         CustomTextField {
                             id: nicknameTextField
 
-                            backgroundText: qsTr("Your nickname")
+                            backgroundText: qsTr("Your nickname - No contain special characters")
                             Layout.alignment: Qt.AlignTop
                         }
                     }
@@ -173,6 +193,23 @@ Item {
                                 font.letterSpacing: 0.3
                                 lineHeightMode: Text.FixedHeight
                                 lineHeight: 12
+                            }
+
+                            Text {
+                                id: emailTitleErrorText
+
+                                text: qsTr("Email is invalid")
+                                anchors.verticalCenter: parent.verticalCenter
+                                verticalAlignment: Text.AlignVCenter
+                                anchors.left: emailTitleText.right
+                                anchors.leftMargin: 10
+                                color: "red"
+                                font.family: loginRegularFont.family
+                                font.pixelSize: loginRegularFont.pixelSize
+                                font.letterSpacing: 0.3
+                                lineHeightMode: Text.FixedHeight
+                                lineHeight: 12
+                                visible: !isEmailValid
                             }
                         }
 

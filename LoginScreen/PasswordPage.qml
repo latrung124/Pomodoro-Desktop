@@ -37,6 +37,9 @@ Item {
     property font loginRegularFont: themeConfig ? themeConfig.fontPalette.layer3 : internal.defaultFont
     property font loginGreetingFont: themeConfig ? themeConfig.fontPalette.layer2 : internal.defaultFont
 
+    property bool isPasswordValid: true
+    property bool isConfirmPasswordValid: true
+
     Rectangle {
         id: backgroundRect
 
@@ -134,6 +137,23 @@ Item {
                                 lineHeightMode:Text.FixedHeight
                                 lineHeight: 12
                             }
+
+                            Text {
+                                id: pwErrorText
+
+                                text: qsTr("Password is invalid")
+                                anchors.verticalCenter: parent.verticalCenter
+                                verticalAlignment: Text.AlignVCenter
+                                anchors.left: pwTitleText.right
+                                anchors.leftMargin: 10
+                                color: "red"
+                                font.family: loginRegularFont.family
+                                font.pixelSize: 12
+                                font.letterSpacing: 0.3
+                                lineHeightMode: Text.FixedHeight
+                                lineHeight: 12
+                                visible: !root.isPasswordValid
+                            }
                         }
 
                         CustomTextField {
@@ -176,6 +196,23 @@ Item {
                                 font.letterSpacing: 0.3
                                 lineHeightMode: Text.FixedHeight
                                 lineHeight: 12
+                            }
+
+                            Text {
+                                id: confirmPwErrorText
+
+                                text: qsTr("Password is invalid")
+                                anchors.verticalCenter: parent.verticalCenter
+                                verticalAlignment: Text.AlignVCenter
+                                anchors.left: confirmPwTitleText.right
+                                anchors.leftMargin: 10
+                                color: "red"
+                                font.family: loginRegularFont.family
+                                font.pixelSize: 12
+                                font.letterSpacing: 0.3
+                                lineHeightMode: Text.FixedHeight
+                                lineHeight: 12
+                                visible: !root.isConfirmPasswordValid
                             }
                         }
 

@@ -38,6 +38,8 @@ Item {
     property font loginRegularFont: themeConfig ? themeConfig.fontPalette.layer3 : internal.defaultFont
     property font loginGreetingFont: themeConfig ? themeConfig.fontPalette.layer2 : internal.defaultFont
 
+    property bool isEmailValid: true
+
     Rectangle {
         id: backgroundRect
 
@@ -63,7 +65,6 @@ Item {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
             Layout.preferredHeight: 250
-            Layout.maximumHeight: 250
 
             spacing: 42
 
@@ -75,7 +76,6 @@ Item {
                 Layout.leftMargin: 16
                 Layout.rightMargin: 16
                 Layout.preferredHeight: 56
-                Layout.maximumHeight: 56
 
                 spacing: 0
 
@@ -84,13 +84,12 @@ Item {
 
                     Layout.fillWidth: true
                     Layout.preferredHeight: 28
-                    Layout.maximumHeight: 28
 
                     Text {
                         id: headerText
 
                         text: qsTr("Enter your email")
-                        font: themeConfig.fontPalette.layer2
+                        font: loginGreetingFont
                         color: "black"
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -103,7 +102,6 @@ Item {
 
                     Layout.fillWidth: true
                     Layout.preferredHeight: 28
-                    Layout.maximumHeight: 28
 
                     Text {
                         id: headerExText
@@ -157,6 +155,23 @@ Item {
                                 font.letterSpacing: 0.3
                                 lineHeightMode: Text.FixedHeight
                                 lineHeight: 12
+                            }
+
+                            Text {
+                                id: emailErrorText
+
+                                text: qsTr("Invalid email address")
+                                anchors.verticalCenter: parent.verticalCenter
+                                verticalAlignment: Text.AlignVCenter
+                                anchors.left: emailTitleText.right
+                                anchors.leftMargin: 10
+                                color: "red"
+                                font.pixelSize: loginRegularFont.pixelSize
+                                font.family: loginRegularFont.family
+                                font.letterSpacing: 0.3
+                                lineHeightMode: Text.FixedHeight
+                                lineHeight: 12
+                                visible: !isEmailValid
                             }
                         }
 

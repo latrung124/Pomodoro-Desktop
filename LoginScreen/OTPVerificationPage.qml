@@ -36,6 +36,9 @@ Item {
     StackView.visible: true
 
     property font loginRegularFont: themeConfig ? themeConfig.fontPalette.layer3 : internal.defaultFont
+    property font loginGreetingFont: themeConfig ? themeConfig.fontPalette.layer2 : internal.defaultFont
+
+    property bool isOTPValid: true
 
     Rectangle {
         id: backgroundRect
@@ -63,7 +66,7 @@ Item {
             Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
             Layout.maximumHeight: 250
 
-            spacing: 42
+            spacing: 30
 
             ColumnLayout {
                 id: headerTextLayout
@@ -72,7 +75,7 @@ Item {
                 Layout.topMargin: 23
                 Layout.leftMargin: 16
                 Layout.rightMargin: 16
-                Layout.maximumHeight: 56
+                Layout.preferredHeight: 68
 
                 spacing: 0
 
@@ -80,13 +83,13 @@ Item {
                     id: headerTextRect
 
                     Layout.fillWidth: true
-                    Layout.maximumHeight: 28
+                    Layout.preferredHeight: 28
 
                     Text {
                         id: headerText
 
                         text: qsTr("OTP Verification")
-                        font: themeConfig.fontPalette.layer2
+                        font: loginGreetingFont
                         color: "black"
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -99,7 +102,7 @@ Item {
                     id: headerExTextRect
 
                     Layout.fillWidth: true
-                    Layout.maximumHeight: 28
+                    Layout.preferredHeight: 28
 
                     Text {
                         id: headerExText
@@ -112,6 +115,26 @@ Item {
                         anchors.horizontalCenter: parent.horizontalCenter
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
+                    }
+                }
+
+                Item {
+                    id: errorNotificationRect
+
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 12
+
+                    Text {
+                        id: errorNotificationText
+
+                        text: qsTr("*Invalid OTP code")
+                        font: loginRegularFont
+                        color: "red"
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        visible: !isOTPValid
                     }
                 }
             }

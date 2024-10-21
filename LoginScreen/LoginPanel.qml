@@ -35,6 +35,7 @@ Item {
 
     property font loginRegularFont: themeConfig ? themeConfig.fontPalette.layer3 : internal.defaultFont
     property font loginGreetingFont: themeConfig ? themeConfig.fontPalette.layer2 : internal.defaultFont
+    property bool isErrorLogin: false
 
     signal openPanel(string name)
 
@@ -124,6 +125,23 @@ Item {
                                 lineHeightMode:Text.FixedHeight
                                 lineHeight: 12
                             }
+
+                            Text {
+                                id: errorLoginText
+
+                                text: qsTr("*Invalid login or password")
+                                visible: isErrorLogin
+                                anchors.left: emailTitleText.right
+                                anchors.leftMargin: 10
+                                anchors.verticalCenter: parent.verticalCenter
+                                verticalAlignment: Text.AlignVCenter
+                                color: "red"
+                                font.family: loginRegularFont.family
+                                font.pixelSize: loginRegularFont.pixelSize
+                                font.letterSpacing: 0.3
+                                lineHeightMode: Text.FixedHeight
+                                lineHeight: 12
+                            }
                         }
 
                         CustomTextField {
@@ -161,6 +179,23 @@ Item {
                                 anchors.left: parent.left
                                 verticalAlignment: Text.AlignVCenter
                                 anchors.leftMargin: 16
+                                font.family: loginRegularFont.family
+                                font.pixelSize: loginRegularFont.pixelSize
+                                font.letterSpacing: 0.3
+                                lineHeightMode: Text.FixedHeight
+                                lineHeight: 12
+                            }
+
+                            Text {
+                                id: errorPwText
+
+                                text: qsTr("*Invalid login or password")
+                                visible: isErrorLogin
+                                anchors.left: pwTitleText.right
+                                anchors.leftMargin: 10
+                                anchors.verticalCenter: parent.verticalCenter
+                                verticalAlignment: Text.AlignVCenter
+                                color: "red"
                                 font.family: loginRegularFont.family
                                 font.pixelSize: loginRegularFont.pixelSize
                                 font.letterSpacing: 0.3
