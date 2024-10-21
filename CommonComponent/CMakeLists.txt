@@ -17,4 +17,5 @@ qt_add_qml_module(CommonComponent
     RESOURCES
         "Resources/google-logo-240x240.png"
         "Resources/google-logo-1040x1040.png"
+        "Resources/show-pw-icon.png"
 )

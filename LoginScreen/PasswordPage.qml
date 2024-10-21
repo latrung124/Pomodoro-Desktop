@@ -161,6 +161,7 @@ Item {
 
                             backgroundText: qsTr("Your password")
                             Layout.alignment: Qt.AlignTop
+                            isPassword: true
                         }
                     }
                 }
@@ -221,6 +222,7 @@ Item {
 
                             backgroundText: qsTr("Confirm your password")
                             Layout.alignment: Qt.AlignTop
+                            isPassword: true
                         }
                     }
                 }

@@ -209,6 +209,7 @@ Item {
 
                             backgroundText: qsTr("Password")
                             Layout.alignment: Qt.AlignTop
+                            isPassword: true
                         }
                     }
                 }
