@@ -22,6 +22,7 @@ import QtQuick.Controls.Basic
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import Qt5Compat.GraphicalEffects
 
 TextField {
     id: root
@@ -33,6 +34,7 @@ TextField {
     property int backgroundRadius: 6
     property string textFont: "Roboto"
     property color backgroundColor: "#F2F2F2"
+    property bool isShowPassword: false
     property alias isPassword: showPwRect.visible
     property alias backgroundText: placeHolderText.text
     property alias borderColor: backgroundRect.border.color
@@ -44,6 +46,8 @@ TextField {
 
     font.family: root.textFont
     font.pixelSize: root.textSize
+
+    echoMode: isShowPassword ? TextInput.Normal : TextInput.Password
 
     background: Rectangle {
         id: backgroundRect
@@ -98,13 +102,20 @@ TextField {
             anchors.margins: 8
         }
 
+        ColorOverlay {
+            visible: isShowPassword
+            anchors.fill: showPwImage
+            source: showPwImage
+            color: "#007AFF"
+        }
+
         MouseArea {
             id: showPwArea
 
             anchors.fill: parent
             cursorShape: Qt.ArrowCursor
             onClicked: {
-                root.echoMode = root.echoMode === TextInput.Normal ? TextInput.Password : TextInput.Normal
+                isShowPassword = !isShowPassword;
             }
         }
     }
