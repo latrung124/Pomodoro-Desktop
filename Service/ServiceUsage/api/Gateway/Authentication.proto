@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package authentication;
+
+// Enum for different authentication channels
+enum AuthChannel {
+  DEFAULT = 0;   // Standard username/password login
+  GOOGLE = 1;    // Google OAuth
+  FACEBOOK = 2;  // Facebook OAuth
+  TWITTER = 3;   // Twitter OAuth
+  GITHUB = 4;    // GitHub OAuth
+}
+
+// Login request message
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+  AuthChannel auth_channel = 3;  // Specifies the authentication channel
+}
+
+// Login response message
+message LoginResponse {
+  bool success = 1;
+  string message = 2;
+  string token = 3; // JWT or any other authentication token
+}
+
+// Refresh token request message
+message RefreshTokenRequest {
+  string token = 1;
+}
+
+// Refresh token response message
+message RefreshTokenResponse {
+  bool success = 1;
+  string new_token = 2;
+}
+
+// Service for authentication
+service AuthService {
+  // RPC method for login
+  rpc Login(LoginRequest) returns (LoginResponse);
+  
+  // RPC method for token refresh
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
+}
