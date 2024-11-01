@@ -19,24 +19,13 @@
  * Author: La Trung
  */
 
-#pragma once
+#include "ServerMessageProcessor.h"
 
-#include "IGatewayServiceApiSender.h"
-#include "IGatewayServiceApiReceiver.h"
-
-#include <memory>
-
-class IGatewayService
+void ServerMessageProcessor::processMessage(const std::vector<uint8_t> &messageData)
 {
-public:
-    virtual ~IGatewayService() = default;
+}
 
-    virtual void start() = 0;
-    virtual void stop() = 0;
-    
-    virtual std::shared_ptr<IGatewayServiceApiSender> getApiCaller() = 0;
-    virtual std::shared_ptr<IGatewayServiceApiReceiver> getApiReceiver() = 0;
+void handleLoginResponse(const authentication::LoginResponse &response)
+{
 
-    virtual void registerApiReceiver(std::shared_ptr<IGatewayServiceApiReceiver> apiReceiver) = 0;
-};
-
+}

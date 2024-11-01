@@ -22,21 +22,12 @@
 #pragma once
 
 #include "IGatewayServiceApiSender.h"
-#include "IGatewayServiceApiReceiver.h"
 
-#include <memory>
-
-class IGatewayService
+class GatewayServiceApiSender : public IGatewayServiceApiSender
 {
 public:
-    virtual ~IGatewayService() = default;
+    virtual ~GatewayServiceApiSender() = default;
 
-    virtual void start() = 0;
-    virtual void stop() = 0;
-    
-    virtual std::shared_ptr<IGatewayServiceApiSender> getApiCaller() = 0;
-    virtual std::shared_ptr<IGatewayServiceApiReceiver> getApiReceiver() = 0;
-
-    virtual void registerApiReceiver(std::shared_ptr<IGatewayServiceApiReceiver> apiReceiver) = 0;
+    void sendMessage(std::string) override;
+    void requestLogin(std::string username, std::string password) override;
 };
-

@@ -19,24 +19,22 @@
  * Author: La Trung
  */
 
-#pragma once
+#include "ServerMessageQueueHandler.h"
 
-#include "IGatewayServiceApiSender.h"
-#include "IGatewayServiceApiReceiver.h"
-
-#include <memory>
-
-class IGatewayService
+void ServerMessageQueueHandler::pushMessage(const std::vector<uint8_t> &message)
 {
-public:
-    virtual ~IGatewayService() = default;
+    m_messageQueue.push(message);
+}
 
-    virtual void start() = 0;
-    virtual void stop() = 0;
-    
-    virtual std::shared_ptr<IGatewayServiceApiSender> getApiCaller() = 0;
-    virtual std::shared_ptr<IGatewayServiceApiReceiver> getApiReceiver() = 0;
+std::vector<uint8_t> ServerMessageQueueHandler::popMessage()
+{
+    if (m_messageQueue.empty())
+    {
+        return {};
+    }
 
-    virtual void registerApiReceiver(std::shared_ptr<IGatewayServiceApiReceiver> apiReceiver) = 0;
-};
+    auto message = m_messageQueue.front();
+    m_messageQueue.pop();
 
+    return message;
+}

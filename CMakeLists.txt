@@ -41,7 +41,7 @@ add_subdirectory(ThemeConfig)
 add_subdirectory(CommonComponent)
 add_subdirectory(HomeScreen)
 add_subdirectory(LoginScreen)
-# add_subdirectory(ExternalModule)
+add_subdirectory(ExternalModule)
 
 #add service subdirectory
 add_subdirectory(Service)

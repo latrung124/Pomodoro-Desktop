@@ -19,24 +19,16 @@
  * Author: La Trung
  */
 
-#pragma once
+#include "GatewayServiceApiReceiver.h"
 
-#include "IGatewayServiceApiSender.h"
-#include "IGatewayServiceApiReceiver.h"
+void GatewayServiceApiReceiver::registerCallback(std::function<void(const std::string &msg)> callback) {
+    // Register callback to receive message from the server
+    mCallback = callback;
+}
 
-#include <memory>
-
-class IGatewayService
-{
-public:
-    virtual ~IGatewayService() = default;
-
-    virtual void start() = 0;
-    virtual void stop() = 0;
-    
-    virtual std::shared_ptr<IGatewayServiceApiSender> getApiCaller() = 0;
-    virtual std::shared_ptr<IGatewayServiceApiReceiver> getApiReceiver() = 0;
-
-    virtual void registerApiReceiver(std::shared_ptr<IGatewayServiceApiReceiver> apiReceiver) = 0;
-};
-
+void GatewayServiceApiReceiver::receiveMessage(const std::string &msg) {
+    // Receive message from the server
+    if (mCallback) {
+        mCallback(msg);
+    }
+}

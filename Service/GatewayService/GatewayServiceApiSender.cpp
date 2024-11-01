@@ -19,24 +19,12 @@
  * Author: La Trung
  */
 
-#pragma once
+#include "GatewayServiceApiSender.h"
 
-#include "IGatewayServiceApiSender.h"
-#include "IGatewayServiceApiReceiver.h"
+void GatewayServiceApiSender::sendMessage(std::string) {
+    // Send message to the server
+}
 
-#include <memory>
-
-class IGatewayService
-{
-public:
-    virtual ~IGatewayService() = default;
-
-    virtual void start() = 0;
-    virtual void stop() = 0;
-    
-    virtual std::shared_ptr<IGatewayServiceApiSender> getApiCaller() = 0;
-    virtual std::shared_ptr<IGatewayServiceApiReceiver> getApiReceiver() = 0;
-
-    virtual void registerApiReceiver(std::shared_ptr<IGatewayServiceApiReceiver> apiReceiver) = 0;
-};
-
+void GatewayServiceApiSender::requestLogin(std::string username, std::string password) {
+    // Send login request to the server
+}

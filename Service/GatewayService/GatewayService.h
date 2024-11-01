@@ -31,6 +31,14 @@ public:
 
     void start() override;
     void stop() override;
+
+    std::shared_ptr<IGatewayServiceApiSender> getApiCaller() override;
+    std::shared_ptr<IGatewayServiceApiReceiver> getApiReceiver() override;
+
+private:
+    void initialize();
+
+    std::shared_ptr<IGatewayServiceApiSender> mApiCaller;
 };
 
 #endif // GATEWAYSERVICE_H_

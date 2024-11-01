@@ -21,22 +21,18 @@
 
 #pragma once
 
-#include "IGatewayServiceApiSender.h"
-#include "IGatewayServiceApiReceiver.h"
+#include "Authentication.pb.h"
 
-#include <memory>
+#include <vector>
 
-class IGatewayService
+class ServerMessageProcessor
 {
 public:
-    virtual ~IGatewayService() = default;
+    ServerMessageProcessor() = default;
+    ~ServerMessageProcessor() = default;
 
-    virtual void start() = 0;
-    virtual void stop() = 0;
-    
-    virtual std::shared_ptr<IGatewayServiceApiSender> getApiCaller() = 0;
-    virtual std::shared_ptr<IGatewayServiceApiReceiver> getApiReceiver() = 0;
+    virtual void processMessage(const std::vector<uint8_t> &messageData);
 
-    virtual void registerApiReceiver(std::shared_ptr<IGatewayServiceApiReceiver> apiReceiver) = 0;
+private:
+    void handleLoginResponse(const authentication::LoginResponse &response);
 };
-
