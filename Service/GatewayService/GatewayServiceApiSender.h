@@ -21,13 +21,28 @@
 
 #pragma once
 
+#include <memory>
+
 #include "IGatewayServiceApiSender.h"
+
+class ClientMessageProcessor;
 
 class GatewayServiceApiSender : public IGatewayServiceApiSender
 {
 public:
+    GatewayServiceApiSender();
     virtual ~GatewayServiceApiSender() = default;
 
+    GatewayServiceApiSender(const GatewayServiceApiSender &) = delete;
+    GatewayServiceApiSender &operator=(const GatewayServiceApiSender &) = delete;
+
+    GatewayServiceApiSender(GatewayServiceApiSender &&other) noexcept;
+    GatewayServiceApiSender &operator=(GatewayServiceApiSender &&other) noexcept;
+
     void sendMessage(std::string) override;
-    void requestLogin(std::string username, std::string password) override;
+    void requestLoginWithGoogle(std::string username, std::string password) override;
+    void requestLoginWithFacebook(std::string username, std::string password) override;
+
+private:
+    std::unique_ptr<ClientMessageProcessor> m_clientMessageProcessor;
 };

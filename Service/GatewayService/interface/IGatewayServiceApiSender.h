@@ -29,5 +29,6 @@ public:
     virtual ~IGatewayServiceApiSender() = default;
 
     virtual void sendMessage(std::string) = 0;
-    virtual void requestLogin(std::string username, std::string password) = 0;
+    virtual void requestLoginWithGoogle(std::string username, std::string password) = 0;
+    virtual void requestLoginWithFacebook(std::string username, std::string password) = 0;
 };
