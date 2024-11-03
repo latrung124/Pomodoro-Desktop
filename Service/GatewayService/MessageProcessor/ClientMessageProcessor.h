@@ -39,7 +39,6 @@ public:
                              const std::string &password,
                              const authentication::AuthChannel &authChannel);
 private:
-
     RequestMsgData createLoginRequest(const std::string &username,
                                       const std::string &password,
                                       const authentication::AuthChannel &authChannel);

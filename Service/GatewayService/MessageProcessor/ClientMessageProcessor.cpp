@@ -19,6 +19,8 @@
  * Author: La Trung
  */
 
+#include <thread>
+
 #include "ClientMessageProcessor.h"
 #include "MessageHandler/ClientMessageQueueHandler.h"
 
@@ -30,9 +32,13 @@ void ClientMessageProcessor::processLoginRequest(const std::string &username,
                                                  const authentication::AuthChannel &authChannel)
 {
     auto request = createLoginRequest(username, password, authChannel);
-    // Send the request to the client msg queue handler
 
-    ClientMessageQueueHandler::getInstance().enqueueMessage(request);
+    // Enqueue the request to the message queue
+    std::thread enqueueThread([&request] {
+        ClientMessageQueueHandler::getInstance().enqueueMessage(request);
+    });
+
+    enqueueThread.detach();
 }
 
 RequestMsgData ClientMessageProcessor::createLoginRequest(const std::string &username,
@@ -43,6 +49,7 @@ RequestMsgData ClientMessageProcessor::createLoginRequest(const std::string &use
     request.set_username(username);
     request.set_password(password);
     request.set_auth_channel(authChannel);
+    
     // Serialize the request to a byte array
     RequestMsgData msgData(request.ByteSizeLong());
     request.SerializeToArray(msgData.data(), msgData.size());
