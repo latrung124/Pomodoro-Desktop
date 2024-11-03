@@ -25,11 +25,18 @@
 
 #include "IGatewayServiceApiSender.h"
 
+namespace gateway::message_processor::client {
+
 class ClientMessageProcessor;
+
+}
+
 
 class GatewayServiceApiSender : public IGatewayServiceApiSender
 {
 public:
+    using client_processor = gateway::message_processor::client::ClientMessageProcessor;
+
     GatewayServiceApiSender();
     virtual ~GatewayServiceApiSender() = default;
 
@@ -44,5 +51,5 @@ public:
     void requestLoginWithFacebook(std::string username, std::string password) override;
 
 private:
-    std::unique_ptr<ClientMessageProcessor> m_clientMessageProcessor;
+    std::unique_ptr<client_processor> m_clientMessageProcessor;
 };

@@ -20,6 +20,10 @@
  */
 
 #include "ClientMessageProcessor.h"
+#include "MessageHandler/ClientMessageQueueHandler.h"
+
+namespace gateway::message_processor::client
+{
 
 void ClientMessageProcessor::processLoginRequest(const std::string &username,
                                                  const std::string &password,
@@ -27,20 +31,22 @@ void ClientMessageProcessor::processLoginRequest(const std::string &username,
 {
     auto request = createLoginRequest(username, password, authChannel);
     // Send the request to the client msg queue handler
+
+    ClientMessageQueueHandler::getInstance().enqueueMessage(request);
 }
 
-std::vector<uint8_t> ClientMessageProcessor::createLoginRequest(const std::string &username,
-                                                                const std::string &password,
-                                                                const authentication::AuthChannel &authChannel)
+RequestMsgData ClientMessageProcessor::createLoginRequest(const std::string &username,
+                                                          const std::string &password,
+                                                          const authentication::AuthChannel &authChannel)
 {
     authentication::LoginRequest request;
     request.set_username(username);
     request.set_password(password);
     request.set_auth_channel(authChannel);
-
     // Serialize the request to a byte array
-    std::vector<uint8_t> byteArray(request.ByteSizeLong());
-    request.SerializeToArray(byteArray.data(), byteArray.size());
-
-    return byteArray;
+    RequestMsgData msgData(request.ByteSizeLong());
+    request.SerializeToArray(msgData.data(), msgData.size());
+    return msgData;
 }
+
+} // namespace gateway::message_processor::client

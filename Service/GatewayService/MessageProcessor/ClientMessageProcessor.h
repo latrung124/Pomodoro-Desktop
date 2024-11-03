@@ -26,18 +26,23 @@
 
 #include "Authentication.pb.h"
 
+namespace gateway::message_processor::client
+{
+using RequestMsgData = std::vector<uint8_t>;
+
 class ClientMessageProcessor
 {
 public:
     ClientMessageProcessor() = default;
     ~ClientMessageProcessor() = default;
-
     void processLoginRequest(const std::string &username,
                              const std::string &password,
                              const authentication::AuthChannel &authChannel);
-
 private:
-    std::vector<uint8_t> createLoginRequest(const std::string &username,
-                                            const std::string &password,
-                                            const authentication::AuthChannel &authChannel);
+
+    RequestMsgData createLoginRequest(const std::string &username,
+                                      const std::string &password,
+                                      const authentication::AuthChannel &authChannel);
 };
+
+} // namespace gateway::message_processor::client

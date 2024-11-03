@@ -21,20 +21,25 @@
 
 #include "ClientMessageQueueHandler.h"
 
-void ClientMessageQueueHandler::pushMessage(const std::vector<uint8_t> &message)
+ClientMessageQueueHandler &ClientMessageQueueHandler::getInstance()
 {
-    m_messageQueue.push(message);
+    static ClientMessageQueueHandler instance;
+    return instance;
 }
 
-std::vector<uint8_t> ClientMessageQueueHandler::popMessage()
+void ClientMessageQueueHandler::enqueueMessage(const std::vector<uint8_t> &message)
 {
-    if (m_messageQueue.empty())
-    {
-        return {};
-    }
+    std::lock_guard<std::mutex> lock(m_mutex);
+    m_messageQueue.push(message);
+    m_condition.notify_one();
+}
 
-    auto message = m_messageQueue.front();
+std::vector<uint8_t> ClientMessageQueueHandler::dequeueMessage()
+{
+    std::unique_lock<std::mutex> lock(m_mutex);
+    m_condition.wait(lock, [this] { return !m_messageQueue.empty(); });
+
+    std::vector<uint8_t> message = m_messageQueue.front();
     m_messageQueue.pop();
-
     return message;
 }
