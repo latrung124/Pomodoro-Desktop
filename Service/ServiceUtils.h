@@ -21,21 +21,11 @@
 
 #pragma once
 
-#include "IService.h"
+namespace service_utils {
 
-#include <memory>
-
-class IGatewayServiceApiSender;
-class IGatewayServiceApiReceiver;
-
-class IGatewayService : public IService
-{
-public:
-    virtual ~IGatewayService() = default;
-    
-    virtual std::shared_ptr<IGatewayServiceApiSender> getApiCaller() = 0;
-    virtual std::shared_ptr<IGatewayServiceApiReceiver> getApiReceiver() = 0;
-
-    virtual void registerApiReceiver(std::shared_ptr<IGatewayServiceApiReceiver> apiReceiver) = 0;
+enum class ServiceId {
+    GATEWAY_SERVICE,
+    SERVICE_MANAGER
 };
 
+} // namespace ServiceUtils

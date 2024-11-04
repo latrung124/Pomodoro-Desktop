@@ -19,31 +19,26 @@
  * Author: La Trung
  */
 
-#ifndef GATEWAYSERVICE_H_
-#define GATEWAYSERVICE_H_
+#pragma once
 
-#include "interface/IGatewayService.h"
+#include <map>
 
-class GatewayService : public IGatewayService {
+#include "IServiceManager.h"
+
+class ServiceManager : public IServiceManager
+{
 public:
-    GatewayService() = default;
-    virtual ~GatewayService() = default;
+    ServiceManager() = default;
+    virtual ~ServiceManager() = default;
 
     void start() override;
     void stop() override;
 
     service_utils::ServiceId getServiceId() const override;
-
-    std::shared_ptr<IGatewayServiceApiSender> getApiCaller() override;
-    std::shared_ptr<IGatewayServiceApiReceiver> getApiReceiver() override;
+    void registerService(std::shared_ptr<IService> service) override;
+    template <typename Service>
+    std::shared_ptr<Service> getService(const service_utils::ServiceId &serviceId) const;
 
 private:
-    void initialize();
-
-    std::shared_ptr<IGatewayServiceApiSender> mApiCaller;
-    std::shared_ptr<IGatewayServiceApiReceiver> mApiReceiver;
-
-    service_utils::ServiceId mServiceId = service_utils::ServiceId::GATEWAY_SERVICE;
+    std::map<service_utils::ServiceId, std::shared_ptr<IService>> mServiceMap;
 };
-
-#endif // GATEWAYSERVICE_H_

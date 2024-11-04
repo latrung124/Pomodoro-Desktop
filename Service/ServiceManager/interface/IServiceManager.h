@@ -25,17 +25,13 @@
 
 #include <memory>
 
-class IGatewayServiceApiSender;
-class IGatewayServiceApiReceiver;
-
-class IGatewayService : public IService
+class IServiceManager : public IService
 {
 public:
-    virtual ~IGatewayService() = default;
+    virtual ~IServiceManager() = default;
+
+    virtual void registerService(std::shared_ptr<IService> service) = 0;
     
-    virtual std::shared_ptr<IGatewayServiceApiSender> getApiCaller() = 0;
-    virtual std::shared_ptr<IGatewayServiceApiReceiver> getApiReceiver() = 0;
-
-    virtual void registerApiReceiver(std::shared_ptr<IGatewayServiceApiReceiver> apiReceiver) = 0;
+    template <typename Service>
+    std::shared_ptr<Service> getService(const service_utils::ServiceId &serviceId) const;
 };
-

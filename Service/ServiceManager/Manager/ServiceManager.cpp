@@ -19,23 +19,31 @@
  * Author: La Trung
  */
 
-#pragma once
+#include "ServiceManager.h"
 
-#include "IService.h"
+void ServiceManager::start() {
+}
 
-#include <memory>
+void ServiceManager::stop() {
+    for (auto &service : mServiceMap) {
+        service.second->stop();
+    }
+}
 
-class IGatewayServiceApiSender;
-class IGatewayServiceApiReceiver;
+service_utils::ServiceId ServiceManager::getServiceId() const {
+    return service_utils::ServiceId::SERVICE_MANAGER;
+}
 
-class IGatewayService : public IService
-{
-public:
-    virtual ~IGatewayService() = default;
-    
-    virtual std::shared_ptr<IGatewayServiceApiSender> getApiCaller() = 0;
-    virtual std::shared_ptr<IGatewayServiceApiReceiver> getApiReceiver() = 0;
+void ServiceManager::registerService(std::shared_ptr<IService> service) {
+    mServiceMap[service->getServiceId()] = service;
+}
 
-    virtual void registerApiReceiver(std::shared_ptr<IGatewayServiceApiReceiver> apiReceiver) = 0;
-};
+template <typename Service>
+std::shared_ptr<Service> ServiceManager::getService(const service_utils::ServiceId &serviceId) const {
+    auto it = mServiceMap.find(serviceId);
+    if (it != mServiceMap.end()) {
+        return std::dynamic_pointer_cast<Service>(it->second);
+    }
 
+    return nullptr;
+}

@@ -21,6 +21,7 @@
 
 #include "GatewayService.h"
 #include "GatewayServiceApiSender.h"
+#include "GatewayServiceApiReceiver.h"
 
 void GatewayService::start() {
     // Start the gateway service
@@ -34,4 +35,13 @@ void GatewayService::stop() {
 void GatewayService::initialize() {
     // Initialize the gateway service
     mApiCaller = std::make_shared<GatewayServiceApiSender>();
+    mApiReceiver = std::make_shared<GatewayServiceApiReceiver>();
+}
+
+std::shared_ptr<IGatewayServiceApiSender> GatewayService::getApiCaller() {
+    return mApiCaller;
+}
+
+std::shared_ptr<IGatewayServiceApiReceiver> GatewayService::getApiReceiver() {
+    return mApiReceiver;
 }
