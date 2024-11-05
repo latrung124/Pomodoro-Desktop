@@ -18,30 +18,45 @@
  * Author: La Trung
  */
 
+#pragma once
+
+#include <QObject>
+#include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QResource>
+#include <memory>
 
-#include "Controller/ModuleController/LoginModuleController.h"
+#include "ThemeConfig/ThemeConfig.h"
 
-LoginModuleController::LoginModuleController(QQmlContext *context, QObject *parent)
-    : BaseModuleController(context, parent)
+class LoginModuleController;
+class UiSystemController : public QObject
 {
-    if (context) {
-        context->setContextProperty("loginModuleController", this);
-    }
-}
+    Q_OBJECT
 
-LoginModuleController::~LoginModuleController()
-{
-}
+public:
+    ~UiSystemController();
 
-void LoginModuleController::open()
-{
-}
+    //singleton
+    static UiSystemController *instance();
 
-void LoginModuleController::close()
-{
-}
+public slots:
+    void start();
+    void stop();
 
-void LoginModuleController::initSettings()
-{
-}
+signals:
+    void quit();
+
+private:
+    UiSystemController(QObject *parent = nullptr);
+    
+    void init();
+    void cleanup();
+    void setupConnections();
+
+    void themeSetup();
+    void loadModule();
+    void initModuleControllers();
+
+    QQmlApplicationEngine m_engine;
+    std::shared_ptr<ThemeConfig> m_themeConfig;
+};

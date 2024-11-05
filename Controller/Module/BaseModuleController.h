@@ -20,40 +20,29 @@
 
 #pragma once
 
-#include <QObject>
-#include <QQmlApplicationEngine>
-#include <QQmlContext>
-#include <QResource>
 #include <memory>
+#include <QObject>
 
-#include "ThemeConfig/ThemeConfig.h"
+class QQmlContext;
 
-class LoginModuleController;
-class SystemController : public QObject
+class BaseModuleController : public QObject
 {
     Q_OBJECT
 
 public:
-    SystemController(QObject *parent = nullptr);
-    ~SystemController();
+    BaseModuleController(QObject *parent = nullptr) : QObject(parent) {}
+    virtual ~BaseModuleController() {}
 
-public slots:
-    void start();
-    void stop();
+    // Default copy constructor and copy assignment operator are deleted
+    BaseModuleController(const BaseModuleController&) = delete;
+    BaseModuleController& operator=(const BaseModuleController&) = delete;
 
-signals:
-    void quit();
+    // Default move constructor and move assignment operator
+    BaseModuleController(BaseModuleController&&) noexcept = default;
+    BaseModuleController& operator=(BaseModuleController&&) noexcept = default;
 
-private:
-    void init();
-    void cleanup();
-    void setupConnections();
+    virtual void setContext(QQmlContext *context) = 0;
 
-    void themeSetup();
-    void loadModule();
-    void initModuleControllers();
-
-    QQmlApplicationEngine m_engine;
-    std::shared_ptr<ThemeConfig> m_themeConfig;
-    std::unique_ptr<LoginModuleController> m_loginModuleController;
+protected:
+    std::unique_ptr<QQmlContext> mContext;
 };

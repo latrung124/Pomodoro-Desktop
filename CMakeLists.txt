@@ -15,9 +15,13 @@ find_package(Qt6 6.5 REQUIRED COMPONENTS Core Gui Qml Quick)
 qt_standard_project_setup(REQUIRES 6.5)
 
 # Define paths
+set(MODULE_DIR ${CMAKE_SOURCE_DIR}/Controller)
 set(SERVICE_PROTO_DIR ${CMAKE_SOURCE_DIR}/ExternalModule/ServiceProto)
 set(PROTOBUF_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/ExternalModule/x64-windows/include)
 set(PROTOBUF_LIB_DIR ${CMAKE_SOURCE_DIR}/ExternalModule/x64-windows/lib)
+
+set(SERVICE_MANAGER_INTERFACE ${CMAKE_SOURCE_DIR}/ExternalModule/ServiceManager/interface)
+set(SERVICE_MANAGER_IMPL ${CMAKE_SOURCE_DIR}/ExternalModule/ServiceManager/Manager)
 
 # Add the proto generated source and header files
 set(PROTO_SRCS ${SERVICE_PROTO_DIR}/Authentication.pb.cc)
@@ -27,12 +31,12 @@ add_executable(untitled
   main.cpp
 
   Utils/CommonSettingsDefine.h
-  Controller/SystemController.h
-  Controller/ModuleController/BaseModuleController.h
-  Controller/ModuleController/LoginModuleController.h
+  Controller/System/UiSystemController.h
+  Controller/Module/BaseModuleController.h
+  Controller/Module/LoginModuleController.h
 
-  Controller/SystemController.cpp
-  Controller/ModuleController/LoginModuleController.cpp
+  Controller/System/UiSystemController.cpp
+  Controller/Module/LoginModuleController.cpp
 )
 
 add_subdirectory(ThemeConfig)
@@ -45,6 +49,11 @@ add_subdirectory(ExternalModule)
 
 #add service subdirectory
 add_subdirectory(Service)
+
+target_include_directories(untitled PUBLIC
+    ${MODULE_DIR}
+    ${SERVICE_MANAGER_INTERFACE}
+ )
 
 target_link_libraries(untitled PRIVATE
     Qt6::Core

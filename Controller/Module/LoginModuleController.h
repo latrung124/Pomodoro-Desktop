@@ -20,18 +20,18 @@
 
 #pragma once
 
-#include "Controller/ModuleController/BaseModuleController.h"
+#include "Module/BaseModuleController.h"
 
 class LoginModuleController : public BaseModuleController
 {
     Q_OBJECT
 
 public:
-    explicit LoginModuleController(QQmlContext *context, QObject *parent = nullptr);
-    ~LoginModuleController();
+    ~LoginModuleController() override;
 
-    void open() override;
-    void close() override;
+    void setContext(QQmlContext *context) override;
+    static LoginModuleController *instance();
 
-    void initSettings() override;
+private:
+    LoginModuleController(QObject *parent = nullptr);
 };

@@ -1,5 +1,5 @@
 #include <QGuiApplication>
-#include "Controller/SystemController.h"
+#include "System/UiSystemController.h"
 
 int main(int argc, char *argv[])
 {
@@ -7,10 +7,9 @@ int main(int argc, char *argv[])
 
     Q_INIT_RESOURCE(ThemeResources);
 
-    SystemController systemController;
-    QObject::connect(&systemController, &SystemController::quit, &app, &QGuiApplication::quit);
+    QObject::connect(UiSystemController::instance(), &UiSystemController::quit, &app, &QGuiApplication::quit);
 
-    systemController.start();
+    UiSystemController::instance()->start();
 
     return app.exec();
 }
