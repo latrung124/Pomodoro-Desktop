@@ -28,13 +28,9 @@ qt_add_executable(untitled
 
 add_subdirectory(ThemeConfig)
 
-#add qml module subdirectories
 add_subdirectory(CommonComponent)
 add_subdirectory(HomeScreen)
 add_subdirectory(LoginScreen)
-
-#add service subdirectory
-add_subdirectory(Service)
 
 target_link_libraries(untitled PRIVATE
     Qt6::Core
