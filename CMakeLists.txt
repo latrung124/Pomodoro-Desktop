@@ -11,8 +11,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 6.5 REQUIRED COMPONENTS Core Gui Qml Quick)
-
-qt_standard_project_setup(REQUIRES 6.5)
+# find_package(Protobuf CONFIG REQUIRED)
 
 # Define paths
 set(SERVICE_PROTO_DIR ${CMAKE_SOURCE_DIR}/ExternalModule/ServiceProto)
@@ -23,7 +22,9 @@ set(PROTOBUF_LIB_DIR ${CMAKE_SOURCE_DIR}/ExternalModule/x64-windows/lib)
 set(PROTO_SRCS ${SERVICE_PROTO_DIR}/Authentication.pb.cc)
 set(PROTO_HDRS ${SERVICE_PROTO_DIR}/Authentication.pb.h)
 
-add_executable(untitled
+qt_standard_project_setup(REQUIRES 6.5)
+
+qt_add_executable(untitled
   main.cpp
 
   Utils/CommonSettingsDefine.h
@@ -41,7 +42,6 @@ add_subdirectory(ThemeConfig)
 add_subdirectory(CommonComponent)
 add_subdirectory(HomeScreen)
 add_subdirectory(LoginScreen)
-# add_subdirectory(ExternalModule)
 
 #add service subdirectory
 add_subdirectory(Service)
