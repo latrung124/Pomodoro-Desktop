@@ -8,8 +8,13 @@ qt6_add_resources(THEME_RESOURCES ThemeResources.qrc)
 add_library(ThemeConfig STATIC
     ${THEME_RESOURCES}
     Utils/ThemeDefined.h
+
+    ColorPalette.h
+    FontPalette.h
     ThemeConfig.h
-    
+
+    ColorPalette.cpp
+    FontPalette.cpp
     ThemeConfig.cpp
 )
 

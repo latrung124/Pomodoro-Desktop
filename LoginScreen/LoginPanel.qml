@@ -19,8 +19,8 @@
  */
 
 import QtQuick
-import QtQuick.Window
 import QtQuick.Controls
+import QtQuick.Controls.Basic
 import QtQuick.Layouts
 
 import CommonComponent
@@ -28,11 +28,16 @@ import CommonComponent
 Item {
     id: root
 
+    objectName: "LoginPanel"
+
     implicitWidth: 488
     implicitHeight: 650
 
-    property font loginRegularFont: themeConfig ? themeConfig.loginRegularFont : internal.defaultFont
-    property font loginGreetingFont: themeConfig ? themeConfig.loginGreetingFont : internal.defaultFont
+    property font loginRegularFont: themeConfig ? themeConfig.fontPalette.layer3 : internal.defaultFont
+    property font loginGreetingFont: themeConfig ? themeConfig.fontPalette.layer2 : internal.defaultFont
+    property bool isErrorLogin: false
+
+    signal openPanel(string name)
 
     Rectangle {
         id: backgroundRect
@@ -42,7 +47,7 @@ Item {
     }
     
     ColumnLayout {
-        id: contentRect
+        id: panelLayout
 
         anchors.margins: internal.contentMargin
         anchors.fill: parent
@@ -50,16 +55,16 @@ Item {
         ColumnLayout {
             id: headerLayout
 
-            width: parent.width
-            height: 80
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignTop
+            height: internal.headerLayoutHeight
         }
 
         ColumnLayout {
             id: contentLayout
 
-            width: parent.width
-            height: 244
-
+            Layout.fillWidth: true
+            height: internal.contentLayoutHeight
             spacing: 24
 
             Rectangle {
@@ -120,6 +125,23 @@ Item {
                                 lineHeightMode:Text.FixedHeight
                                 lineHeight: 12
                             }
+
+                            Text {
+                                id: errorLoginText
+
+                                text: qsTr("*Invalid login or password")
+                                visible: isErrorLogin
+                                anchors.left: emailTitleText.right
+                                anchors.leftMargin: 10
+                                anchors.verticalCenter: parent.verticalCenter
+                                verticalAlignment: Text.AlignVCenter
+                                color: "red"
+                                font.family: loginRegularFont.family
+                                font.pixelSize: loginRegularFont.pixelSize
+                                font.letterSpacing: 0.3
+                                lineHeightMode: Text.FixedHeight
+                                lineHeight: 12
+                            }
                         }
 
                         CustomTextField {
@@ -163,6 +185,23 @@ Item {
                                 lineHeightMode: Text.FixedHeight
                                 lineHeight: 12
                             }
+
+                            Text {
+                                id: errorPwText
+
+                                text: qsTr("*Invalid login or password")
+                                visible: isErrorLogin
+                                anchors.left: pwTitleText.right
+                                anchors.leftMargin: 10
+                                anchors.verticalCenter: parent.verticalCenter
+                                verticalAlignment: Text.AlignVCenter
+                                color: "red"
+                                font.family: loginRegularFont.family
+                                font.pixelSize: loginRegularFont.pixelSize
+                                font.letterSpacing: 0.3
+                                lineHeightMode: Text.FixedHeight
+                                lineHeight: 12
+                            }
                         }
 
                         CustomTextField {
@@ -170,6 +209,7 @@ Item {
 
                             backgroundText: qsTr("Password")
                             Layout.alignment: Qt.AlignTop
+                            isPassword: true
                         }
                     }
                 }
@@ -230,7 +270,6 @@ Item {
                         id: forgotLayout
 
                         Layout.fillHeight: true
-                        // Layout.alignment: Qt.AlignRight
                         implicitWidth: 204
 
                         Item {
@@ -263,9 +302,59 @@ Item {
 
                                 anchors.fill: forgotText
                                 cursorShape: Qt.PointingHandCursor
+
                                 onClicked: {
                                     console.log("Forgot password clicked")
+                                    root.openPanel("ForgotPasswordPanel");
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        ColumnLayout {
+            id: footerLayout
+
+            Layout.fillWidth: true
+            height: internal.footerLayoutHeight
+            spacing: 0
+
+            ColumnLayout {
+                id: signInBtnLayout
+
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignTop
+                Layout.preferredHeight: internal.btnLayoutHeight
+
+                Item {
+                    id: signInBtnItem
+
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBottom
+                    Layout.preferredHeight: internal.buttonHeight
+
+                    Button {
+                        id: signInBtn
+
+                        anchors.fill: parent
+
+                        background: Rectangle {
+                            color: "#007AFF"
+                            radius: 6
+                        }
+
+                        contentItem: Item {
+                            Text {
+                                text: qsTr("Sign in")
+                                color: "white"
+                                font.pixelSize: 16
+                                font.family: loginRegularFont.family
+                                font.bold: true
+                                anchors.fill: parent
+                                verticalAlignment: Text.AlignVCenter
+                                horizontalAlignment: Text.AlignHCenter
                             }
                         }
                     }
@@ -273,20 +362,134 @@ Item {
             }
 
             ColumnLayout {
-                id: loginButtonLayout
+                id: lineLayout
+
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignBottom
+                Layout.preferredHeight: 32
+
+                Rectangle {
+                    id: lineRect
+
+                    Layout.fillWidth: true
+                    implicitHeight: 0.5
+                    Layout.alignment: Qt.AlignBottom
+                    color: "#E5E5E5"
+                }
+            }
+
+            ColumnLayout {
+                id: googleSignInBtnLayout
 
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignTop
-                implicitHeight: internal.buttonHeight
+                Layout.preferredHeight: 72
 
+                Item {
+                    id: googleSignInBtnItem
+
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBottom
+                    Layout.preferredHeight: 40
+
+                    CustomIconButton {
+                        id: googleSignInIconBtn
+
+                        contentText: qsTr("Sign in with Google")
+                        iconBtnSource: `Resources/google-logo-1040x1040.png`
+                        iconSize: 20
+                        Layout.fillWidth: true
+                        backgroundColor: "#333333"
+                    }
+                }
             }
-        }
 
-        ColumnLayout {
-            id: footerLayout
+            ColumnLayout {
+                id: signUpLayout
 
-            width: parent.width
-            height: 176.5
+                Layout.fillWidth: true
+                Layout.preferredHeight: 43.5
+
+                Item {
+                    id: signUpItem
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+
+                    RowLayout {
+                        id: signUpTxtLayout
+
+                        implicitWidth: 250
+                        height: parent.height
+                        anchors.horizontalCenter: parent.horizontalCenter
+
+                        Item {
+                            id: dontHaveAccountRect
+
+                            height: 20
+                            width: 170
+                            Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+
+                            Text {
+                                id: signUpText
+
+                                text: qsTr("Don't have an account?")
+                                anchors {
+                                    bottom: parent.bottom
+                                    left: parent.left
+                                }
+                                verticalAlignment: Text.AlignBottom
+                                horizontalAlignment: Text.AlignLeft
+                                anchors.leftMargin: 0
+                                font.family: loginRegularFont.family
+                                font.pixelSize: loginRegularFont.pixelSize
+                                font.letterSpacing: 0.3
+                                lineHeightMode: Text.FixedHeight
+                                lineHeight: 12
+                            }
+                        }
+
+                        Item {
+                            id: signUpNowRect
+
+                            height: 20
+                            width: 80
+                            Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+
+                            Text {
+                                id: signUpNowText
+
+                                text: qsTr("Sign up now")
+                                anchors {
+                                    bottom: parent.bottom
+                                    left: parent.left
+                                }
+                                verticalAlignment: Text.AlignBottom
+                                horizontalAlignment: Text.AlignLeft
+                                anchors.leftMargin: 0
+                                font.family: loginRegularFont.family
+                                font.pixelSize: loginRegularFont.pixelSize
+                                font.letterSpacing: 0.3
+                                lineHeightMode: Text.FixedHeight
+                                lineHeight: 12
+                                font.underline: true
+                                color: internal.blueColor
+                            }
+
+                            MouseArea {
+                                id: signUpNowMouseArea
+
+                                anchors.fill: signUpNowText
+                                cursorShape: Qt.PointingHandCursor
+
+                                onClicked: function() {
+                                    console.log("Sign Up Now Button clicked");
+                                    root.openPanel("UserRegistrationPanel");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -297,5 +500,9 @@ Item {
         property font defaultFont: ({ family: "Helvetica", pointSize: 13, bold: true})
         property color blueColor: "#007AFF"
         property int buttonHeight: 40
+        property int btnLayoutHeight: 72
+        property double footerLayoutHeight: 220.5
+        property int headerLayoutHeight: 80
+        property int contentLayoutHeight: 244
     }
 }

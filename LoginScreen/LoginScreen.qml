@@ -35,7 +35,7 @@ ApplicationWindow {
 
     title: qsTr("Pomodoro")
 
-    property string bgColor: themeConfig ? themeConfig.loginBgColor : internal.defaultBgColor
+    property string bgColor: themeConfig ? themeConfig.colorPalette.layer6 : internal.defaultBgColor
 
     Component.onCompleted: {
         x = Screen.width / 2 - width / 2
@@ -81,10 +81,36 @@ ApplicationWindow {
                 }
             }
 
-            LoginPanel {
-                id: loginRect
+            Item {
+                id: panelContainer
 
-                Layout.alignment: Qt.AlignLeft
+                Layout.alignment: Qt.AlignRight
+                width: 488
+                height: 650
+
+                LoginPanel {
+                    id: loginPanel
+
+                    objectName: "LoginPanel"
+                    anchors.fill: parent
+
+                    onOpenPanel: function(name) {
+                        internal.handleOpenPanel(name);
+                    }
+                }
+
+                Loader {
+                    id: panelLoader
+
+                    anchors.fill: parent
+                    source: ""
+
+                    onLoaded: {
+                        console.log("onLoaded: " + panelLoader.source)
+                        panelLoader.item.panelAppearTrans();
+                        internal.connectionEstablished(panelLoader.item);
+                    }
+                }
             }
         }
     }
@@ -93,5 +119,25 @@ ApplicationWindow {
         id: internal
 
         property string defaultBgColor: "#FFFFFF"
+        property var pageList: ["UserRegistrationPanel", "ForgotPasswordPanel"]
+
+        function handleClosePanel() {
+            console.log("handleClosePanel(): " + panelLoader.source);
+            panelLoader.source = "";
+        }
+
+        function connectionEstablished(obj) {
+            for (let i = 0; i < pageList.length; ++i) {
+                if (obj.objectName === pageList[i]) {
+                    panelLoader.item.closePanel.connect(internal.handleClosePanel);
+                    console.log("Connection " + pageList[i] + " established!");
+                }
+            }
+        }
+
+        function handleOpenPanel(name) {
+            panelLoader.source = name + ".qml";
+            console.log("handleOpenPanel: " + panelLoader.source);
+        }
     }
 }

@@ -13,4 +13,9 @@ qt_add_qml_module(CommonComponent
     QML_FILES
         CustomTextField.qml
         CustomToggle.qml
+        CustomIconButton.qml
+    RESOURCES
+        "Resources/google-logo-240x240.png"
+        "Resources/google-logo-1040x1040.png"
+        "Resources/show-pw-icon.png"
 )

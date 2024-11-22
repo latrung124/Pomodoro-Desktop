@@ -1,83 +1,113 @@
 {
     "themes": {
         "dark": {
-            "homescreen": {
-                "backgroundColor": "#121212",
-                "font": {
-                    "family": "Arial",
-                    "pixelSize": 14,
-                    "weight": "Bold"
-                }
+            "colors": {
+                "layer1": "#FFFFFF",
+                "layer2": "#000000",
+                "layer3": "#121212",
+                "layer4": "#333333",
+                "layer5": "#F0F0F0",
+                "layer6": "#E8EAE0",
+                "layer7": "#808080"
             },
-            "loginscreen": {
-                "backgroundColor": "#333333",
-                "font": {
+            "fonts": {
+                "layer1": {
                     "family": "Poppins-SemiBold",
                     "pixelSize": 12,
+                    "weight": "Normal"
+                },
+                "layer2": {
+                    "family": "Poppins-SemiBold",
+                    "pixelSize": 20
+                },
+                "layer3": {
+                    "family": "Inter_24pt-Regular",
+                    "pixelSize": 11,
+                    "weight": "Normal"
+                },
+                "layer4": {
+                    "family": "Roboto-Bold",
+                    "pixelSize": 15,
+                    "weight": "Normal"
+                },
+                "layer5": {
+                    "family": "Roboto-Regular",
+                    "pixelSize": 15,
                     "weight": "Normal"
                 }
             }
         },
         "light": {
-            "homescreen": {
-                "backgroundColor": "#FFFFFF",
-                "font": {
-                    "family": "Arial",
-                    "pixelSize": 14,
-                    "weight": "Normal"
-                }
+            "colors": {
+                "layer1": "#FFFFFF",
+                "layer2": "#000000",
+                "layer3": "#121212",
+                "layer4": "#333333",
+                "layer5": "#F0F0F0",
+                "layer6": "#E8EAE0",
+                "layer7": "#808080"
             },
-            "loginscreen": {
-                "color": "#333333",
-                "backgroundColor": "#F0F0F0",
-                "font": {
+            "fonts": {
+                "layer1": {
                     "family": "Poppins-SemiBold",
                     "pixelSize": 12,
+                    "weight": "Normal"
+                },
+                "layer2": {
+                    "family": "Poppins-SemiBold",
+                    "pixelSize": 20
+                },
+                "layer3": {
+                    "family": "Inter_24pt-Regular",
+                    "pixelSize": 11,
+                    "weight": "Normal"
+                },
+                "layer4": {
+                    "family": "Roboto-Bold",
+                    "pixelSize": 15,
+                    "weight": "Normal"
+                },
+                "layer5": {
+                    "family": "Roboto-Regular",
+                    "pixelSize": 15,
                     "weight": "Normal"
                 }
             }
         },
         "matcha": {
-            "homescreen": {
-                "backgroundColor": "#FFFFFF",
-                "font": {
-                    "family": "Arial",
-                    "pixelSize": 14,
-                    "weight": "Normal"
-                }
+            "colors": {
+                "layer1": "#FFFFFF",
+                "layer2": "#000000",
+                "layer3": "#121212",
+                "layer4": "#333333",
+                "layer5": "#F0F0F0",
+                "layer6": "#E8EAE0",
+                "layer7": "#808080"
             },
-            "loginscreen": {
-                "loginPanelBgColor": "#FFFFFF",
-                "backgroundColor": "#E8EAE0",
-                "text": {
-                    "greeting": {
-                        "color": "#000000",
-                        "font": {
-                            "family": "Poppins-SemiBold",
-                            "pixelSize": 20
-                        }
-                    },
-                    "regular": {
-                        "color": "#000000",
-                        "font": {
-                            "family": "Inter_24pt-Regular",
-                            "pixelSize": 11
-                        }
-                    },
-                    "button": {
-                        "color": "#FFFFFF",
-                        "font": {
-                            "family": "Roboto-Bold",
-                            "pixelSize": 15
-                        }
-                    },
-                    "placeholder": {
-                        "color": "#808080",
-                        "font": {
-                            "family": "Roboto-Regular",
-                            "pixelSize": 15
-                        }
-                    }
+            "fonts": {
+                "layer1": {
+                    "family": "Poppins-SemiBold",
+                    "pixelSize": 12,
+                    "weight": "Normal"
+                },
+                "layer2": {
+                    "family": "Poppins-SemiBold",
+                    "pixelSize": 20
+                },
+                "layer3": {
+                    "family": "Inter_24pt-Regular",
+                    "pixelSize": 11,
+                    "weight": "Normal"
+                },
+                "layer4": {
+                    "family": "Roboto-Bold",
+                    "pixelSize": 15,
+                    "weight": "Normal"
+                },
+                "layer5": {
+                    "family": "Roboto-Regular",
+                    "pixelSize": 15,
+                    "weight": "Normal"
                 }
             }
         }
