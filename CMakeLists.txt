@@ -10,6 +10,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+include(GenerateExportHeader)
+
 find_package(Qt6 6.5 REQUIRED COMPONENTS Core Gui Qml Quick)
 
 qt_standard_project_setup(REQUIRES 6.5)
@@ -27,10 +29,10 @@ qt_add_executable(untitled
 )
 
 add_subdirectory(ThemeConfig)
-
 add_subdirectory(CommonComponent)
 add_subdirectory(HomeScreen)
 add_subdirectory(LoginScreen)
+add_subdirectory(Service)
 
 target_link_libraries(untitled PRIVATE
     Qt6::Core
@@ -40,6 +42,8 @@ target_link_libraries(untitled PRIVATE
     ThemeConfig
     HomeScreenplugin
     LoginScreenplugin
+
+    FirebaseService
 )
 
 include(GNUInstallDirs)
