@@ -11,16 +11,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 6.5 REQUIRED COMPONENTS Core Gui Qml Quick)
-# find_package(Protobuf CONFIG REQUIRED)
-
-# Define paths
-set(SERVICE_PROTO_DIR ${CMAKE_SOURCE_DIR}/ExternalModule/ServiceProto)
-set(PROTOBUF_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/ExternalModule/x64-windows/include)
-set(PROTOBUF_LIB_DIR ${CMAKE_SOURCE_DIR}/ExternalModule/x64-windows/lib)
-
-# Add the proto generated source and header files
-set(PROTO_SRCS ${SERVICE_PROTO_DIR}/Authentication.pb.cc)
-set(PROTO_HDRS ${SERVICE_PROTO_DIR}/Authentication.pb.h)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
@@ -61,5 +51,3 @@ install(TARGETS untitled
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
-
-install(DIRECTORY ${SERVICE_PROTO_DIR} DESTINATION include)
