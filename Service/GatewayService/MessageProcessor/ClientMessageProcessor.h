@@ -34,7 +34,7 @@ public:
 
     void processLoginRequest(const std::string &username,
                              const std::string &password,
-                             const authentication::AuthChannel &authChannel);
+                             authentication::AuthChannel authChannel);
 
 private:
     std::vector<uint8_t> createLoginRequest(const std::string &username,

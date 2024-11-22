@@ -23,7 +23,7 @@
 
 void ClientMessageProcessor::processLoginRequest(const std::string &username,
                                                  const std::string &password,
-                                                 const authentication::AuthChannel &authChannel)
+                                                 authentication::AuthChannel authChannel)
 {
     auto request = createLoginRequest(username, password, authChannel);
     // Send the request to the client msg queue handler

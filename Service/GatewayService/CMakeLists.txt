@@ -9,9 +9,7 @@ set(HEADERS
     MessageProcessor/ClientMessageProcessor.h
     MessageProcessor/ServerMessageProcessor.h
 
-    GatewayService.h
-    GatewayServiceApiSender.h
-    GatewayServiceApiReceiver.h)
+    GatewayService.h)
 
 set(SOURCES
     GatewayService.cpp

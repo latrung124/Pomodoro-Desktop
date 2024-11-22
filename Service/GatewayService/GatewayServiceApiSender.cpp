@@ -20,40 +20,11 @@
  */
 
 #include "GatewayServiceApiSender.h"
-#include "MessageProcessor/ClientMessageProcessor.h"
 
-GatewayServiceApiSender::GatewayServiceApiSender()
-    : m_clientMessageProcessor(std::make_unique<ClientMessageProcessor>())
-{
-}
-
-GatewayServiceApiSender::GatewayServiceApiSender(GatewayServiceApiSender &&other) noexcept
-    : m_clientMessageProcessor(std::move(other.m_clientMessageProcessor))
-{
-}
-
-GatewayServiceApiSender &GatewayServiceApiSender::operator=(GatewayServiceApiSender &&other) noexcept
-{
-    if (this != &other) {
-        m_clientMessageProcessor = std::move(other.m_clientMessageProcessor);
-    }
-
-    return *this;
-}
-
-void GatewayServiceApiSender::sendMessage(std::string)
-{
+void GatewayServiceApiSender::sendMessage(std::string) {
     // Send message to the server
 }
 
-void GatewayServiceApiSender::requestLoginWithGoogle(std::string username, std::string password)
-{
+void GatewayServiceApiSender::requestLogin(std::string username, std::string password) {
     // Send login request to the server
-    m_clientMessageProcessor->processLoginRequest(username, password, authentication::AuthChannel::GOOGLE);
-}
-
-void GatewayServiceApiSender::requestLoginWithFacebook(std::string username, std::string password)
-{
-    // Send login request to the server
-    m_clientMessageProcessor->processLoginRequest(username, password, authentication::AuthChannel::FACEBOOK);
 }
