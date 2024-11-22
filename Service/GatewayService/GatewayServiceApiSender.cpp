@@ -23,7 +23,7 @@
 #include "MessageProcessor/ClientMessageProcessor.h"
 
 GatewayServiceApiSender::GatewayServiceApiSender()
-    : m_clientMessageProcessor(std::make_unique<client_processor>())
+    : m_clientMessageProcessor(std::make_unique<ClientMessageProcessor>())
 {
 }
 
@@ -48,10 +48,8 @@ void GatewayServiceApiSender::sendMessage(std::string)
 
 void GatewayServiceApiSender::requestLoginWithGoogle(std::string username, std::string password)
 {
-    using client_processor =  gateway::message_processor::client::ClientMessageProcessor;
-        // Send login request to the server
-        m_clientMessageProcessor->processLoginRequest(
-            username, password, authentication::AuthChannel::GOOGLE);
+    // Send login request to the server
+    m_clientMessageProcessor->processLoginRequest(username, password, authentication::AuthChannel::GOOGLE);
 }
 
 void GatewayServiceApiSender::requestLoginWithFacebook(std::string username, std::string password)

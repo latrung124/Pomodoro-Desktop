@@ -22,24 +22,16 @@
 #pragma once
 
 #include <queue>
-#include <mutex>
-#include <condition_variable>
 
 class ClientMessageQueueHandler
 {
 public:
-    static ClientMessageQueueHandler &getInstance();
+    ClientMessageQueueHandler() = default;
+    ~ClientMessageQueueHandler() = default;
 
-    void enqueueMessage(const std::vector<uint8_t> &message);
-    std::vector<uint8_t> dequeueMessage();
+    void pushMessage(const std::vector<uint8_t> &message);
+    std::vector<uint8_t> popMessage();
 
 private:
-    ClientMessageQueueHandler() = default;
-
-    ClientMessageQueueHandler(const ClientMessageQueueHandler &) = delete;
-    ClientMessageQueueHandler &operator=(const ClientMessageQueueHandler &) = delete;
-
     std::queue<std::vector<uint8_t>> m_messageQueue;
-    std::mutex m_mutex;
-    std::condition_variable m_condition;
 };
