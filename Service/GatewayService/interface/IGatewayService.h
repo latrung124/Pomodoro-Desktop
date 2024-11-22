@@ -19,24 +19,16 @@
  * Author: La Trung
  */
 
-#pragma once
+#ifndef IGATEWAYSERVICE_H_
+#define IGATEWAYSERVICE_H_
 
-#include "IGatewayServiceApiSender.h"
-#include "IGatewayServiceApiReceiver.h"
-
-#include <memory>
-
-class IGatewayService
-{
+class IGatewayService {
 public:
     virtual ~IGatewayService() = default;
 
     virtual void start() = 0;
     virtual void stop() = 0;
-    
-    virtual std::shared_ptr<IGatewayServiceApiSender> getApiCaller() = 0;
-    virtual std::shared_ptr<IGatewayServiceApiReceiver> getApiReceiver() = 0;
-
-    virtual void registerApiReceiver(std::shared_ptr<IGatewayServiceApiReceiver> apiReceiver) = 0;
 };
+
+#endif // IGATEWAYSERVICE_H_
 

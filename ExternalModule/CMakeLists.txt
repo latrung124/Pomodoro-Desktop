@@ -1,10 +1,14 @@
+cmake_minimum_required(VERSION 3.16)
+
+project(ServiceProto LANGUAGES CXX)
+
 # Define paths
-# set(PROTOBUF_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/../ExternalModule/x64-windows/include)
-# set(PROTOBUF_LIB_DIR ${CMAKE_SOURCE_DIR}/../ExternalModule/x64-windows/lib)
+set(PROTOBUF_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/../ExternalModule/x64-windows/include)
+set(PROTOBUF_LIB_DIR ${CMAKE_SOURCE_DIR}/../ExternalModule/x64-windows/lib)
 
 # Add the proto generated source and header files
-set(PROTO_SRCS ${CMAKE_SOURCE_DIR}/ExternalModule/ServiceProto/Authentication.pb.cc)
-set(PROTO_HDRS ${CMAKE_SOURCE_DIR}/ExternalModule/ServiceProto/Authentication.pb.h)
+set(PROTO_SRCS ${CMAKE_SOURCE_DIR}/Authentication.pb.cc)
+set(PROTO_HDRS ${CMAKE_SOURCE_DIR}/Authentication.pb.h)
 
 # Include directories
 include_directories(${PROTOBUF_INCLUDE_DIR})

@@ -20,18 +20,11 @@
  */
 
 #include "GatewayService.h"
-#include "GatewayServiceApiSender.h"
 
 void GatewayService::start() {
     // Start the gateway service
-    initialize();
 }
 
 void GatewayService::stop() {
     // Stop the gateway service
-}
-
-void GatewayService::initialize() {
-    // Initialize the gateway service
-    mApiCaller = std::make_shared<GatewayServiceApiSender>();
 }
