@@ -18,52 +18,46 @@
  * Author: La Trung
  */
 
-#include "System/UiSystemController.h"
+#include "Controller/SystemController.h"
 #include "Utils/CommonSettingsDefine.h"
-#include "Module/LoginModuleController.h"
+#include "Controller/ModuleController/LoginModuleController.h"
 
-UiSystemController::UiSystemController(QObject *parent)
+SystemController::SystemController(QObject *parent)
     : QObject(parent)
 {
     init();
 }
 
-UiSystemController::~UiSystemController()
+SystemController::~SystemController()
 {
     cleanup();
 }
 
-UiSystemController *UiSystemController::instance()
-{
-    static UiSystemController instance;
-    return &instance;
-}
-
-void UiSystemController::start()
+void SystemController::start()
 {
     loadModule();
 }
 
-void UiSystemController::stop()
+void SystemController::stop()
 {
     m_engine.quit();
 }
 
-void UiSystemController::init()
+void SystemController::init()
 {
     themeSetup();
 }
 
-void UiSystemController::cleanup()
+void SystemController::cleanup()
 {
 }
 
-void UiSystemController::setupConnections()
+void SystemController::setupConnections()
 {
-    QObject::connect(&m_engine, &QQmlApplicationEngine::quit, this, &UiSystemController::quit);
+    QObject::connect(&m_engine, &QQmlApplicationEngine::quit, this, &SystemController::quit);
 }
 
-void UiSystemController::loadModule()
+void SystemController::loadModule()
 {
     // Load LoginScreen module
     using namespace Utils::SystemScreenSettings;
@@ -71,7 +65,7 @@ void UiSystemController::loadModule()
                             , moduleSettingsMap[LoginScreen].moduleName);
 }
 
-void UiSystemController::themeSetup()
+void SystemController::themeSetup()
 {
     // Create an instance of ThemeConfig
     m_themeConfig = std::make_shared<ThemeConfig>();
@@ -79,8 +73,9 @@ void UiSystemController::themeSetup()
     m_engine.rootContext()->setContextProperty("themeConfig", m_themeConfig.get());
 }
 
-void UiSystemController::initModuleControllers()
+void SystemController::initModuleControllers()
 {
     // Create an instance of LoginModuleController
-    LoginModuleController::instance()->setContext(m_engine.rootContext());
+    m_loginModuleController = std::make_unique<LoginModuleController>(m_engine.rootContext());
+    m_loginModuleController->initSettings();
 }

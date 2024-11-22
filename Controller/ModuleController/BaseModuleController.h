@@ -18,33 +18,23 @@
  * Author: La Trung
  */
 
-#include "System/ServiceController.h"
-#include "ServiceManager.h"
+#pragma once
 
-ServiceController::ServiceController(QObject *parent)
-    : QObject(parent)
+#include <QObject>
+
+class QQmlContext;
+
+class BaseModuleController : public QObject
 {
-}
+    Q_OBJECT
 
-ServiceController::~ServiceController()
-{
-}
+public:
+    BaseModuleController(QQmlContext *context, QObject *parent = nullptr) {};
+    virtual ~BaseModuleController() {};
 
-void ServiceController::start()
-{
-    m_serviceManager = std::make_unique<ServiceManager>();
-}
+    virtual void open() = 0;
+    virtual void close() = 0;
 
-void ServiceController::stop()
-{
-}
-
-std::shared_ptr<IServiceManager> ServiceController::serviceManager() {
-    return m_serviceManager;
-}
-
-ServiceController *ServiceController::instance()
-{
-    static ServiceController instance;
-    return &instance;
-}
+protected:
+    virtual void initSettings() = 0;
+};
