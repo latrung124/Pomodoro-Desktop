@@ -32,8 +32,6 @@ public:
     void start() override;
     void stop() override;
 
-    service_utils::ServiceId getServiceId() const override;
-
     std::shared_ptr<IGatewayServiceApiSender> getApiCaller() override;
     std::shared_ptr<IGatewayServiceApiReceiver> getApiReceiver() override;
 
@@ -41,9 +39,6 @@ private:
     void initialize();
 
     std::shared_ptr<IGatewayServiceApiSender> mApiCaller;
-    std::shared_ptr<IGatewayServiceApiReceiver> mApiReceiver;
-
-    service_utils::ServiceId mServiceId = service_utils::ServiceId::GATEWAY_SERVICE;
 };
 
 #endif // GATEWAYSERVICE_H_

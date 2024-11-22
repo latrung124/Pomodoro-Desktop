@@ -36,20 +36,10 @@ target_include_directories(GatewayService PUBLIC
     ${PROTOBUF_INCLUDE_DIR} # for protobuf headers
     ${CMAKE_CURRENT_SOURCE_DIR} # for GatewayService.h
     ${CMAKE_CURRENT_SOURCE_DIR}/interface # for IGatewayService.h
-    ${SERVICEMANAGER_INCLUDE_DIR}
-    ${CMAKE_SOURCE_DIR}/Service
-)
-
-# Set the output directory for the library
-set_target_properties(GatewayService PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
-    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
-    ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
 )
 
 # Link the protobuf library
 target_link_libraries(GatewayService PUBLIC
     ${PROTOBUF_LIB_DIR}/libprotobuf.lib
-    ${CMAKE_BINARY_DIR}/lib/ServiceManager.lib
 ) # Change the .lib file name if needed
 

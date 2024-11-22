@@ -1,10 +1,3 @@
-set(SERVICEMANAGER_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/Service/ServiceManager/interface)
-
-set(COMMON_SOURCES
-    ${CMAKE_SOURCE_DIR}/Service/ServiceUtils.h
-)
-
-add_subdirectory(ServiceManager)
 add_subdirectory(GatewayService)
 
 set (SERVICE_PROTO_FILES

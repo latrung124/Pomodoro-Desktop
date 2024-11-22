@@ -21,17 +21,18 @@
 
 #pragma once
 
-#include "IService.h"
+#include "IGatewayServiceApiSender.h"
+#include "IGatewayServiceApiReceiver.h"
 
 #include <memory>
 
-class IGatewayServiceApiSender;
-class IGatewayServiceApiReceiver;
-
-class IGatewayService : public IService
+class IGatewayService
 {
 public:
     virtual ~IGatewayService() = default;
+
+    virtual void start() = 0;
+    virtual void stop() = 0;
     
     virtual std::shared_ptr<IGatewayServiceApiSender> getApiCaller() = 0;
     virtual std::shared_ptr<IGatewayServiceApiReceiver> getApiReceiver() = 0;
