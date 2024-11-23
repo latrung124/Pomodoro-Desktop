@@ -6,13 +6,35 @@
 */
 
 #include "FirebaseServiceImpl.h"
+#include "FirebaseApp.h"
+
+#include <iostream>
 
 FirebaseServiceImpl::FirebaseServiceImpl()
+    : m_isConnected(false)
+    , m_firebaseApp(std::make_unique<FirebaseApp>())
 {
 }
 
 FirebaseServiceImpl::~FirebaseServiceImpl()
 {
+}
+
+bool FirebaseServiceImpl::connect()
+{
+    if (m_isConnected = m_firebaseApp->initialize(); m_isConnected) {
+        // Connect to Firebase
+        std::cout << "Connected to Firebase" << std::endl;
+        return true;
+    }
+
+    std::cerr << "Failed to connect to Firebase" << std::endl;
+    return false;
+}
+
+void FirebaseServiceImpl::disconnect()
+{
+    m_firebaseApp->exit();
 }
 
 bool FirebaseServiceImpl::login(AuthProviderType authType, const std::string &email, const std::string &password)

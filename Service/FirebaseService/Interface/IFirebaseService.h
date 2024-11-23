@@ -20,6 +20,9 @@ public:
     IFirebaseService(const IFirebaseService&) = delete;
     IFirebaseService& operator=(const IFirebaseService&) = delete;
 
+    virtual bool connect() = 0;
+    virtual void disconnect() = 0;
+
     virtual bool login(AuthProviderType authType,
                         const std::string &email,
                         const std::string &password) = 0;
