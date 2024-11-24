@@ -1,6 +1,6 @@
 add_definitions(-DFIREBASE_CONFIG_PATH="${CMAKE_CURRENT_SOURCE_DIR}/Resources/Firebase/Config")
 
-set(HEADER_SOURCE_FILES
+set(FS_HEADER_FILES
     FirebaseUtils.h
     Interface/IFirebaseService.h
     Implementation/FirebaseServiceImpl.h
@@ -12,7 +12,7 @@ set(HEADER_SOURCE_FILES
     Implementation/Authentication/GoogleOAuth.h
 )
 
-set(SOURCE_FILES
+set(FS_SOURCE_FILES
     Implementation/FirebaseServiceImpl.cpp
     Implementation/Authentication/FirebaseAuthentication.cpp
     Implementation/Authentication/EmailPwAuthProvider.cpp
@@ -22,13 +22,15 @@ set(SOURCE_FILES
 
 add_library(FirebaseService
     STATIC
-        ${HEADER_SOURCE_FILES}
-        ${SOURCE_FILES})
+        ${SERVICE_HEADERS_FILES}
+        ${FS_HEADER_FILES}
+        ${FS_SOURCE_FILES})
 
 target_include_directories(FirebaseService
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/Interface
+        ${CMAKE_SOURCE_DIR}/Service
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/Implementation
         ${CMAKE_SOURCE_DIR}/ExternalModule/Third-Parties/Firebase/include)

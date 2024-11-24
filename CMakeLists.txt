@@ -43,6 +43,7 @@ target_link_libraries(untitled PRIVATE
     HomeScreenplugin
     LoginScreenplugin
 
+    ServiceManager
     FirebaseService
 )
 
