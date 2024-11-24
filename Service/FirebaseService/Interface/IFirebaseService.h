@@ -23,11 +23,11 @@ public:
     virtual bool connect() = 0;
     virtual void disconnect() = 0;
 
-    virtual bool login(AuthProviderType authType,
-                        const std::string &email,
-                        const std::string &password) = 0;
+    virtual bool signIn(AuthProviderType authType,
+                        const std::string &email = "",
+                        const std::string &password = "") = 0;
     virtual bool signOut() = 0;
-    virtual bool createAccount(const std::string &email, const std::string &password) = 0;
+    virtual bool signUp(const std::string &email, const std::string &password) = 0;
     virtual bool deleteAccount() = 0;
     virtual bool updatePassword(const std::string &newPassword) = 0;
 };

@@ -16,6 +16,7 @@ namespace firebase_utils {
 namespace authentication {
 
 enum class AuthProviderType : uint16_t {
+    None,
     EmailPassword,
     Google,
     Facebook,

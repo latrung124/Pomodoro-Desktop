@@ -7,6 +7,7 @@
 
 #include "FirebaseServiceImpl.h"
 #include "FirebaseApp.h"
+#include "Implementation/Authentication/FirebaseAuthentication.h"
 
 #include <iostream>
 
@@ -25,6 +26,7 @@ bool FirebaseServiceImpl::connect()
     if (m_isConnected = m_firebaseApp->initialize(); m_isConnected) {
         // Connect to Firebase
         std::cout << "Connected to Firebase" << std::endl;
+        m_firebaseAuth = std::make_unique<FirebaseAuthentication>(m_firebaseApp->getApp());
         return true;
     }
 
@@ -37,32 +39,52 @@ void FirebaseServiceImpl::disconnect()
     m_firebaseApp->exit();
 }
 
-bool FirebaseServiceImpl::login(AuthProviderType authType, const std::string &email, const std::string &password)
+bool FirebaseServiceImpl::signIn(AuthProviderType authType, const std::string &email, const std::string &password)
 {
-    // Implementation of login method
-    return true;
+    if (!m_firebaseAuth || !m_isConnected) {
+        std::cerr << "Firebase Authentication is not initialized" << std::endl;
+        return false;
+    }
+
+    return m_firebaseAuth->signIn(authType, email, password);
 }
 
 bool FirebaseServiceImpl::signOut()
 {
-    // Implementation of signOut method
-    return true;
+    if (!m_firebaseAuth || !m_isConnected) {
+        std::cerr << "Firebase Authentication is not initialized" << std::endl;
+        return false;
+    }
+
+    return m_firebaseAuth->signOut();
 }
 
-bool FirebaseServiceImpl::createAccount(const std::string &email, const std::string &password)
+bool FirebaseServiceImpl::signUp(const std::string &email, const std::string &password)
 {
-    // Implementation of createAccount method
-    return true;
+    if (!m_firebaseAuth || !m_isConnected) {
+        std::cerr << "Firebase Authentication is not initialized" << std::endl;
+        return false;
+    }
+
+    return m_firebaseAuth->signUp(email, password);
 }
 
 bool FirebaseServiceImpl::deleteAccount()
 {
-    // Implementation of deleteAccount method
-    return true;
+    if (!m_firebaseAuth || !m_isConnected) {
+        std::cerr << "Firebase Authentication is not initialized" << std::endl;
+        return false;
+    }
+
+    return m_firebaseAuth->deleteAccount();
 }
 
 bool FirebaseServiceImpl::updatePassword(const std::string &newPassword)
 {
-    // Implementation of updatePassword method
-    return true;
+    if(!m_firebaseAuth || !m_isConnected) {
+        std::cerr << "Firebase Authentication is not initialized" << std::endl;
+        return false;
+    }
+
+    return m_firebaseAuth->updatePassword(newPassword);
 }
