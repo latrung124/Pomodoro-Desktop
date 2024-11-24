@@ -6,9 +6,11 @@
 */
 
 #include "GoogleAuthProvider.h"
+#include "Implementation/Authentication/GoogleOAuth.h"
 
 GoogleAuthProvider::GoogleAuthProvider(firebase::auth::Auth* authApp)
     : AbstractExternalAuthProvider(authApp)
+    , m_googleOAuth(std::make_unique<GoogleOAuth>())
 {
 }
 

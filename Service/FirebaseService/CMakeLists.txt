@@ -9,6 +9,7 @@ set(HEADER_SOURCE_FILES
     Implementation/Authentication/AbstractInternalAuthProvider.h
     Implementation/Authentication/EmailPwAuthProvider.h
     Implementation/Authentication/GoogleAuthProvider.h
+    Implementation/Authentication/GoogleOAuth.h
 )
 
 set(SOURCE_FILES
@@ -16,6 +17,7 @@ set(SOURCE_FILES
     Implementation/Authentication/FirebaseAuthentication.cpp
     Implementation/Authentication/EmailPwAuthProvider.cpp
     Implementation/Authentication/GoogleAuthProvider.cpp
+    Implementation/Authentication/GoogleOAuth.cpp
 )
 
 add_library(FirebaseService
@@ -78,4 +80,6 @@ set(FIREBASE_LIB_DIR
 target_link_libraries(FirebaseService
     PUBLIC
     ${FIREBASE_LIB_DIR}/firebase_auth.lib
-    ${FIREBASE_LIB_DIR}/firebase_app.lib)
+    ${FIREBASE_LIB_DIR}/firebase_app.lib
+    PRIVATE
+    Qt6::Core)

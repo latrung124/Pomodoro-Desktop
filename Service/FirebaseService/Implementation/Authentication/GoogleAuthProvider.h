@@ -10,6 +10,10 @@
 
 #include "Implementation/Authentication/AbstractExternalAuthProvider.h"
 
+#include <memory>
+
+class GoogleOAuth;
+
 class GoogleAuthProvider : public AbstractExternalAuthProvider
 {
 public:
@@ -17,6 +21,9 @@ public:
     ~GoogleAuthProvider() = default;
 
     bool signIn() override;
+
+private:
+    std::unique_ptr<GoogleOAuth> m_googleOAuth;
 };
 
 #endif // GOOGLEAUTHPROVIDER_H
