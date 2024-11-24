@@ -8,14 +8,23 @@
 #include "GoogleAuthProvider.h"
 #include "Implementation/Authentication/GoogleOAuth.h"
 
-GoogleAuthProvider::GoogleAuthProvider(firebase::auth::Auth* authApp)
-    : AbstractExternalAuthProvider(authApp)
+GoogleAuthProvider::GoogleAuthProvider(firebase::auth::Auth* authApp, QObject *parent)
+    : AbstractExternalAuthProvider(authApp, parent)
     , m_googleOAuth(std::make_unique<GoogleOAuth>())
 {
+    QObject::connect(m_googleOAuth.get(), &GoogleOAuth::googleAccessTokenReceived,
+                    this, &GoogleAuthProvider::onGoogleAccessTokenReceived);
 }
 
 bool GoogleAuthProvider::signIn()
 {
-    // Sign in with Google
+    if (m_googleOAuth->requestAccessToken()) {
+        return true;
+    }
     return true;
+}
+
+void GoogleAuthProvider::onGoogleAccessTokenReceived(const GoogleAccessToken& accessToken)
+{
+    // Exchange the access token for a Firebase credential
 }

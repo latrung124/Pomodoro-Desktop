@@ -10,10 +10,14 @@
 
 #include <firebase/auth.h>
 
-class AbstractExternalAuthProvider
+#include <QObject>
+
+class AbstractExternalAuthProvider : public QObject
 {
+    Q_OBJECT
 public:
-    AbstractExternalAuthProvider(firebase::auth::Auth* authApp) : m_auth(authApp) {}
+    AbstractExternalAuthProvider(firebase::auth::Auth* authApp, QObject* parent = nullptr)
+        : m_auth(authApp), QObject(parent) {}
     virtual ~AbstractExternalAuthProvider() = default;
 
     AbstractExternalAuthProvider(const AbstractExternalAuthProvider&) = delete;

@@ -9,6 +9,7 @@
 #define GOOGLEAUTHPROVIDER_H
 
 #include "Implementation/Authentication/AbstractExternalAuthProvider.h"
+#include "FirebaseUtils.h"
 
 #include <memory>
 
@@ -16,11 +17,15 @@ class GoogleOAuth;
 
 class GoogleAuthProvider : public AbstractExternalAuthProvider
 {
+    Q_OBJECT
 public:
-    GoogleAuthProvider(firebase::auth::Auth* authApp);
+    GoogleAuthProvider(firebase::auth::Auth* authApp, QObject* parent = nullptr);
     ~GoogleAuthProvider() = default;
 
     bool signIn() override;
+
+public slots:
+    void onGoogleAccessTokenReceived(const GoogleAccessToken& accessToken);
 
 private:
     std::unique_ptr<GoogleOAuth> m_googleOAuth;

@@ -82,4 +82,6 @@ target_link_libraries(FirebaseService
     ${FIREBASE_LIB_DIR}/firebase_auth.lib
     ${FIREBASE_LIB_DIR}/firebase_app.lib
     PRIVATE
-    Qt6::Core)
+    Qt6::Core
+    Qt6::Network
+    Qt6::Gui)

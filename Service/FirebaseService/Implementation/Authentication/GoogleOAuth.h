@@ -10,15 +10,23 @@
 
 #include "FirebaseUtils.h"
 
+#include <QNetworkAccessManager>
+#include <QTcpServer>
+
 #include <string>
 
-class GoogleOAuth {
+class GoogleOAuth : public QObject
+{
+    Q_OBJECT
 public:
-    GoogleOAuth();
+    explicit GoogleOAuth(QObject* parent = nullptr);
     ~GoogleOAuth() = default;
 
-    std::string requestAuthorizationCode();
-    std::string exchangeCodeForToken();
+    bool requestAccessToken();
+    bool exchangeCodeForToken(const std::string& authorizationCode);
+
+signals:
+    void googleAccessTokenReceived(const GoogleAccessToken& accessToken);
 
 private:
     bool loadConfig();
@@ -26,6 +34,9 @@ private:
 
     OAuthConfig m_oauthConfig;
     bool m_isConfigAvailable;
+    QNetworkAccessManager m_networkManager;
+    QTcpServer* m_tcpServer;
+    GoogleAccessToken m_googleAccessToken;
 };
 
 #endif // GOOGLEOAUTH_H

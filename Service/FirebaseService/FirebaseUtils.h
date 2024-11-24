@@ -11,6 +11,8 @@
 #include <cstdint>
 #include <string>
 
+#include <QMetaType>
+
 namespace firebase_utils {
 
 namespace authentication {
@@ -46,6 +48,14 @@ struct OAuthConfig {
     std::string platform;
 };
 
+struct GoogleAccessToken {
+    std::string accessToken;
+    std::string tokenType;
+    std::string expiresIn;
+    std::string refreshToken;
+    std::string scope;
+};
+
 const std::string gGoogleOAuthScope = "scope=email%20profile";
 const std::string gGoogleOAuthResponseType = "response_type=code";
 const std::string gGoogleOAuthState = "state=security_token%3D138r5719ru3e1%26url%3Dhttps%3A%2F%2Foauth2.example.com%2Ftoken";
@@ -56,5 +66,8 @@ const std::string gGoogleOAuthState = "state=security_token%3D138r5719ru3e1%26ur
 
 using AuthProviderType = firebase_utils::authentication::AuthProviderType;
 using OAuthConfig = firebase_utils::authentication::OAuthConfig;
+using GoogleAccessToken = firebase_utils::authentication::GoogleAccessToken;
+
+Q_DECLARE_METATYPE(GoogleAccessToken);
 
 #endif // FIREBASEUTILS_H
