@@ -20,8 +20,8 @@ public:
     IFirebaseService(const IFirebaseService&) = delete;
     IFirebaseService& operator=(const IFirebaseService&) = delete;
 
-    virtual bool connect() = 0;
-    virtual void disconnect() = 0;
+    virtual bool connect() = 0; // call this function to connect to Firebase before using any other functions
+    virtual void disconnect() = 0; // call this function to disconnect from Firebase
 
     virtual bool signIn(AuthProviderType authType,
                         const std::string &email = "",

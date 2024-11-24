@@ -13,7 +13,6 @@
 
 FirebaseServiceImpl::FirebaseServiceImpl()
     : m_isConnected(false)
-    , m_firebaseApp(std::make_unique<FirebaseApp>())
 {
 }
 
@@ -23,6 +22,8 @@ FirebaseServiceImpl::~FirebaseServiceImpl()
 
 bool FirebaseServiceImpl::connect()
 {
+    m_firebaseApp = std::make_unique<FirebaseApp>();
+
     if (m_isConnected = m_firebaseApp->initialize(); m_isConnected) {
         // Connect to Firebase
         std::cout << "Connected to Firebase" << std::endl;
@@ -37,6 +38,7 @@ bool FirebaseServiceImpl::connect()
 void FirebaseServiceImpl::disconnect()
 {
     m_firebaseApp->exit();
+    m_firebaseAuth.reset();
 }
 
 bool FirebaseServiceImpl::signIn(AuthProviderType authType, const std::string &email, const std::string &password)
