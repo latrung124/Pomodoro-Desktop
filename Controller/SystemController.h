@@ -20,13 +20,14 @@
 
 #pragma once
 
+#include "ThemeConfig/ThemeConfig.h"
+
 #include <QObject>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QResource>
-#include <memory>
 
-#include "ThemeConfig/ThemeConfig.h"
+#include <memory>
 
 class LoginModuleController;
 class SystemController : public QObject

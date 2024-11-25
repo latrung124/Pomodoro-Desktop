@@ -1,8 +1,9 @@
 set(SM_HEADER_FILES
-    ServiceManager.h)
+    ${CMAKE_CURRENT_SOURCE_DIR}/ServiceManager.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/ServiceConcreteHelper.h)
 
 set(SM_SOURCE_FILES
-    ServiceManager.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/ServiceManager.cpp)
 
 add_library(ServiceManager STATIC
     ${SERVICE_HEADERS_FILES}
@@ -12,5 +13,7 @@ add_library(ServiceManager STATIC
 target_include_directories(ServiceManager
     PUBLIC
         ${CMAKE_SOURCE_DIR}/Service
-    PRIVATE
+    PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR})
+
+target_link_libraries(ServiceManager PUBLIC FirebaseService)

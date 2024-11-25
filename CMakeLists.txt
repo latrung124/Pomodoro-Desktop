@@ -21,12 +21,20 @@ qt_add_executable(untitled
 
   Utils/CommonSettingsDefine.h
   Controller/SystemController.h
+  Controller/ServiceController.h
   Controller/ModuleController/BaseModuleController.h
   Controller/ModuleController/LoginModuleController.h
 
+  Controller/ServiceController.cpp
   Controller/SystemController.cpp
   Controller/ModuleController/LoginModuleController.cpp
 )
+
+set(MSVC_RUNTIME_MODE MD)
+set(FIREBASE_CPP_SDK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/ExternalModule/Third-Parties/firebase_cpp_sdk)
+set(firebase_libs firebase_auth firebase_database firebase_firestore firebase_app)
+set(ADDITIONAL_LIBS advapi32 ws2_32 crypt32 iphlpapi psapi userenv rpcrt4 ole32 shell32)
+add_subdirectory(${FIREBASE_CPP_SDK_DIR} bin/ EXCLUDE_FROM_ALL)
 
 add_subdirectory(ThemeConfig)
 add_subdirectory(CommonComponent)
@@ -44,7 +52,6 @@ target_link_libraries(untitled PRIVATE
     LoginScreenplugin
 
     ServiceManager
-    FirebaseService
 )
 
 include(GNUInstallDirs)
