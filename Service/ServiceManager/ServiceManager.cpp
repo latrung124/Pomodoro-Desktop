@@ -9,6 +9,24 @@
 #include "IBaseService.h"
 
 #include <iostream>
+#include <source_location>
+#include <format>
+
+namespace {
+
+class ServiceException : public std::runtime_error
+{
+public:
+    explicit ServiceException(const std::string& message, 
+                            const std::source_location& location = std::source_location::current())
+        : std::runtime_error(std::format(" Service error {} at {}:{}:{}",
+        message, location.file_name(),
+        location.line(), location.column()))
+    {
+    }
+};
+
+}
 
 ServiceManager::~ServiceManager()
 {
@@ -17,55 +35,61 @@ ServiceManager::~ServiceManager()
 
 void ServiceManager::disconnectAllServices()
 {
-    for (auto& service : m_services) {
-        if (service.second) {
-            service.second->disconnect();
+    for (const auto& [serviceId, service] : m_services) {
+        if (service) {
+            service->disconnect();
         }
     }
+
     m_services.clear();
 }
 
-template <typename Service>
-std::shared_ptr<Service> ServiceManager::registerService()
+template<ServiceType Service>
+[[nodiscard]] std::shared_ptr<Service> ServiceManager::registerService()
 {
     auto service = std::make_shared<Service>();
     auto serviceId = typeid(Service).hash_code();
 
-    if (m_services.find(serviceId) != m_services.end()) {
-        throw std::runtime_error("Service already registered");
+    if (const auto [it, inserted] = m_services.try_emplace({ serviceId, nullptr }); !inserted) {
+        throw ServiceException(std::format("Service of type {} already registered", typeid(Service).name()));
     }
 
-    if (!service->connect()) {
-        throw std::runtime_error("Failed to connect to service");
+    try {
+        if constexpr (requires { service->connect(); }) {
+            if (!service->connect()) {
+                throw ServiceException("Failed to connect to service");
+            }
+        } else {
+            throw ServiceException("Service does not have connect function");
+        }
+    } catch (const std::exception& e) {
+        m_services.erase(serviceId);
+        throw ServiceException(e.what());
     }
 
-    m_services[serviceId] = service;
-    return std::dynamic_pointer_cast<Service>(service);
+    m_services[serviceId] = std::move(service);
+    return std::static_pointer_cast<Service>(m_services[serviceId]);
 }
 
-template <typename Service>
+template <ServiceType Service>
 void ServiceManager::unregister()
 {
     auto serviceId = typeid(Service).hash_code();
-    auto it = m_services.find(serviceId);
-
-    if (it == m_services.end()) {
-        throw std::runtime_error("Service not found");
+    if (const auto it = m_services.find(serviceId); it != m_services.end()) {
+        m_services.erase(it);
     }
 
-    it->second->disconnect();
-    m_services.erase(it);
+    throw ServiceException("Service not found");
 }
 
-template <typename Service>
-std::shared_ptr<Service> ServiceManager::getService()
+template <ServiceType Service>
+[[nodiscard]] std::shared_ptr<Service> ServiceManager::getService()
 {
     auto serviceId = typeid(Service).hash_code();
-    auto it = m_services.find(serviceId);
-
-    if (it == m_services.end()) {
-        throw std::runtime_error("Service not found");
+    
+    if (const auto it = m_services.find(serviceId); it != m_services.end()) {
+        return std::static_pointer_cast<Service>(it->second);
     }
 
-    return std::dynamic_pointer_cast<Service>(it->second);
+    throw ServiceException("Service not found");
 }

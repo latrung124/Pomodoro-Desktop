@@ -10,8 +10,14 @@
 
 #include <memory>
 #include <unordered_map>
+#include <concepts>
 
 class IBaseService;
+
+namespace {
+    template<typename T>
+    concept ServiceType = std::derived_from<T, IBaseService>;
+}
 
 class ServiceManager
 {
@@ -24,13 +30,13 @@ public:
 
     void disconnectAllServices();
 
-    template <typename Service>
-    std::shared_ptr<Service> registerService();
+    template <ServiceType Service>
+    [[nodiscard]] std::shared_ptr<Service> registerService();
 
-    template <typename Service>
+    template <ServiceType Service>
     void unregister();
 
-    template <typename Service>
+    template <ServiceType Service>
     std::shared_ptr<Service> getService();
 
 private:
