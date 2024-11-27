@@ -11,28 +11,18 @@
 
 #include <iostream>
 
-FirebaseAuthentication::FirebaseAuthentication(firebase::App* app)
-    : m_auth(firebase::auth::Auth::GetAuth(app))
+FirebaseAuthentication::FirebaseAuthentication()
 {
-    if (m_auth == nullptr) {
-        std::cerr << "Failed to initialize Firebase Authentication" << std::endl;
-        return;
-    }
-
     initializeAuthProvider();
 }
 
 FirebaseAuthentication::~FirebaseAuthentication()
 {
-    if (m_auth != nullptr) {
-        delete m_auth;
-        m_auth = nullptr;
-    }
 }
 
 bool FirebaseAuthentication::isValid() const
 {
-    return m_auth != nullptr;
+    return true;
 }
 
 bool FirebaseAuthentication::signIn(AuthProviderType authType, const std::string& email, const std::string& password)
@@ -57,12 +47,6 @@ bool FirebaseAuthentication::signUp(const std::string& email, const std::string&
 
 bool FirebaseAuthentication::signOut()
 {
-    if (m_auth == nullptr) {
-        std::cerr << "Firebase Authentication is not initialized" << std::endl;
-        return false;
-    }
-
-    m_auth->SignOut();
     return true;
 }
 
@@ -80,8 +64,8 @@ void FirebaseAuthentication::initializeAuthProvider()
 {
     // Initialize the authentication provider
     // External Auth Providers
-    m_externalAuthProviders[AuthProviderType::Google] = std::make_unique<GoogleAuthProvider>(m_auth);
+    m_externalAuthProviders[AuthProviderType::Google] = std::make_unique<GoogleAuthProvider>();
 
     // Internal Auth Providers
-    m_internalAuthProviders[AuthProviderType::EmailPassword] = std::make_unique<EmailPwAuthProvider>(m_auth);
+    m_internalAuthProviders[AuthProviderType::EmailPassword] = std::make_unique<EmailPwAuthProvider>();
 }

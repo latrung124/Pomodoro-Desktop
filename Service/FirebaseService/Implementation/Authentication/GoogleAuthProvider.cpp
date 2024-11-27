@@ -8,8 +8,8 @@
 #include "GoogleAuthProvider.h"
 #include "Implementation/Authentication/GoogleOAuth.h"
 
-GoogleAuthProvider::GoogleAuthProvider(firebase::auth::Auth* authApp, QObject *parent)
-    : AbstractExternalAuthProvider(authApp, parent)
+GoogleAuthProvider::GoogleAuthProvider(QObject *parent)
+    : AbstractExternalAuthProvider(parent)
     , m_googleOAuth(std::make_unique<GoogleOAuth>())
 {
     QObject::connect(m_googleOAuth.get(), &GoogleOAuth::googleAccessTokenReceived,

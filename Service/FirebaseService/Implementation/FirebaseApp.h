@@ -8,8 +8,6 @@
 #ifndef FIREBASEAPP_H
 #define FIREBASEAPP_H
 
-#include <firebase/app.h>
-
 class FirebaseApp {
 public:
     FirebaseApp();
@@ -17,12 +15,6 @@ public:
 
     bool initialize();
     void exit();
-
-    firebase::App* getApp();
-
-private:
-    firebase::App* m_app;
-    firebase::AppOptions* m_options;
 };
 
 #endif // FIREBASEAPP_H

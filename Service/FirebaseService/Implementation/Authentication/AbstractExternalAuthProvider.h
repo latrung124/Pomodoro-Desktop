@@ -16,8 +16,8 @@ class AbstractExternalAuthProvider : public QObject
 {
     Q_OBJECT
 public:
-    AbstractExternalAuthProvider(firebase::auth::Auth* authApp, QObject* parent = nullptr)
-        : m_auth(authApp), QObject(parent) {}
+    AbstractExternalAuthProvider(QObject* parent = nullptr)
+        : QObject(parent) {}
     virtual ~AbstractExternalAuthProvider() = default;
 
     AbstractExternalAuthProvider(const AbstractExternalAuthProvider&) = delete;
@@ -26,9 +26,6 @@ public:
     AbstractExternalAuthProvider& operator=(AbstractExternalAuthProvider&&) = delete;
 
     virtual bool signIn() = 0;
-
-protected:
-    firebase::auth::Auth* m_auth;
 };
 
 #endif // ABSTRACTEXTERNALAUTHPROVIDER_H

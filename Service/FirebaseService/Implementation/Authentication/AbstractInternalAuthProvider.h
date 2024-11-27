@@ -15,7 +15,7 @@
 class AbstractInternalAuthProvider
 {
 public:
-    AbstractInternalAuthProvider(firebase::auth::Auth* authApp) :m_auth(authApp) {}
+    AbstractInternalAuthProvider() = default;
     virtual ~AbstractInternalAuthProvider() = default;
 
     AbstractInternalAuthProvider(const AbstractInternalAuthProvider&) = delete;
@@ -27,9 +27,6 @@ public:
     virtual bool deleteAccount() = 0;
     virtual bool signUp(const std::string &email, const std::string &password) = 0;
     virtual bool updatePassword(const std::string &newPassword) = 0;
-
-protected:
-    firebase::auth::Auth* m_auth;
 };
 
 #endif // ABSTRACTINTERNALAUTHPROVIDER_H

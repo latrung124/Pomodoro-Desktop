@@ -10,8 +10,6 @@
 
 #include "FirebaseUtils.h"
 
-#include <firebase/auth.h>
-
 #include <string>
 #include <map>
 #include <memory>
@@ -22,7 +20,7 @@ class AbstractInternalAuthProvider;
 class FirebaseAuthentication
 {
 public:
-    FirebaseAuthentication(firebase::App* app);
+    FirebaseAuthentication();
     virtual ~FirebaseAuthentication();
 
     FirebaseAuthentication(const FirebaseAuthentication&) = delete;
@@ -43,7 +41,6 @@ public:
 private:
     void initializeAuthProvider();
 
-    firebase::auth::Auth* m_auth;
     std::map<AuthProviderType, std::unique_ptr<AbstractExternalAuthProvider>> m_externalAuthProviders;
     std::map<AuthProviderType, std::unique_ptr<AbstractInternalAuthProvider>> m_internalAuthProviders;
 };

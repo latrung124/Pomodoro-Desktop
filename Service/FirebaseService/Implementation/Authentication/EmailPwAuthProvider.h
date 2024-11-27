@@ -13,7 +13,7 @@
 class EmailPwAuthProvider : public AbstractInternalAuthProvider
 {
 public:
-    EmailPwAuthProvider(firebase::auth::Auth* authApp);
+    EmailPwAuthProvider() = default;
     virtual ~EmailPwAuthProvider() = default;
 
     bool signIn(const std::string &email, const std::string &password) override;

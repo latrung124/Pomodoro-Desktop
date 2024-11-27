@@ -19,7 +19,7 @@ class GoogleAuthProvider : public AbstractExternalAuthProvider
 {
     Q_OBJECT
 public:
-    GoogleAuthProvider(firebase::auth::Auth* authApp, QObject* parent = nullptr);
+    GoogleAuthProvider(QObject* parent = nullptr);
     ~GoogleAuthProvider() = default;
 
     bool signIn() override;
