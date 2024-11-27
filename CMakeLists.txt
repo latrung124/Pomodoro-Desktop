@@ -20,14 +20,22 @@ qt_add_executable(untitled
   main.cpp
 
   Utils/CommonSettingsDefine.h
+  Utils/CloudUtility/FirebaseUtility.h
+
   Controller/SystemController.h
   Controller/ServiceController.h
   Controller/ModuleController/BaseModuleController.h
   Controller/ModuleController/LoginModuleController.h
 
+  Handler/Firebase/FirebaseRequestHandler.h
+  Handler/Firebase/MessageProcessor/FirebaseRequestProcessor.h
+
   Controller/ServiceController.cpp
   Controller/SystemController.cpp
   Controller/ModuleController/LoginModuleController.cpp
+
+  Handler/Firebase/FirebaseRequestHandler.cpp
+  Handler/Firebase/MessageProcessor/FirebaseRequestProcessor.cpp
 )
 
 set(MSVC_RUNTIME_MODE MD)
