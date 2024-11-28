@@ -10,10 +10,12 @@
 
 #include "Utils/CloudUtility/FirebaseUtility.h"
 
-class FirebaseRequestProcessor
-{
-    FirebaseRequestProcessor();
-    ~FirebaseRequestProcessor();
+struct FirebaseRequestProcessor {
+    void operator()(const Utils::Cloud::Firebase::SignInData& data);
+    void operator()(const Utils::Cloud::Firebase::SignUpData& data) const;
+    void operator()(const Utils::Cloud::Firebase::UpdatePasswordData& data) const;
+    void operator()(const Utils::Cloud::Firebase::SignOutData& data) const;
+    void operator()(const std::monostate&) const;
 };
 
 #endif // FIREBASEREQUESTPROCESSOR_H

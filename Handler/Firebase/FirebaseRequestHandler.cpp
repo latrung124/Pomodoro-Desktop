@@ -42,6 +42,6 @@ void FirebaseRequestHandler::processRequest()
         lock.unlock();
 
         // Process request
-        std::visit(MessageHandler{}, request.data);
+        std::visit(FirebaseRequestProcessor{}, request.data);
     }
 }

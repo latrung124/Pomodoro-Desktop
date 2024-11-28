@@ -14,25 +14,6 @@
 #include <mutex>
 #include <condition_variable>
 
-struct MessageHandler {
-    int clientId;
-    void operator()(const Utils::Cloud::Firebase::SignInData& data) const {
-        printf("Client %d: SignIn request for user %s\n", clientId, data.email.c_str());
-    }
-    void operator()(const Utils::Cloud::Firebase::SignUpData& data) const {
-        printf("Client %d: CreateAccount request for user %s\n", clientId, data.email.c_str());
-    }
-    void operator()(const Utils::Cloud::Firebase::UpdatePasswordData& data) const {
-        printf("Client %d: UpdatePassword request\n", clientId);
-    }
-    void operator()(const Utils::Cloud::Firebase::SignOutData& data) const {
-        printf("Client %d: SignOut request\n", clientId);
-    }
-    void operator()(const std::monostate&) const {
-        printf("Client %d: SignOut request\n", clientId);
-    }
-};
-
 class FirebaseRequestHandler
 {
 public:
