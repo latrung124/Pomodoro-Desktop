@@ -22,10 +22,14 @@ qt_add_executable(untitled
   Utils/CommonSettingsDefine.h
   Utils/CloudUtility/FirebaseUtility.h
 
+  Controller/BaseController.h
   Controller/SystemController.h
   Controller/ServiceController.h
   Controller/ModuleController/BaseModuleController.h
   Controller/ModuleController/LoginModuleController.h
+
+  Core/Manager/ControllerManager.h
+  Core/Helper/ControllerHelper.h
 
   Handler/Firebase/FirebaseRequestHandler.h
   Handler/Firebase/MessageProcessor/FirebaseRequestProcessor.h
@@ -36,6 +40,8 @@ qt_add_executable(untitled
 
   Handler/Firebase/FirebaseRequestHandler.cpp
   Handler/Firebase/MessageProcessor/FirebaseRequestProcessor.cpp
+
+  Core/Manager/ControllerManager.cpp
 )
 
 set(MSVC_RUNTIME_MODE MD)
@@ -49,6 +55,10 @@ add_subdirectory(CommonComponent)
 add_subdirectory(HomeScreen)
 add_subdirectory(LoginScreen)
 add_subdirectory(Service)
+
+target_include_directories(untitled PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 target_link_libraries(untitled PRIVATE
     Qt6::Core

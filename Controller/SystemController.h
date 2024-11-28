@@ -21,6 +21,7 @@
 #pragma once
 
 #include "ThemeConfig/ThemeConfig.h"
+#include "BaseController.h"
 
 #include <QObject>
 #include <QQmlApplicationEngine>
@@ -30,10 +31,9 @@
 #include <memory>
 
 class LoginModuleController;
-class SystemController : public QObject
+class SystemController : public BaseController
 {
     Q_OBJECT
-
 public:
     SystemController(QObject *parent = nullptr);
     ~SystemController();

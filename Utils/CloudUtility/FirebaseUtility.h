@@ -23,11 +23,13 @@ namespace Firebase
 
 enum class AuthProviderType : uint16_t
 {
+    None = 0,
     EmailAndPassword,
     Google,
 };
 
 struct SignInData {
+    AuthProviderType authType;
     std::string email;
     std::string password;
 };

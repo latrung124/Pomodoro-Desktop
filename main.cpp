@@ -1,4 +1,5 @@
 #include <QGuiApplication>
+#include "Core/Manager/ControllerManager.h"
 #include "Controller/SystemController.h"
 #include "Controller/ServiceController.h"
 
@@ -8,13 +9,15 @@ int main(int argc, char *argv[])
 
     Q_INIT_RESOURCE(ThemeResources);
 
-    SystemController systemController;
-    QObject::connect(&systemController, &SystemController::quit, &app, &QGuiApplication::quit);
+    ControllerManager::instance().addController<SystemController>();
+    ControllerManager::instance().addController<ServiceController>();
 
-    systemController.start();
-    
-    ServiceController serviceController;
-    serviceController.start();
+    auto systemController = ControllerManager::instance().getController<SystemController>();
+    QObject::connect(systemController.get(), &SystemController::quit, &app, &QGuiApplication::quit);
+    systemController->start();
+
+    auto serviceController = ControllerManager::instance().getController<ServiceController>();
+    serviceController->start();
 
     return app.exec();
 }

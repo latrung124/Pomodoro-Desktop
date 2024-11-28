@@ -9,7 +9,8 @@
 
 #include "Service/ServiceManager/ServiceManager.h"
 
-ServiceController::ServiceController()
+ServiceController::ServiceController(QObject* parent)
+    : BaseController(parent)
 {
 }
 
@@ -25,4 +26,9 @@ void ServiceController::start()
 
 void ServiceController::stop()
 {
+}
+
+std::weak_ptr<IFirebaseService> ServiceController::getFirebaseService() const
+{
+    return m_firebaseService;
 }

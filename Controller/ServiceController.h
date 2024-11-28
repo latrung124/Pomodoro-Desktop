@@ -8,15 +8,18 @@
 #ifndef SERVICECONTROLLER_H
 #define SERVICECONTROLLER_H
 
+#include "BaseController.h"
+
 #include <memory>
 
 class ServiceManager;
 class IFirebaseService;
 
-class ServiceController
+class ServiceController : public BaseController
 {
+    Q_OBJECT
 public:
-    ServiceController();
+    ServiceController(QObject* parent = nullptr);
     ~ServiceController();
 
     ServiceController(const ServiceController&) = delete;
@@ -24,6 +27,8 @@ public:
 
     void start();
     void stop();
+
+    std::weak_ptr<IFirebaseService> getFirebaseService() const;
 
 private:
     std::weak_ptr<IFirebaseService> m_firebaseService;

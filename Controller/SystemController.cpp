@@ -23,7 +23,7 @@
 #include "Controller/ModuleController/LoginModuleController.h"
 
 SystemController::SystemController(QObject *parent)
-    : QObject(parent)
+    : BaseController(parent)
 {
     init();
 }
@@ -40,6 +40,7 @@ void SystemController::start()
 
 void SystemController::stop()
 {
+    cleanup();
     m_engine.quit();
 }
 
