@@ -47,6 +47,7 @@ void SystemController::stop()
 void SystemController::init()
 {
     themeSetup();
+    initModuleControllers();
 }
 
 void SystemController::cleanup()

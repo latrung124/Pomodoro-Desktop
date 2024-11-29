@@ -22,6 +22,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Basic
 import QtQuick.Layouts
+import App.Enums 1.0
 
 import CommonComponent
 
@@ -147,6 +148,7 @@ Item {
                         CustomTextField {
                             id: emailTextField
 
+                            echoMode: TextInput.Normal
                             backgroundText: qsTr("Email or phone number")
                             Layout.alignment: Qt.AlignTop
                         }
@@ -356,6 +358,12 @@ Item {
                                 verticalAlignment: Text.AlignVCenter
                                 horizontalAlignment: Text.AlignHCenter
                             }
+                        }
+
+                        onClicked: {
+                            console.log("Sign In Button clicked");
+                            loginModuleController.onSignIn(AuthenticationType.EmailAndPassword,
+                                                        emailTextField.text, pwTextField.text);
                         }
                     }
                 }

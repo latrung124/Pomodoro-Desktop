@@ -8,6 +8,8 @@
 #ifndef FIREBASEUTILITY_H
 #define FIREBASEUTILITY_H
 
+#include "Utils/CloudUtility/AuthenticationType.h"
+
 #include <string>
 #include <cstdint>
 #include <variant>
@@ -21,15 +23,8 @@ namespace Cloud
 namespace Firebase
 {
 
-enum class AuthProviderType : uint16_t
-{
-    None = 0,
-    EmailAndPassword,
-    Google,
-};
-
 struct SignInData {
-    AuthProviderType authType;
+    AuthenticationType authType;
     std::string email;
     std::string password;
 };

@@ -45,3 +45,19 @@ void LoginModuleController::close()
 void LoginModuleController::initSettings()
 {
 }
+
+void LoginModuleController::onSignIn(const AuthenticationType &authType
+                                    , const QString &email, const QString &password)
+{
+    qDebug() << "Sign in request for user" << email;
+}
+
+void LoginModuleController::onSignUp(const QString &email, const QString &password)
+{
+    qDebug() << "Sign up request for user" << email;
+}
+
+void LoginModuleController::onSignOut()
+{
+    qDebug() << "Sign out request";
+}

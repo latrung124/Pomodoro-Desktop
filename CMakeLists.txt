@@ -20,6 +20,7 @@ qt_add_executable(untitled
   main.cpp
 
   Utils/CommonSettingsDefine.h
+  Utils/CloudUtility/AuthenticationType.h
   Utils/CloudUtility/FirebaseUtility.h
 
   Controller/BaseController.h
