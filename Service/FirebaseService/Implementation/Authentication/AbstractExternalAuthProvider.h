@@ -8,8 +8,6 @@
 #ifndef ABSTRACTEXTERNALAUTHPROVIDER_H
 #define ABSTRACTEXTERNALAUTHPROVIDER_H
 
-#include <firebase/auth.h>
-
 #include <QObject>
 
 class AbstractExternalAuthProvider : public QObject

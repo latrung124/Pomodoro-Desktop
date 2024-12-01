@@ -3,6 +3,7 @@ add_definitions(-DFIREBASE_CONFIG_PATH="${CMAKE_CURRENT_SOURCE_DIR}/Resources/Fi
 set(FS_HEADER_FILES
     FirebaseUtils.h
     Interface/IFirebaseService.h
+    Implementation/FirebaseApp.h
     Implementation/FirebaseServiceImpl.h
     Implementation/Authentication/FirebaseAuthentication.h
     Implementation/Authentication/AbstractExternalAuthProvider.h
@@ -13,6 +14,7 @@ set(FS_HEADER_FILES
 )
 
 set(FS_SOURCE_FILES
+    Implementation/FirebaseApp.cpp
     Implementation/FirebaseServiceImpl.cpp
     Implementation/Authentication/FirebaseAuthentication.cpp
     Implementation/Authentication/EmailPwAuthProvider.cpp
@@ -31,14 +33,11 @@ target_include_directories(FirebaseService
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/Interface
         ${CMAKE_SOURCE_DIR}/Service
-        ${CMAKE_CURRENT_SOURCE_DIR}/Implementation
-        ${CMAKE_SOURCE_DIR}/ExternalModule/Third-Parties/firebase_cpp_sdk/include)
+        ${CMAKE_CURRENT_SOURCE_DIR}/Implementation)
 
 # Set link directories
 target_link_libraries(FirebaseService
     PUBLIC
-    ${firebase_libs}
-    ${ADDITIONAL_LIBS}
     Qt6::Core
     Qt6::Network
     Qt6::Gui)

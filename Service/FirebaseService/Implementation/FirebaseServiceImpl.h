@@ -10,8 +10,9 @@
 
 #include "IFirebaseService.h"
 
+#include <memory>
+
 class FirebaseApp;
-class FirebaseAuthentication;
 
 class FirebaseServiceImpl : public IFirebaseService
 {
@@ -32,8 +33,7 @@ public:
 
 private:
     bool m_isConnected;
-    FirebaseApp* m_firebaseApp;
-    FirebaseAuthentication* m_firebaseAuth;
+    std::unique_ptr<FirebaseApp> m_firebaseApp;
 };
 
 #endif // FIREBASESERVICEIMPL_H

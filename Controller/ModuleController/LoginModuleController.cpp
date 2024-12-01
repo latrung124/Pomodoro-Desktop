@@ -18,9 +18,11 @@
  * Author: La Trung
  */
 
-#include <QQmlContext>
-
 #include "Controller/ModuleController/LoginModuleController.h"
+#include "Core/Helper/Firebase/FirebaseRequestHelper.h"
+
+#include <QQmlContext>
+#include <QDebug>
 
 LoginModuleController::LoginModuleController(QQmlContext *context, QObject *parent)
     : BaseModuleController(context, parent)
@@ -50,6 +52,7 @@ void LoginModuleController::onSignIn(const AuthenticationType &authType
                                     , const QString &email, const QString &password)
 {
     qDebug() << "Sign in request for user" << email;
+    helper::firebase::constructSignInRequest(authType, email.toStdString(), password.toStdString());
 }
 
 void LoginModuleController::onSignUp(const QString &email, const QString &password)

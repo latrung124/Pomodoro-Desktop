@@ -6,13 +6,24 @@
 */
 
 #include "FirebaseApp.h"
+#include "Authentication/FirebaseAuthentication.h"
+
+#include <QDebug>
 
 #include <string>
 #include <fstream>
-#include <iostream>
 
 FirebaseApp::FirebaseApp()
+    : m_isInitialized(false)
+    , m_configJsonStr("")
 {
+    m_isInitialized = initialize();
+    if (!m_isInitialized) {
+        qWarning() << "Failed to initialize FirebaseApp";
+        return;
+    }
+
+    m_auth = std::make_shared<FirebaseAuthentication>();
 }
 
 FirebaseApp::~FirebaseApp()
@@ -26,13 +37,35 @@ bool FirebaseApp::initialize()
 
     std::ifstream configFile(configPath);
     if(!configFile.is_open()) {
-        std::cerr << "Failed to open config file: " << configPath << std::endl;
+        qWarning() << "Failed to open config file: " << configPath;
         return false;
     }
 
-    std::string configJson = std::string((std::istreambuf_iterator<char>(configFile)), std::istreambuf_iterator<char>());
+    m_configJsonStr = std::string((std::istreambuf_iterator<char>(configFile)), std::istreambuf_iterator<char>());
+    configFile.close();
+    qDebug() << "Config file loaded: " << m_configJsonStr.c_str();
+    return !m_configJsonStr.empty();
 }
 
 void FirebaseApp::exit()
 {
+}
+
+bool FirebaseApp::isInitialized() const
+{
+    return m_isInitialized;
+}
+
+const std::string& FirebaseApp::getConfigJsonStr() const
+{
+    if (!m_isInitialized) {
+        qWarning() << "FirebaseApp is not initialized";
+    }
+
+    return m_configJsonStr;
+}
+
+std::weak_ptr<FirebaseAuthentication> FirebaseApp::getAuth() const
+{
+    return m_auth;
 }

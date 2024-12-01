@@ -8,8 +8,6 @@
 #ifndef ABSTRACTINTERNALAUTHPROVIDER_H
 #define ABSTRACTINTERNALAUTHPROVIDER_H
 
-#include <firebase/auth.h>
-
 #include <string>
 
 class AbstractInternalAuthProvider

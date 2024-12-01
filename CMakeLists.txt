@@ -31,6 +31,8 @@ qt_add_executable(untitled
 
   Core/Manager/ControllerManager.h
   Core/Helper/ControllerHelper.h
+  Core/Helper/Firebase/FirebaseRequestHelper.h
+  Core/Helper/Firebase/FirebaseHandlerHelper.h
 
   Handler/Firebase/FirebaseRequestHandler.h
   Handler/Firebase/MessageProcessor/FirebaseRequestProcessor.h

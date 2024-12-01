@@ -5,14 +5,15 @@
 * This is an implementation class for FirebaseService
 */
 
-#include "Implementation/Authentication/FirebaseAuthentication.h"
-#include "FirebaseApp.h"
 #include "FirebaseServiceImpl.h"
+#include "FirebaseApp.h"
+#include "Implementation/Authentication/FirebaseAuthentication.h"
 
-#include <iostream>
+#include <QDebug>
 
 FirebaseServiceImpl::FirebaseServiceImpl()
-    : m_isConnected(false)
+    : m_isConnected(false),
+    m_firebaseApp(std::make_unique<FirebaseApp>())
 {
 }
 
@@ -31,6 +32,24 @@ void FirebaseServiceImpl::disconnect()
 
 bool FirebaseServiceImpl::signIn(AuthProviderType authType, const std::string &email, const std::string &password)
 {
+    if (m_firebaseApp->isInitialized())
+    {
+        qDebug() << "FirebaseApp is initialized";
+    }
+    else
+    {
+        qWarning() << "FirebaseApp is not initialized";
+        return false;
+    }
+
+    qDebug() << "FirebaseServiceImpl::signIn() called: " << email.c_str() << " " << password.c_str();
+    if (auto auth = m_firebaseApp->getAuth().lock(); auth)
+    {
+        return auth->signIn(authType, email, password);
+    } else {
+        qWarning() << "Failed to get FirebaseAuthentication";
+    }
+
     return false;
 }
 
