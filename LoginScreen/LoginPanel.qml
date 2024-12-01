@@ -36,7 +36,6 @@ Item {
 
     property font loginRegularFont: themeConfig ? themeConfig.fontPalette.layer3 : internal.defaultFont
     property font loginGreetingFont: themeConfig ? themeConfig.fontPalette.layer2 : internal.defaultFont
-    property bool isErrorLogin: false
 
     signal openPanel(string name)
 
@@ -131,7 +130,7 @@ Item {
                                 id: errorLoginText
 
                                 text: qsTr("*Invalid login or password")
-                                visible: isErrorLogin
+                                visible: false
                                 anchors.left: emailTitleText.right
                                 anchors.leftMargin: 10
                                 anchors.verticalCenter: parent.verticalCenter
@@ -192,7 +191,7 @@ Item {
                                 id: errorPwText
 
                                 text: qsTr("*Invalid login or password")
-                                visible: isErrorLogin
+                                visible: false
                                 anchors.left: pwTitleText.right
                                 anchors.leftMargin: 10
                                 anchors.verticalCenter: parent.verticalCenter
@@ -362,8 +361,7 @@ Item {
 
                         onClicked: {
                             console.log("Sign In Button clicked");
-                            loginModuleController.onSignIn(AuthenticationType.EmailAndPassword,
-                                                        emailTextField.text, pwTextField.text);
+                            internal.signInButtonClicked();
                         }
                     }
                 }
@@ -512,5 +510,27 @@ Item {
         property double footerLayoutHeight: 220.5
         property int headerLayoutHeight: 80
         property int contentLayoutHeight: 244
+
+        function isValidEmail(email) {
+            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(email);
+        }
+
+        function isValidPassword(password) {
+            // Example: Password must be at least 8 characters long
+            return password.length >= 8;
+        }
+
+        function signInButtonClicked() {
+            var isValidLoginAndPassword = internal.isValidEmail(emailTextField.text) && internal.isValidPassword(pwTextField.text);
+            errorLoginText.visible = !isValidLoginAndPassword;
+            errorPwText.visible = !isValidLoginAndPassword;
+            if (isValidLoginAndPassword) {
+                loginModuleController.onSignIn(AuthenticationType.EmailAndPassword,
+                                               emailTextField.text, pwTextField.text);
+            } else {
+                console.log("Invalid login or password");
+            }
+        }
     }
 }
