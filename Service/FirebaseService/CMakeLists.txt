@@ -4,22 +4,31 @@ set(FS_HEADER_FILES
     FirebaseUtils.h
     Interface/IFirebaseService.h
     Implementation/FirebaseApp.h
+    Implementation/FirebaseConfig.h
     Implementation/FirebaseServiceImpl.h
+    Implementation/Helper/FirebaseFactoryHelper.h
+    Implementation/Helper/FirebaseGatewayHelper.h
+    Implementation/Helper/FirebaseConfigHelper.h
     Implementation/Authentication/FirebaseAuthentication.h
     Implementation/Authentication/AbstractExternalAuthProvider.h
     Implementation/Authentication/AbstractInternalAuthProvider.h
     Implementation/Authentication/EmailPwAuthProvider.h
     Implementation/Authentication/GoogleAuthProvider.h
     Implementation/Authentication/GoogleOAuth.h
+    Implementation/FirebaseGateway/FirebaseSender.h
+    Implementation/FirebaseGateway/FirebaseGatewayManager.h
 )
 
 set(FS_SOURCE_FILES
     Implementation/FirebaseApp.cpp
+    Implementation/FirebaseConfig.cpp
     Implementation/FirebaseServiceImpl.cpp
     Implementation/Authentication/FirebaseAuthentication.cpp
     Implementation/Authentication/EmailPwAuthProvider.cpp
     Implementation/Authentication/GoogleAuthProvider.cpp
     Implementation/Authentication/GoogleOAuth.cpp
+    Implementation/FirebaseGateway/FirebaseSender.cpp
+    Implementation/FirebaseGateway/FirebaseGatewayManager.cpp
 )
 
 add_library(FirebaseService

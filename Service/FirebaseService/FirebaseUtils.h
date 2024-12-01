@@ -11,9 +11,62 @@
 #include <cstdint>
 #include <string>
 
+#include <QString>
+#include <QJsonObject>
+
 #include <QMetaType>
 
 namespace firebase_utils {
+
+namespace config {
+
+    struct AndroidClientInfo {
+        std::string package_name;
+        std::string certificate_hash;
+    };
+    struct ClientInfo {
+        std::string mobileSdkAppId;
+        AndroidClientInfo androidClientInfo;
+    };
+
+    struct OAuthClient {
+        std::string client_id;
+        std::string client_type;
+    };
+
+    struct ApiKey {
+        std::string current_key;
+    };
+
+    struct ProjectInfo {
+        std::string projectId;
+        std::string projectNumber;
+        std::string storageBucket;
+    };
+
+    struct Client {
+        ClientInfo clientInfo;
+        OAuthClient oauthClient;
+        ApiKey apiKey;
+        //Services services[];
+    };
+
+    struct ProjectConfig {
+        ProjectInfo projectInfo;
+        Client client;
+        std::string configVersion;
+    };
+
+} // namespace firebase_utils::config
+
+namespace gateway {
+
+struct FirebasePostRequest {
+    QString url;
+    QJsonObject payload;
+};
+
+} // namespace firebase_utils::gateway
 
 namespace authentication {
 
@@ -67,6 +120,7 @@ const std::string gGoogleOAuthState = "state=security_token%3D138r5719ru3e1%26ur
 using AuthProviderType = firebase_utils::authentication::AuthProviderType;
 using OAuthConfig = firebase_utils::authentication::OAuthConfig;
 using GoogleAccessToken = firebase_utils::authentication::GoogleAccessToken;
+using ProjectConfig = firebase_utils::config::ProjectConfig;
 
 Q_DECLARE_METATYPE(GoogleAccessToken);
 

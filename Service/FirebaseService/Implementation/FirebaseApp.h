@@ -8,6 +8,8 @@
 #ifndef FIREBASEAPP_H
 #define FIREBASEAPP_H
 
+#include "FirebaseUtils.h"
+
 #include <string>
 #include <memory>
 
@@ -27,9 +29,12 @@ public:
     std::weak_ptr<FirebaseAuthentication> getAuth() const;
 
 private:
+    bool parseConfigJson(ProjectConfig& config);
+
     bool m_isInitialized;
     std::string m_configJsonStr;
     std::shared_ptr<FirebaseAuthentication> m_auth;
+    ProjectConfig m_projectConfig;
 };
 
 #endif // FIREBASEAPP_H
