@@ -6,11 +6,3 @@
 */
 
 #include "ControllerManager.h"
-
-ControllerManager::ControllerManager()
-{
-}
-
-ControllerManager::~ControllerManager()
-{
-}

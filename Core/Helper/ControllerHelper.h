@@ -12,6 +12,8 @@
 
 namespace helper {
 
+namespace system {
+
 template <typename ControllerType, typename... Args>
 void addController(Args&&... args)
 {
@@ -22,6 +24,8 @@ template <typename ControllerType>
 std::shared_ptr<ControllerType> getController()
 {
     return ControllerManager::instance().getController<ControllerType>();
+}
+
 }
 
 }

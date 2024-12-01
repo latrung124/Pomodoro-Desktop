@@ -16,9 +16,6 @@ class BaseController;
 class ControllerManager
 {
 public:
-    ControllerManager();
-    ~ControllerManager();
-
     static ControllerManager& instance()
     {
         static ControllerManager instance;
@@ -62,6 +59,8 @@ public:
     }
 
 private:
+    ControllerManager() = default;
+    ~ControllerManager() = default;
     std::vector<std::shared_ptr<BaseController>> m_controllers;
 };
 

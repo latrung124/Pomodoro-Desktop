@@ -1,5 +1,5 @@
 #include <QGuiApplication>
-#include "Core/Manager/ControllerManager.h"
+#include "Core/Helper/ControllerHelper.h"
 #include "Controller/SystemController.h"
 #include "Controller/ServiceController.h"
 #include "Utils/CloudUtility/AuthenticationType.h"
@@ -21,14 +21,14 @@ int main(int argc, char *argv[])
     Q_INIT_RESOURCE(ThemeResources);
     registerTypes();
 
-    ControllerManager::instance().addController<SystemController>();
-    ControllerManager::instance().addController<ServiceController>();
+    helper::system::addController<SystemController>();
+    helper::system::addController<ServiceController>();
 
-    auto systemController = ControllerManager::instance().getController<SystemController>();
+    auto systemController = helper::system::getController<SystemController>();
     QObject::connect(systemController.get(), &SystemController::quit, &app, &QGuiApplication::quit);
     systemController->start();
 
-    auto serviceController = ControllerManager::instance().getController<ServiceController>();
+    auto serviceController = helper::system::getController<ServiceController>();
     serviceController->start();
 
     return app.exec();
