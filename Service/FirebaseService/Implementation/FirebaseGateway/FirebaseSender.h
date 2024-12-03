@@ -11,7 +11,6 @@
 #include <QObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
-#include <QJsonDocument>
 #include <QJsonObject>
 
 class FirebaseSender : public QObject
@@ -21,7 +20,7 @@ public:
     explicit FirebaseSender(QObject *parent = nullptr);
     ~FirebaseSender();
 
-    void postRequest(const QString &url, const QJsonObject &payload);
+    void postRequest(const QJsonObject &payload);
 
 signals:
     void requestFinished(int statusCode, const QString &responseBody);

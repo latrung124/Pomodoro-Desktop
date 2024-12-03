@@ -6,32 +6,26 @@
 */
 
 #include "FirebaseGatewayManager.h"
+#include "FirebaseGateway/FirebaseSender.h"
 
 #include <QDebug>
 
-FirebaseGatewayManager::FirebaseGatewayManager(QObject *parent)
-    : QObject(parent)
+FirebaseGatewayManager::FirebaseGatewayManager()
 {
-    m_authSender = std::make_shared<FirebaseSender>();
-
-    connect(m_authSender.get(), &FirebaseSender::requestFinished, this, &FirebaseGatewayManager::onAuthRequestFinished);
+    FirebaseSender *sender = new FirebaseSender();
+    sender->moveToThread(&workerThread);
+    connect(&workerThread, &QThread::finished, sender, &QObject::deleteLater);
+    connect(this, &FirebaseGatewayManager::operate, sender, &FirebaseSender::postRequest);
+    workerThread.start();
 }
 
 FirebaseGatewayManager::~FirebaseGatewayManager()
 {
+    workerThread.quit();
+    workerThread.wait();
 }
 
-std::weak_ptr<FirebaseSender> FirebaseGatewayManager::getFirebaseAuthSender() const
+void FirebaseGatewayManager::handleReplyFinished(int statusCode, const QString &responseBody)
 {
-    return m_authSender;
-}
-
-void FirebaseGatewayManager::onAuthRequestFinished(int statusCode, const QString &responseBody)
-{
-    qDebug() << "FirebaseGatewayManager::onAuthRequestFinished() called: " << statusCode << " " << responseBody;
-}
-
-void FirebaseGatewayManager::onAuthRequestError(const QString &error)
-{
-    qDebug() << "FirebaseGatewayManager::onAuthRequestError() called: " << error;
+    qDebug() << "FirebaseGatewayManager::handleReplyFinished() called: " << statusCode << " " << responseBody;
 }

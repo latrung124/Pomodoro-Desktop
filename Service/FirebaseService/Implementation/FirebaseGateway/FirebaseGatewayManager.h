@@ -8,8 +8,8 @@
 #ifndef FIREBASEGATEWAYMANAGER_H
 #define FIREBASEGATEWAYMANAGER_H
 
-#include "FirebaseGateway/FirebaseSender.h"
-
+#include <QThread>
+#include <QJsonObject>
 #include <memory>
 
 class FirebaseGatewayManager : public QObject
@@ -22,17 +22,16 @@ public:
         static FirebaseGatewayManager instance;
         return instance;
     }
-
-    std::weak_ptr<FirebaseSender> getFirebaseAuthSender() const;
-
 public slots:
-    void onAuthRequestFinished(int statusCode, const QString &responseBody);
-    void onAuthRequestError(const QString &error);
+    void handleReplyFinished(int statusCode, const QString &responseBody);
+
+signals:
+    void operate(const QJsonObject &payload);
 
 private:
-    FirebaseGatewayManager(QObject *parent = nullptr);
+    FirebaseGatewayManager();
 
-    std::shared_ptr<FirebaseSender> m_authSender;
+    QThread workerThread;
 };
 
 #endif // FIREBASEGATEWAYMANAGER_H
