@@ -24,7 +24,6 @@ public:
     void exit();
 
     bool isInitialized() const;
-    const std::string& getConfigJsonStr() const;
 
     std::weak_ptr<FirebaseAuthentication> getAuth() const;
 

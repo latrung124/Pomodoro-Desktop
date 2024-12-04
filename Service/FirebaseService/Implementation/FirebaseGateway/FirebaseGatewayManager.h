@@ -22,10 +22,9 @@ public:
         static FirebaseGatewayManager instance;
         return instance;
     }
-public slots:
-    void handleReplyFinished(int statusCode, const QString &responseBody);
 
 signals:
+    void initWrappers();
     void operate(const QJsonObject &payload);
 
 private:

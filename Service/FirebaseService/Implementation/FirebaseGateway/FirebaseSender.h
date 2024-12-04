@@ -9,28 +9,26 @@
 #define FIREBASESENDER_H
 
 #include <QObject>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
 #include <QJsonObject>
+
+#include <memory>
+
+class AuthWrapper;
 
 class FirebaseSender : public QObject
 {
-Q_OBJECT
+    Q_OBJECT
 public:
     explicit FirebaseSender(QObject *parent = nullptr);
     ~FirebaseSender();
 
     void postRequest(const QJsonObject &payload);
 
-signals:
-    void requestFinished(int statusCode, const QString &responseBody);
-    void requestError(const QString &error);
-
-private slots:
-    void onReplyFinished(QNetworkReply *reply);
+public slots:
+    void onInitWrapper();
 
 private:
-    QNetworkAccessManager m_networkManager;
+    std::unique_ptr<AuthWrapper> m_authWrapper;
 };
 
 #endif // FIREBASESENDER_H

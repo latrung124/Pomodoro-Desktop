@@ -12,6 +12,7 @@
 #include <string>
 
 #include <QString>
+#include <QVector>
 #include <QJsonObject>
 
 #include <QMetaType>
@@ -21,40 +22,40 @@ namespace firebase_utils {
 namespace config {
 
     struct AndroidClientInfo {
-        std::string package_name;
-        std::string certificate_hash;
+        QString package_name;
+        QString certificate_hash;
     };
     struct ClientInfo {
-        std::string mobileSdkAppId;
+        QString mobileSdkAppId;
         AndroidClientInfo androidClientInfo;
     };
 
     struct OAuthClient {
-        std::string client_id;
-        std::string client_type;
+        QString client_id;
+        QString client_type;
     };
 
     struct ApiKey {
-        std::string current_key;
+        QString current_key;
     };
 
     struct ProjectInfo {
-        std::string projectId;
-        std::string projectNumber;
-        std::string storageBucket;
+        QString projectId;
+        QString projectNumber;
+        QString storageBucket;
     };
 
     struct Client {
         ClientInfo clientInfo;
-        OAuthClient oauthClient;
-        ApiKey apiKey;
+        QVector<OAuthClient> oauthClients;
+        QVector<ApiKey> apiKeys;
         //Services services[];
     };
 
     struct ProjectConfig {
         ProjectInfo projectInfo;
-        Client client;
-        std::string configVersion;
+        QVector<Client> clients;
+        QString configVersion;
     };
 
 } // namespace firebase_utils::config

@@ -10,6 +10,7 @@
 #include "FirebaseConfig.h"
 
 #include <QJsonDocument>
+#include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonParseError>
 #include <QDebug>
@@ -65,15 +66,6 @@ bool FirebaseApp::isInitialized() const
     return m_isInitialized;
 }
 
-const std::string& FirebaseApp::getConfigJsonStr() const
-{
-    if (!m_isInitialized) {
-        qWarning() << "FirebaseApp is not initialized";
-    }
-
-    return m_configJsonStr;
-}
-
 std::weak_ptr<FirebaseAuthentication> FirebaseApp::getAuth() const
 {
     return m_auth;
@@ -81,6 +73,7 @@ std::weak_ptr<FirebaseAuthentication> FirebaseApp::getAuth() const
 
 bool FirebaseApp::parseConfigJson(ProjectConfig& config)
 {
+    using namespace firebase_utils::config;
     QJsonDocument jsonDoc = QJsonDocument::fromJson(QString::fromStdString(m_configJsonStr).toUtf8());
     if (jsonDoc.isNull()) {
         qWarning() << "Failed to parse config json";
@@ -99,49 +92,81 @@ bool FirebaseApp::parseConfigJson(ProjectConfig& config)
         return false;
     }
 
-    config.projectInfo.projectId = projectInfoObj["project_id"].toString().toStdString();
-    config.projectInfo.projectNumber = projectInfoObj["project_number"].toString().toStdString();
-    config.projectInfo.storageBucket = projectInfoObj["storage_bucket"].toString().toStdString();
+    config.projectInfo.projectId = projectInfoObj["project_id"].toString();
+    config.projectInfo.projectNumber = projectInfoObj["project_number"].toString();
+    config.projectInfo.storageBucket = projectInfoObj["storage_bucket"].toString();
 
-    QJsonObject clientObject = jsonObj["client"].toObject();
-    if (clientObject.isEmpty()) {
-        qWarning() << "Client info is empty";
+    QJsonArray clientArray = jsonObj["client"].toArray();
+    if (clientArray.isEmpty()) {
+        qWarning() << "Client array is empty";
         return false;
     }
 
-    QJsonObject clientInfoObj = clientObject["client_info"].toObject();
-    if (clientInfoObj.isEmpty()) {
-        qWarning() << "Client info is empty";
-        return false;
+    for (const auto& client : clientArray) {
+        QJsonObject clientObject = client.toObject();
+        if (clientObject.isEmpty()) {
+            qWarning() << "Client info is empty";
+            return false;
+        }
+
+        QJsonObject clientInfoObj = clientObject["client_info"].toObject();
+        if (clientInfoObj.isEmpty()) {
+            qWarning() << "Client info is empty";
+            return false;
+        }
+
+        Client client;
+
+        client.clientInfo.mobileSdkAppId = clientInfoObj["mobilesdk_app_id"].toString();
+        QJsonObject androidClientInfoObj = clientInfoObj["android_client_info"].toObject();
+        if (androidClientInfoObj.isEmpty()) {
+            qWarning() << "Android client info is empty";
+            return false;
+        }
+
+        client.clientInfo.androidClientInfo.package_name = androidClientInfoObj["package_name"].toString();
+
+        QJsonArray oauthClientArray = clientObject["oauth_client"].toArray();
+        if (oauthClientArray.isEmpty()) {
+            qWarning() << "OAuth client array is empty";
+            return false;
+        }
+
+        for (const auto& oauthClient : oauthClientArray) {
+            QJsonObject oauthClientObj = oauthClient.toObject();
+            if (oauthClientObj.isEmpty()) {
+                qWarning() << "OAuth client info is empty";
+                return false;
+            }
+
+            OAuthClient oauthClient;
+            oauthClient.client_id = oauthClientObj["client_id"].toString();
+            oauthClient.client_type = oauthClientObj["client_type"].toString();
+            client.oauthClients.emplace_back(oauthClient);
+        }
+
+        QJsonArray apiKeyArray = clientObject["api_key"].toArray();
+        if (apiKeyArray.isEmpty()) {
+            qWarning() << "API key array is empty";
+            return false;
+        }
+
+        for (const auto& apiKey : apiKeyArray) {
+            QJsonObject apiKeyObj = apiKey.toObject();
+            if (apiKeyObj.isEmpty()) {
+                qWarning() << "API key info is empty";
+                return false;
+            }
+
+            ApiKey apiKey;
+            apiKey.current_key = apiKeyObj["current_key"].toString();
+            client.apiKeys.emplace_back(apiKey);
+        }
+
+        config.clients.emplace_back(client);
     }
 
-    config.client.clientInfo.mobileSdkAppId = clientInfoObj["mobilesdk_app_id"].toString().toStdString();
-    QJsonObject androidClientInfoObj = clientInfoObj["android_client_info"].toObject();
-    if (androidClientInfoObj.isEmpty()) {
-        qWarning() << "Android client info is empty";
-        return false;
-    }
-
-    config.client.clientInfo.androidClientInfo.package_name = androidClientInfoObj["package_name"].toString().toStdString();
-
-    QJsonObject oauthClientObj = clientObject["oauth_client"].toObject();
-    if (oauthClientObj.isEmpty()) {
-        qWarning() << "OAuth client info is empty";
-        return false;
-    }
-
-    config.client.oauthClient.client_id = oauthClientObj["client_id"].toString().toStdString();
-    config.client.oauthClient.client_type = oauthClientObj["client_type"].toString().toStdString();
-
-    QJsonObject apiKeyObj = clientObject["api_key"].toObject();
-    if (apiKeyObj.isEmpty()) {
-        qWarning() << "API key info is empty";
-        return false;
-    }
-
-    config.client.apiKey.current_key = apiKeyObj["current_key"].toString().toStdString();
-
-    config.configVersion = jsonObj["config_version"].toString().toStdString();
+    config.configVersion = jsonObj["config_version"].toString();
 
     return true;
 }

@@ -6,6 +6,7 @@
 */
 
 #include "FirebaseSender.h"
+#include "FirebaseGateway/AuthWrapper.h"
 
 #include <QNetworkRequest>
 #include <QJsonDocument>
@@ -13,7 +14,6 @@
 FirebaseSender::FirebaseSender(QObject *parent)
     : QObject(parent)
 {
-    connect(&m_networkManager, &QNetworkAccessManager::finished, this, &FirebaseSender::onReplyFinished);
 }
 
 FirebaseSender::~FirebaseSender()
@@ -22,8 +22,10 @@ FirebaseSender::~FirebaseSender()
 
 void FirebaseSender::postRequest(const QJsonObject &payload)
 {
+    m_authWrapper->postSignIn(payload);
 }
 
-void FirebaseSender::onReplyFinished(QNetworkReply *reply)
+void FirebaseSender::onInitWrapper()
 {
+    m_authWrapper = std::make_unique<AuthWrapper>();
 }

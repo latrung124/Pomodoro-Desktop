@@ -12,8 +12,11 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequestFactory>
 #include <QRestAccessManager>
+#include <QRestReply>
 
 #include <memory>
+
+using namespace Qt::StringLiterals;
 
 class AuthWrapper : public QObject
 {
@@ -28,8 +31,10 @@ public:
     void setUrl(const QString &url);
 
 private:
+    void handleReplyFinished(QRestReply &reply);
+
     QNetworkAccessManager m_networkManager;
-    std::unique_ptr<QNetworkRequestFactory> m_requestFactory;
+    QNetworkRequestFactory m_requestFactory{{"https://identitytoolkit.googleapis.com"_L1}};
     std::unique_ptr<QRestAccessManager> m_restAccessManager;
 };
 

@@ -34,11 +34,11 @@ bool FirebaseServiceImpl::signIn(AuthProviderType authType, const std::string &e
 {
     if (m_firebaseApp->isInitialized())
     {
-        qDebug() << "FirebaseApp is initialized";
+        qDebug() << Q_FUNC_INFO << " FirebaseApp is initialized";
     }
     else
     {
-        qWarning() << "FirebaseApp is not initialized";
+        qWarning() << Q_FUNC_INFO << " FirebaseApp is not initialized";
         return false;
     }
 

@@ -3,6 +3,7 @@ add_definitions(-DFIREBASE_CONFIG_PATH="${CMAKE_CURRENT_SOURCE_DIR}/Resources/Fi
 set(FS_HEADER_FILES
     FirebaseUtils.h
     Interface/IFirebaseService.h
+    Implementation/FirebaseHelper.h
     Implementation/FirebaseApp.h
     Implementation/FirebaseConfig.h
     Implementation/FirebaseServiceImpl.h

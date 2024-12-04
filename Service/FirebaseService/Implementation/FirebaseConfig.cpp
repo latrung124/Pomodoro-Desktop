@@ -12,7 +12,7 @@ void FirebaseConfig::setProjectConfig(const ProjectConfig &config)
     m_projectConfig = config;
 }
 
-ProjectConfig FirebaseConfig::getProjectConfig() const
+std::optional<ProjectConfig> FirebaseConfig::getProjectConfig() const
 {
     return m_projectConfig;
 }

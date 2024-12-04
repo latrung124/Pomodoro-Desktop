@@ -10,6 +10,8 @@
 
 #include "FirebaseUtils.h"
 
+#include <optional>
+
 class FirebaseConfig
 {
 public:
@@ -21,7 +23,7 @@ public:
     ~FirebaseConfig() = default;
 
     void setProjectConfig(const ProjectConfig &config);
-    ProjectConfig getProjectConfig() const;
+    std::optional<ProjectConfig> getProjectConfig() const;
 
     void setOAuthConfig(const OAuthConfig &config);
     OAuthConfig getOAuthConfig() const;
@@ -32,7 +34,7 @@ public:
 private:
     FirebaseConfig() = default;
 
-    ProjectConfig m_projectConfig;
+    std::optional<ProjectConfig> m_projectConfig;
     OAuthConfig m_oauthConfig;
     GoogleAccessToken m_googleAccessToken;
 };
