@@ -14,6 +14,7 @@
 #include <QString>
 #include <QVector>
 #include <QJsonObject>
+#include <QJsonArray>
 
 #include <QMetaType>
 
@@ -54,6 +55,109 @@ const QHash<FirebaseApi, QString> gFirebaseApiPath {
     {FirebaseApi::GetUserData, "/v1/accounts:lookup?key=%1"},
     {FirebaseApi::ExchangeCustomToken, "/v1/accounts:signInWithCustomToken?key=%1"},
     {FirebaseApi::ExchangeRefreshToken, "/v1/token?key=%1"},
+};
+
+struct ExchangeCustomTokenResData {
+    QString idToken;
+    QString refreshToken;
+    QString expiresIn;
+};
+
+struct ExchangeRefreshTokenResData {
+    QString idToken;
+    QString refreshToken;
+    QString expiresIn;
+    QString tokenType;
+    QString userId;
+    QString projectId;
+};
+
+struct SignInEmailPasswordResData {
+    QString idToken;
+    QString email;
+    QString refreshToken;
+    QString expiresIn;
+    QString localId;
+    bool isRegistered;
+};
+
+struct SignUpEmailPasswordResData {
+    QString idToken;
+    QString email;
+    QString refreshToken;
+    QString expiresIn;
+    QString localId;
+};
+
+struct SignInAnounymousResData {
+    QString idToken;
+    QString refreshToken;
+    QString expiresIn;
+    QString localId;
+};
+
+struct ChangePasswordResData {
+    QString email;
+    QString localId;
+    QString pwHash;
+    QJsonArray providerUserInfos;
+    QString idToken;
+    QString refreshToken;
+    QString expiresIn;
+};
+
+struct SendPwResetEmailResData {
+    QString email;
+    QString requestType;
+};
+
+struct VerifyPwResetCodeResData {
+    QString email;
+    QString requestType;
+};
+
+struct ConfirmPwResetResData {
+    QString email;
+    QString requestType;
+};
+
+struct ChangeEmailResData {
+    QString localId;
+    QString email;
+    QString pwHash;
+    QJsonArray providerUserInfos;
+    QString idToken;
+    QString refreshToken;
+    QString expiresIn;
+};
+
+struct UpdateProfileResData {
+    QString email;
+    QString localId;
+    QString displayName;
+    QString photoUrl;
+    QString pwHash;
+    QJsonArray providerUserInfos;
+    QString idToken;
+    QString refreshToken;
+    QString expiresIn;
+};
+
+struct GetUserDataResData {
+    QString email;
+    QString localId;
+    bool isEmailVerified;
+    QString displayName;
+    QJsonArray providerUserInfos;
+    QString photoUrl;
+    QString pwHash;
+    double passwordUpdatedAt;
+    QString validSince;
+    bool isDisabled;
+    QString lastLoginAt;
+    QString createdAt;
+    QString idToken;
+    bool isCustomAuth;
 };
 
 } // namespace API_Usage

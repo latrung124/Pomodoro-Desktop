@@ -92,3 +92,118 @@ QJsonObject FirebasePayloadFactory::createExchangeRefreshTokenPayload(const std:
     payload["refreshToken"] = refreshToken.c_str();
     return payload;
 }
+
+FirebasePayloadFactory::SignInEmailPasswordResData FirebasePayloadFactory::parseSignInEmailPasswordResPayload(const QJsonObject &payload)
+{
+    SignInEmailPasswordResData resPayload;
+    resPayload.idToken = payload["idToken"].toString();
+    resPayload.email = payload["email"].toString();
+    resPayload.refreshToken = payload["refreshToken"].toString();
+    resPayload.expiresIn = payload["expiresIn"].toString();
+    resPayload.localId = payload["localId"].toString();
+    return resPayload;
+}
+
+FirebasePayloadFactory::SignUpEmailPasswordResData FirebasePayloadFactory::parseSignUpEmailPasswordResPayload(const QJsonObject &payload)
+{
+    SignUpEmailPasswordResData resPayload;
+    resPayload.idToken = payload["idToken"].toString();
+    resPayload.email = payload["email"].toString();
+    resPayload.refreshToken = payload["refreshToken"].toString();
+    resPayload.expiresIn = payload["expiresIn"].toString();
+    resPayload.localId = payload["localId"].toString();
+    return resPayload;
+}
+
+FirebasePayloadFactory::SignInAnounymousResData FirebasePayloadFactory::parseSignInAnounymousResPayload(const QJsonObject &payload)
+{
+    SignInAnounymousResData resPayload;
+    resPayload.idToken = payload["idToken"].toString();
+    resPayload.refreshToken = payload["refreshToken"].toString();
+    resPayload.expiresIn = payload["expiresIn"].toString();
+    resPayload.localId = payload["localId"].toString();
+    return resPayload;
+}
+
+FirebasePayloadFactory::ChangePasswordResData FirebasePayloadFactory::parseChangePasswordResPayload(const QJsonObject &payload)
+{
+    ChangePasswordResData resPayload;
+    resPayload.email = payload["email"].toString();
+    resPayload.localId = payload["localId"].toString();
+    resPayload.pwHash = payload["pwHash"].toString();
+    resPayload.providerUserInfos = payload["providerUserInfos"].toArray();
+    resPayload.idToken = payload["idToken"].toString();
+    resPayload.refreshToken = payload["refreshToken"].toString();
+    resPayload.expiresIn = payload["expiresIn"].toString();
+    return resPayload;
+}
+
+FirebasePayloadFactory::SendPwResetEmailResData FirebasePayloadFactory::parseSendPwResetEmailResPayload(const QJsonObject &payload)
+{
+    SendPwResetEmailResData resPayload;
+    resPayload.email = payload["email"].toString();
+    resPayload.requestType = payload["requestType"].toString();
+    return resPayload;
+}
+
+FirebasePayloadFactory::VerifyPwResetCodeResData FirebasePayloadFactory::parseVerifyPwResetCodeResPayload(const QJsonObject &payload)
+{
+    VerifyPwResetCodeResData resPayload;
+    resPayload.email = payload["email"].toString();
+    resPayload.requestType = payload["requestType"].toString();
+    return resPayload;
+}
+
+FirebasePayloadFactory::ConfirmPwResetResData FirebasePayloadFactory::parseConfirmPwResetResPayload(const QJsonObject &payload)
+{
+    ConfirmPwResetResData resPayload;
+    resPayload.email = payload["email"].toString();
+    resPayload.requestType = payload["requestType"].toString();
+    return resPayload;
+}
+
+FirebasePayloadFactory::ChangeEmailResData FirebasePayloadFactory::parseChangeEmailResPayload(const QJsonObject &payload)
+{
+    ChangeEmailResData resPayload;
+    resPayload.localId = payload["localId"].toString();
+    resPayload.email = payload["email"].toString();
+    resPayload.pwHash = payload["pwHash"].toString();
+    resPayload.providerUserInfos = payload["providerUserInfos"].toArray();
+    resPayload.idToken = payload["idToken"].toString();
+    resPayload.refreshToken = payload["refreshToken"].toString();
+    resPayload.expiresIn = payload["expiresIn"].toString();
+    return resPayload;
+}
+
+FirebasePayloadFactory::UpdateProfileResData FirebasePayloadFactory::parseUpdateProfileResPayload(const QJsonObject &payload)
+{
+    UpdateProfileResData resPayload;
+    resPayload.email = payload["email"].toString();
+    resPayload.localId = payload["localId"].toString();
+    resPayload.displayName = payload["displayName"].toString();
+    resPayload.photoUrl = payload["photoUrl"].toString();
+    resPayload.pwHash = payload["pwHash"].toString();
+    resPayload.providerUserInfos = payload["providerUserInfos"].toArray();
+    resPayload.idToken = payload["idToken"].toString();
+    resPayload.refreshToken = payload["refreshToken"].toString();
+    resPayload.expiresIn = payload["expiresIn"].toString();
+    return resPayload;
+}
+
+FirebasePayloadFactory::ExchangeCustomTokenResData FirebasePayloadFactory::parseExchangeCustomTokenResPayload(const QJsonObject &payload)
+{
+    ExchangeCustomTokenResData resPayload;
+    resPayload.idToken = payload["idToken"].toString();
+    resPayload.refreshToken = payload["refreshToken"].toString();
+    resPayload.expiresIn = payload["expiresIn"].toString();
+    return resPayload;
+}
+
+FirebasePayloadFactory::ExchangeRefreshTokenResData FirebasePayloadFactory::parseExchangeRefreshTokenResPayload(const QJsonObject &payload)
+{
+    ExchangeRefreshTokenResData resPayload;
+    resPayload.idToken = payload["idToken"].toString();
+    resPayload.refreshToken = payload["refreshToken"].toString();
+    resPayload.expiresIn = payload["expiresIn"].toString();
+    return resPayload;
+}
