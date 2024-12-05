@@ -7,6 +7,7 @@
 
 #include "FirebaseHelper.h"
 #include "FirebaseGateway/AuthWrapper.h"
+
 #include <QHttpHeaders>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -16,19 +17,15 @@
 #include <QtNetwork/qsslsocket.h>
 #endif
 
-namespace {
-
-const QString signInPath = "/v1/accounts:signInWithPassword?key=%1";
-
-}
-
 AuthWrapper::AuthWrapper(QObject *parent)
     : QObject(parent)
+    , m_requestFactory(std::make_unique<QNetworkRequestFactory>())
     , m_restAccessManager(std::make_unique<QRestAccessManager>(&m_networkManager))
 {
     QHttpHeaders headers;
     headers.append("Content-Type"_L1, "application/json"_L1);
-    m_requestFactory.setCommonHeaders(headers);
+    m_requestFactory->setCommonHeaders(headers);
+    m_requestFactory->setBaseUrl(firebase_utils::API_Usage::gFirebaseBaseUrl);
 }
 
 AuthWrapper::~AuthWrapper()
@@ -46,14 +43,15 @@ bool AuthWrapper::sslSupport()
 
 void AuthWrapper::postSignIn(const QJsonObject &payload)
 {
-    QString apiKey = FirebaseGateway::Helper::getCurrentApiKey().c_str();
+    using namespace FirebaseGateway::Helper;
+    QString apiKey = getCurrentApiKey().c_str();
     if (apiKey.isEmpty()) {
         qWarning() << "API key is empty";
         return;
     }
 
-    QString path = QString(signInPath).arg(apiKey);
-    QNetworkRequest request = m_requestFactory.createRequest(path);
+    QString path = QString(getFirebaseApiPath(firebase_utils::API_Usage::FirebaseApi::SignInEmailPassword)).arg(apiKey);
+    QNetworkRequest request = m_requestFactory->createRequest(path);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json"_L1);
     m_restAccessManager->post(request, QJsonDocument(payload), this, [this](QRestReply &reply) {
         //print thread id:
@@ -102,5 +100,5 @@ void AuthWrapper::handleReplyFinished(QRestReply &reply)
 
 void AuthWrapper::setUrl(const QString &url)
 {
-    m_requestFactory.setBaseUrl(url);
+    m_requestFactory->setBaseUrl(url);
 }

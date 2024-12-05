@@ -7,6 +7,7 @@ set(FS_HEADER_FILES
     Implementation/FirebaseApp.h
     Implementation/FirebaseConfig.h
     Implementation/FirebaseServiceImpl.h
+    Implementation/FirebasePayloadFactory.h
     Implementation/Authentication/FirebaseAuthentication.h
     Implementation/Authentication/AbstractExternalAuthProvider.h
     Implementation/Authentication/AbstractInternalAuthProvider.h
@@ -22,6 +23,7 @@ set(FS_SOURCE_FILES
     Implementation/FirebaseApp.cpp
     Implementation/FirebaseConfig.cpp
     Implementation/FirebaseServiceImpl.cpp
+    Implementation/FirebasePayloadFactory.cpp
     Implementation/Authentication/FirebaseAuthentication.cpp
     Implementation/Authentication/EmailPwAuthProvider.cpp
     Implementation/Authentication/GoogleAuthProvider.cpp

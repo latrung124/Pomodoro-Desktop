@@ -16,8 +16,6 @@
 
 #include <memory>
 
-using namespace Qt::StringLiterals;
-
 class AuthWrapper : public QObject
 {
     Q_OBJECT
@@ -34,7 +32,7 @@ private:
     void handleReplyFinished(QRestReply &reply);
 
     QNetworkAccessManager m_networkManager;
-    QNetworkRequestFactory m_requestFactory{{"https://identitytoolkit.googleapis.com"_L1}};
+    std::unique_ptr<QNetworkRequestFactory> m_requestFactory;
     std::unique_ptr<QRestAccessManager> m_restAccessManager;
 };
 

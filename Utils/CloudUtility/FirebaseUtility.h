@@ -14,6 +14,9 @@
 #include <cstdint>
 #include <variant>
 
+#include <QHash>
+#include <QString>
+
 namespace Utils
 {
 

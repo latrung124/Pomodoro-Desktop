@@ -9,6 +9,7 @@
 #define FIREBASEHELPER_H
 
 #include "FirebaseConfig.h"
+#include "FirebaseUtils.h"
 
 namespace FirebaseGateway {
 
@@ -31,6 +32,17 @@ std::string getCurrentApiKey() {
     }
 
     return projectConfig.value().clients[0].apiKeys[0].current_key.toStdString();
+}
+
+QString getFirebaseApiPath(firebase_utils::API_Usage::FirebaseApi api)
+{
+    using namespace firebase_utils::API_Usage;
+    auto path = gFirebaseApiPath.find(api);
+    if (path == gFirebaseApiPath.end()) {
+        return "";
+    }
+
+    return path.value();
 }
 
 } // namespace FirebaseGateway::Helper

@@ -17,7 +17,47 @@
 
 #include <QMetaType>
 
+using namespace Qt::StringLiterals;
+
 namespace firebase_utils {
+
+namespace API_Usage {
+
+const QString gFirebaseBaseUrl = "https://identitytoolkit.googleapis.com"_L1;
+
+enum class FirebaseApi : uint16_t {
+    SignInEmailPassword = 0,
+    SignInWithOAuth,
+    SignInAnounymous,
+    SignUpEmailPassword,
+    ChangePassword,
+    SendPwResetEmail,
+    VerifyPwResetCode,
+    ConfirmPwReset,
+    ChangeEmail,
+    UpdateProfile,
+    GetUserData,
+    ExchangeCustomToken,
+    ExchangeRefreshToken,
+};
+
+const QHash<FirebaseApi, QString> gFirebaseApiPath {
+    {FirebaseApi::SignInEmailPassword, "/v1/accounts:signInWithPassword?key=%1"},
+    {FirebaseApi::SignInAnounymous, "/v1/accounts:signUp?key=%1"},
+    {FirebaseApi::SignUpEmailPassword, "/v1/accounts:signUp?key=%1"},
+    {FirebaseApi::ChangePassword, "/v1/accounts:update?key=%1"},
+    {FirebaseApi::SendPwResetEmail, "/v1/accounts:sendOobCode?key=%1"},
+    {FirebaseApi::VerifyPwResetCode, "/v1/accounts:resetPassword?key=%1"},
+    {FirebaseApi::ConfirmPwReset, "/v1/accounts:resetPassword?key=%1"},
+    {FirebaseApi::ChangeEmail, "/v1/accounts:update?key=%1"},
+    {FirebaseApi::UpdateProfile, "/v1/accounts:update?key=%1"},
+    {FirebaseApi::GetUserData, "/v1/accounts:lookup?key=%1"},
+    {FirebaseApi::ExchangeCustomToken, "/v1/accounts:signInWithCustomToken?key=%1"},
+    {FirebaseApi::ExchangeRefreshToken, "/v1/token?key=%1"},
+};
+
+} // namespace API_Usage
+
 
 namespace config {
 
