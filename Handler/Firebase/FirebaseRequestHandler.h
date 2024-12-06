@@ -9,35 +9,35 @@
 #define FIREBASEREQUESTHANDLER_H
 
 #include "Utils/CloudUtility/FirebaseUtility.h"
+#include "Handler/AbstractMessageHandler.h"
 
-#include <queue>
 #include <mutex>
+#include <queue>
 #include <condition_variable>
 
-class FirebaseRequestHandler
+class FirebaseRequestHandler : public AbstractMessageHandler
 {
 public:
     using FirebaseMsgData = Utils::Cloud::Firebase::MessageData;
     FirebaseRequestHandler();
     ~FirebaseRequestHandler();
 
-    template <typename Request>
-    void enqueueRequest(Request&& request)
+    template <typename Data>
+    void enqueueMessage(Data&& data)
     {
         {
-            std::lock_guard<std::mutex> lock(m_mutex);
-            m_requestQueue.push(std::forward<Request>(request));
+            std::unique_lock<std::mutex> lock(m_mutex);
+            m_messageQueue.push(std::forward<Data>(data));
         }
         m_condition.notify_one();
     }
-private:
-    void processRequest();
 
-    bool m_isRunning;
-    std::thread m_processThread;
-    std::condition_variable m_condition;
+private:
+    void processMessage() override;
+
+    std::queue<FirebaseMsgData> m_messageQueue;
     std::mutex m_mutex;
-    std::queue<FirebaseMsgData> m_requestQueue;
+    std::condition_variable m_condition;
 };
 
 #endif // FIREBASEREQUESTHANDLER_H

@@ -9,9 +9,9 @@
 #include "Handler/Firebase/MessageProcessor/FirebaseResponseProcessor.h"
 
 FirebaseResponseHandler::FirebaseResponseHandler()
-    : m_isRunning(false)
-    , m_processThread([this] { processResponse();})
 {
+    m_isRunning = false;
+    m_processThread = std::thread([this] { processMessage(); });
 }
 
 FirebaseResponseHandler::~FirebaseResponseHandler()
@@ -21,14 +21,14 @@ FirebaseResponseHandler::~FirebaseResponseHandler()
     }
 }
 
-void FirebaseResponseHandler::processResponse()
+void FirebaseResponseHandler::processMessage()
 {
     while (true) {
         std::unique_lock<std::mutex> lock(m_mutex);
-        m_condition.wait(lock, [this] { return !m_responseQueue.empty(); });
+        m_condition.wait(lock, [this] { return !m_messageQueue.empty(); });
 
-        auto response = m_responseQueue.front();
-        m_responseQueue.pop();
+        auto response = m_messageQueue.front();
+        m_messageQueue.pop();
         lock.unlock();
 
         // Process response

@@ -9,7 +9,7 @@
 #define FIREBASEHANDLERHELPER_H
 
 #include "Core/Helper/ControllerHelper.h"
-#include "Controller/ServiceController.h"
+#include "Controller/ServiceController/ServiceController.h"
 
 #include <memory>
 
@@ -17,13 +17,14 @@ namespace utils {
 
 namespace firebase {
 
-std::weak_ptr<FirebaseRequestHandler> getFirebaseRequestHandler()
+template <typename Handler>
+std::weak_ptr<Handler> getServiceHandler()
 {
     auto serviceController = helper::system::getController<ServiceController>();
     if (!serviceController) {
         return {};
     }
-    return serviceController->getFirebaseRequestHandler();
+    return serviceController->getMessageHandler<Handler>();
 }
 
 } // namespace firebase

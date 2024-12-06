@@ -1,7 +1,7 @@
 #include <QGuiApplication>
 #include "Core/Helper/ControllerHelper.h"
 #include "Controller/SystemController.h"
-#include "Controller/ServiceController.h"
+#include "Controller/ServiceController/ServiceController.h"
 #include "Utils/CloudUtility/AuthenticationType.h"
 
 static void registerTypes()

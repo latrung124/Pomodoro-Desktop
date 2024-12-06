@@ -32,9 +32,9 @@ void constructSignInRequest(const AuthenticationType &authType,
     // detach request to a new thread
     std::thread requestThread([data]() {
         // send request to Firebase
-        auto firebaseRequestHandler = utils::firebase::getFirebaseRequestHandler();
+        auto firebaseRequestHandler = utils::firebase::getServiceHandler<FirebaseRequestHandler>();
         if (auto handler = firebaseRequestHandler.lock(); handler) {
-            handler->enqueueRequest(Utils::Cloud::Firebase::MessageData{data});
+            handler->enqueueMessage(Utils::Cloud::Firebase::MessageData{data});
         }
     });
     requestThread.detach();

@@ -9,12 +9,13 @@
 #define FIREBASERESPONSEHANDLER_H
 
 #include "Service/FirebaseService/FirebaseUtils.h"
+#include "Handler/AbstractMessageHandler.h"
 
-#include <queue>
 #include <mutex>
+#include <queue>
 #include <condition_variable>
 
-class FirebaseResponseHandler
+class FirebaseResponseHandler : public AbstractMessageHandler
 {
 public:
     using FirebaseResMsgData = firebase_utils::API_Usage::FirebaseResMsgData;
@@ -22,24 +23,22 @@ public:
     FirebaseResponseHandler();
     ~FirebaseResponseHandler();
 
-    template <typename Response>
-    void enqueueResponse(Response&& response)
+    template <typename Data>
+    void enqueueMessage(Data&& data)
     {
         {
-            std::lock_guard<std::mutex> lock(m_mutex);
-            m_responseQueue.push(std::forward<Response>(response));
+            std::unique_lock<std::mutex> lock(m_mutex);
+            m_messageQueue.push(std::forward<Data>(data));
         }
         m_condition.notify_one();
     }
 
 private:
-    void processResponse();
+    void processMessage() override;
 
-    bool m_isRunning;
-    std::thread m_processThread;
-    std::condition_variable m_condition;
+    std::queue<FirebaseResMsgData> m_messageQueue;
     std::mutex m_mutex;
-    std::queue<FirebaseResMsgData> m_responseQueue;
+    std::condition_variable m_condition;
 };
 
 #endif // FIREBASERESPONSEHANDLER_H

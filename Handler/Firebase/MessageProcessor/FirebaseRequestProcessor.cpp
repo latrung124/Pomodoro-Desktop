@@ -7,7 +7,7 @@
 
 #include "FirebaseRequestProcessor.h"
 #include "Core/Helper/ControllerHelper.h"
-#include "Controller/ServiceController.h"
+#include "Controller/ServiceController/ServiceController.h"
 #include "Service/FirebaseService/Interface/IFirebaseService.h"
 
 void FirebaseRequestProcessor::operator()(const SignInData& data)

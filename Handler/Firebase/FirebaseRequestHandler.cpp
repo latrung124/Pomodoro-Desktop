@@ -11,9 +11,9 @@
 #include <QDebug>
 
 FirebaseRequestHandler::FirebaseRequestHandler()
-    : m_isRunning(false),
-      m_processThread([this] { processRequest(); })
 {
+    m_isRunning = false;
+    m_processThread = std::thread([this] { processMessage(); });
     qDebug() << "FirebaseRequestHandler created";
 }
 
@@ -24,14 +24,14 @@ FirebaseRequestHandler::~FirebaseRequestHandler()
     }
 }
 
-void FirebaseRequestHandler::processRequest()
+void FirebaseRequestHandler::processMessage()
 {
     while (true) {
         std::unique_lock<std::mutex> lock(m_mutex);
-        m_condition.wait(lock, [this] { return !m_requestQueue.empty();});
+        m_condition.wait(lock, [this] { return !m_messageQueue.empty();});
 
-        auto request = m_requestQueue.front();
-        m_requestQueue.pop();
+        auto request = m_messageQueue.front();
+        m_messageQueue.pop();
         lock.unlock();
 
         // Process request

@@ -25,7 +25,7 @@ qt_add_executable(untitled
 
   Controller/BaseController.h
   Controller/SystemController.h
-  Controller/ServiceController.h
+  Controller/ServiceController/ServiceController.h
   Controller/ModuleController/BaseModuleController.h
   Controller/ModuleController/LoginModuleController.h
 
@@ -34,13 +34,14 @@ qt_add_executable(untitled
   Core/Helper/Firebase/FirebaseRequestHelper.h
   Core/Helper/Firebase/FirebaseHandlerHelper.h
 
+  Handler/AbstractMessagehandler.h
   Handler/Firebase/FirebaseRequestHandler.h
   Handler/Firebase/FirebaseResponseHandler.h
   Handler/Firebase/MessageProcessor/FirebaseRequestProcessor.h
   Handler/Firebase/MessageProcessor/FirebaseResponseProcessor.h
 
-  Controller/ServiceController.cpp
   Controller/SystemController.cpp
+  Controller/ServiceController/ServiceController.cpp
   Controller/ModuleController/LoginModuleController.cpp
 
   Handler/Firebase/FirebaseRequestHandler.cpp
