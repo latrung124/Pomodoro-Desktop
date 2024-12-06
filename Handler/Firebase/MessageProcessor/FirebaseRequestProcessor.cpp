@@ -10,7 +10,7 @@
 #include "Controller/ServiceController.h"
 #include "Service/FirebaseService/Interface/IFirebaseService.h"
 
-void FirebaseRequestProcessor::operator()(const Utils::Cloud::Firebase::SignInData& data)
+void FirebaseRequestProcessor::operator()(const SignInData& data)
 {
     printf("SignIn request for user %s\n", data.email.c_str());
     if (auto firebaseService = helper::system::getController<ServiceController>()->getFirebaseService().lock(); firebaseService) {
@@ -18,7 +18,7 @@ void FirebaseRequestProcessor::operator()(const Utils::Cloud::Firebase::SignInDa
     }
 }
 
-void FirebaseRequestProcessor::operator()(const Utils::Cloud::Firebase::SignUpData& data) const
+void FirebaseRequestProcessor::operator()(const SignUpData& data) const
 {
     printf("CreateAccount request for user %s\n", data.email.c_str());
     if (auto firebaseService =  helper::system::getController<ServiceController>()->getFirebaseService().lock(); firebaseService) {
@@ -26,7 +26,7 @@ void FirebaseRequestProcessor::operator()(const Utils::Cloud::Firebase::SignUpDa
     }
 }
 
-void FirebaseRequestProcessor::operator()(const Utils::Cloud::Firebase::UpdatePasswordData& data) const
+void FirebaseRequestProcessor::operator()(const UpdatePasswordData& data) const
 {
     printf("UpdatePassword request\n");
     if(auto firebaseService =  helper::system::getController<ServiceController>()->getFirebaseService().lock(); firebaseService) {
@@ -34,7 +34,7 @@ void FirebaseRequestProcessor::operator()(const Utils::Cloud::Firebase::UpdatePa
     }
 }
 
-void FirebaseRequestProcessor::operator()(const Utils::Cloud::Firebase::SignOutData& data) const
+void FirebaseRequestProcessor::operator()(const SignOutData& data) const
 {
     printf("SignOut request\n");
     if(auto firebaseService =  helper::system::getController<ServiceController>()->getFirebaseService().lock(); firebaseService) {

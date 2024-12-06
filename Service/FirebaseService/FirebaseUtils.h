@@ -10,6 +10,7 @@
 
 #include <cstdint>
 #include <string>
+#include <variant>
 
 #include <QString>
 #include <QVector>
@@ -158,6 +159,22 @@ struct GetUserDataResData {
     QString createdAt;
     QString idToken;
     bool isCustomAuth;
+};
+
+struct FirebaseResMsgData {
+    FirebaseApi api;
+    std::variant<ExchangeCustomTokenResData,
+                 ExchangeRefreshTokenResData,
+                 SignInEmailPasswordResData,
+                 SignUpEmailPasswordResData,
+                 SignInAnounymousResData,
+                 ChangePasswordResData,
+                 SendPwResetEmailResData,
+                 VerifyPwResetCodeResData,
+                 ConfirmPwResetResData,
+                 ChangeEmailResData,
+                 UpdateProfileResData,
+                 GetUserDataResData> data;
 };
 
 } // namespace API_Usage

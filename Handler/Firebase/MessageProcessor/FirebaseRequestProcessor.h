@@ -10,11 +10,15 @@
 
 #include "Utils/CloudUtility/FirebaseUtility.h"
 
+namespace {
+    using namespace Utils::Cloud::Firebase;
+}
+
 struct FirebaseRequestProcessor {
-    void operator()(const Utils::Cloud::Firebase::SignInData& data);
-    void operator()(const Utils::Cloud::Firebase::SignUpData& data) const;
-    void operator()(const Utils::Cloud::Firebase::UpdatePasswordData& data) const;
-    void operator()(const Utils::Cloud::Firebase::SignOutData& data) const;
+    void operator()(const SignInData& data);
+    void operator()(const SignUpData& data) const;
+    void operator()(const UpdatePasswordData& data) const;
+    void operator()(const SignOutData& data) const;
     void operator()(const std::monostate&) const;
 };
 
