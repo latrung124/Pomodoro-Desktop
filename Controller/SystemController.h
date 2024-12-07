@@ -47,12 +47,15 @@ signals:
 
 private:
     void init();
+    void initModuleControllers();
     void cleanup();
     void setupConnections();
 
     void themeSetup();
-    void loadModule();
-    void initModuleControllers();
+
+    void loadModules();
+    void loadModels();
+    void loadLoginModels(QObject *loginScreen);
 
     QQmlApplicationEngine m_engine;
     std::shared_ptr<ThemeConfig> m_themeConfig;

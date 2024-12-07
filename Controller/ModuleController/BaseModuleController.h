@@ -28,7 +28,7 @@ class BaseModuleController : public QObject
 {
     Q_OBJECT
 public:
-    BaseModuleController(QQmlContext *context, QObject *parent = nullptr) {};
+    BaseModuleController(QQmlContext *context, QObject *parent = nullptr) : m_context(context) {};
     virtual ~BaseModuleController() {};
 
     virtual void open() = 0;
@@ -36,4 +36,5 @@ public:
 
 protected:
     virtual void initSettings() = 0;
+    QQmlContext *m_context;
 };

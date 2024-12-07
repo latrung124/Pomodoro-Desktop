@@ -28,6 +28,8 @@ import QtQuick.Layouts
 ApplicationWindow {
     id: root
 
+    objectName: "loginScreen"
+
     width: 1366
     height: 780
 
@@ -36,6 +38,11 @@ ApplicationWindow {
     title: qsTr("Pomodoro")
 
     property string bgColor: themeConfig ? themeConfig.colorPalette.layer6 : internal.defaultBgColor
+    property QtObject loginModel: null
+
+    onLoginModelChanged: {
+        console.log("loginModelChanged!")
+    }
 
     Component.onCompleted: {
         x = Screen.width / 2 - width / 2

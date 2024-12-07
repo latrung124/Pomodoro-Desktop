@@ -46,6 +46,12 @@ void LoginModuleController::close()
 
 void LoginModuleController::initSettings()
 {
+    m_userModel = std::make_shared<UserModel>();
+}
+
+std::weak_ptr<UserModel> LoginModuleController::getUserModel() const
+{
+    return m_userModel;
 }
 
 void LoginModuleController::onSignIn(const AuthenticationType &authType
