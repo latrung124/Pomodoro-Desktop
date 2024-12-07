@@ -15,10 +15,17 @@
 
 class AuthWrapper;
 
+namespace firebase_utils::API_Usage {
+
+struct FirebaseResMsgData;
+
+}
+
 class FirebaseSender : public QObject
 {
     Q_OBJECT
 public:
+    using FirebaseResMsgData = firebase_utils::API_Usage::FirebaseResMsgData;
     explicit FirebaseSender(QObject *parent = nullptr);
     ~FirebaseSender();
 
@@ -26,8 +33,12 @@ public:
 
 public slots:
     void onInitWrapper();
+    void onPostRequestFinished(const FirebaseResMsgData &data);
 
 private:
+    void startConnection();
+    void endConnection();
+
     std::unique_ptr<AuthWrapper> m_authWrapper;
 };
 

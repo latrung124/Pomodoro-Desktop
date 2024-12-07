@@ -7,6 +7,8 @@
 
 #include "FirebaseHelper.h"
 #include "FirebaseGateway/AuthWrapper.h"
+#include "FirebaseUtils.h"
+#include "FirebaseGateway/FirebaseSender.h"
 
 #include <QHttpHeaders>
 #include <QJsonDocument>
@@ -61,6 +63,7 @@ void AuthWrapper::postSignIn(const QJsonObject &payload)
 
 void AuthWrapper::handleReplyFinished(QRestReply &reply)
 {
+    using namespace FirebaseGateway::Helper;
     if (reply.error() == QNetworkReply::NoError) {
         auto jsonOpt = reply.readJson();
         if (!jsonOpt.has_value()) {
@@ -71,16 +74,27 @@ void AuthWrapper::handleReplyFinished(QRestReply &reply)
         QJsonObject jsonObject = jsonResponse.object();
 
         // Extract fields from the JSON response
-        QString localId = jsonObject.value("localId").toString();
-        QString email = jsonObject.value("email").toString();
-        QString idToken = jsonObject.value("idToken").toString();
-        QString refreshToken = jsonObject.value("refreshToken").toString();
-        QString expiresIn = jsonObject.value("expiresIn").toString();
-        //Handle the response later
-        qDebug() << "Authentication successful!";
+        FirebaseResMsgData msgData;
+        msgData.api = firebase_utils::API_Usage::FirebaseApi::SignInEmailPassword;
+        auto localId = jsonObject.value("localId").toString();
+        auto idToken = jsonObject.value("idToken").toString();
+        auto refreshToken = jsonObject.value("refreshToken").toString();
+        auto expiresIn = jsonObject.value("expiresIn").toString();
+        auto registered = jsonObject.value("registered").toBool();
+        auto email = jsonObject.value("email").toString();
+        msgData.data = firebase_utils::API_Usage::SignInEmailPasswordResData{
+            .idToken = idToken,
+            .email = email,
+            .refreshToken = refreshToken,
+            .expiresIn = expiresIn,
+            .localId = localId,
+            .isRegistered = registered
+        };
+        qDebug() << "Post SignIn successful!";
+        emit postSignInFinished(msgData);
     } else {
         // Error
-        qDebug() << "Authentication failed!";
+        qDebug() << "Post SignIn failed!";
         qDebug() << "Error:" << reply.errorString();
 
         // Attempt to parse the error response
@@ -92,9 +106,11 @@ void AuthWrapper::handleReplyFinished(QRestReply &reply)
         QJsonDocument jsonError = errorOpt.value();
         QJsonObject jsonObject = jsonError.object();
         QString errorMessage = jsonObject.value("error").toObject().value("message").toString();
+
         if (!errorMessage.isEmpty()) {
             qDebug() << "Error message:" << errorMessage;
         }
+        emit postSignInFinished(FirebaseResMsgData{});
     }
 }
 

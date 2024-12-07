@@ -16,10 +16,18 @@
 
 #include <memory>
 
+namespace firebase_utils::API_Usage {
+
+struct FirebaseResMsgData;
+
+}
+
 class AuthWrapper : public QObject
 {
     Q_OBJECT
 public:
+    using FirebaseResMsgData = firebase_utils::API_Usage::FirebaseResMsgData;
+
     AuthWrapper(QObject *parent = nullptr);
     ~AuthWrapper();
 
@@ -27,6 +35,9 @@ public:
 
     bool sslSupport();
     void setUrl(const QString &url);
+
+signals:
+    void postSignInFinished(const FirebaseResMsgData &data);
 
 private:
     void handleReplyFinished(QRestReply &reply);

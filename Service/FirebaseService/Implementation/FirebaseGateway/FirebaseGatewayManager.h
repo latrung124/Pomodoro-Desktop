@@ -12,16 +12,29 @@
 #include <QJsonObject>
 #include <memory>
 
+namespace firebase_utils::API_Usage {
+
+struct FirebaseResMsgData;
+
+}
+
+class FirebaseSender;
+
 class FirebaseGatewayManager : public QObject
 {
     Q_OBJECT
 public:
+    using FirebaseResMsgData = firebase_utils::API_Usage::FirebaseResMsgData;
+
     ~FirebaseGatewayManager();
     static FirebaseGatewayManager& instance()
     {
         static FirebaseGatewayManager instance;
         return instance;
     }
+
+public slots:
+    void onPostRequestFinished(const FirebaseResMsgData &data);
 
 signals:
     void initWrappers();
@@ -30,7 +43,11 @@ signals:
 private:
     FirebaseGatewayManager();
 
+    void startConnection();
+    void endConnection();
+
     QThread workerThread;
+    FirebaseSender *m_sender;
 };
 
 #endif // FIREBASEGATEWAYMANAGER_H

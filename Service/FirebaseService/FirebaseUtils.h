@@ -16,6 +16,7 @@
 #include <QVector>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QMetaType>
 
 #include <QMetaType>
 
@@ -285,5 +286,6 @@ using GoogleAccessToken = firebase_utils::authentication::GoogleAccessToken;
 using ProjectConfig = firebase_utils::config::ProjectConfig;
 
 Q_DECLARE_METATYPE(GoogleAccessToken);
+Q_DECLARE_METATYPE(firebase_utils::API_Usage::FirebaseResMsgData);
 
 #endif // FIREBASEUTILS_H

@@ -44,7 +44,8 @@ target_include_directories(FirebaseService
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/Interface
         ${CMAKE_SOURCE_DIR}/Service
-        ${CMAKE_CURRENT_SOURCE_DIR}/Implementation)
+        ${CMAKE_CURRENT_SOURCE_DIR}/Implementation
+        ${CMAKE_SOURCE_DIR})
 
 # Set link directories
 target_link_libraries(FirebaseService
