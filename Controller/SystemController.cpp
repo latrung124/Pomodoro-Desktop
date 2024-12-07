@@ -79,7 +79,7 @@ void SystemController::themeSetup()
 void SystemController::initModuleControllers()
 {
     // Create an instance of LoginModuleController
-    m_loginModuleController = std::make_unique<LoginModuleController>(m_engine.rootContext());
+    m_loginModuleController = std::make_shared<LoginModuleController>(m_engine.rootContext());
     m_loginModuleController->initSettings();
 }
 
@@ -106,4 +106,9 @@ void SystemController::loadLoginModels(QObject *loginScreen)
     }
 
     loginScreen->setProperty("userModel", QVariant::fromValue(userModel.get()));
+}
+
+std::weak_ptr<LoginModuleController> SystemController::getLoginModuleController() const
+{
+    return m_loginModuleController;
 }

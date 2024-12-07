@@ -58,6 +58,7 @@ void LoginModuleController::onSignIn(const AuthenticationType &authType
                                     , const QString &email, const QString &password)
 {
     qDebug() << "Sign in request for user" << email;
+    m_userModel->setEmail(email);
     helper::firebase::constructSignInRequest(authType, email.toStdString(), password.toStdString());
 }
 

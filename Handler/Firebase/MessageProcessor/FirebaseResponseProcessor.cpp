@@ -6,6 +6,9 @@
 */
 
 #include "FirebaseResponseProcessor.h"
+#include "Core/Manager/ControllerManager.h"
+#include "Controller/SystemController.h"
+#include "Controller/ModuleController/LoginModuleController.h"
 
 void FirebaseResponseProcessor::operator()(const ExchangeCustomTokenResData& data) const
 {
@@ -20,6 +23,18 @@ void FirebaseResponseProcessor::operator()(const ExchangeRefreshTokenResData& da
 void FirebaseResponseProcessor::operator()(const SignInEmailPasswordResData& data) const
 {
     printf("SignInEmailPassword response\n");
+    auto loginModuleController = ControllerManager::instance().getController<SystemController>()->getLoginModuleController().lock();
+    if (!loginModuleController) {
+        return;
+    }
+
+    if (auto userModel = loginModuleController->getUserModel().lock(); userModel) {
+        if (data.email != "") {
+            userModel->updateModel(data.email, true);
+        } else {
+            userModel->updateModel("", false);
+        }
+    }
 }
 
 void FirebaseResponseProcessor::operator()(const SignUpEmailPasswordResData& data) const

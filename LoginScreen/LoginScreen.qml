@@ -38,10 +38,10 @@ ApplicationWindow {
     title: qsTr("Pomodoro")
 
     property string bgColor: themeConfig ? themeConfig.colorPalette.layer6 : internal.defaultBgColor
-    property QtObject loginModel: null
+    property QtObject userModel: null
 
-    onLoginModelChanged: {
-        console.log("loginModelChanged!")
+    onUserModelChanged: {
+        console.log("userModelChanged!")
     }
 
     Component.onCompleted: {
@@ -100,6 +100,7 @@ ApplicationWindow {
 
                     objectName: "LoginPanel"
                     anchors.fill: parent
+                    userModel: root.userModel
 
                     onOpenPanel: function(name) {
                         internal.handleOpenPanel(name);

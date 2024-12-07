@@ -38,6 +38,8 @@ public:
     SystemController(QObject *parent = nullptr);
     ~SystemController();
 
+    std::weak_ptr<LoginModuleController> getLoginModuleController() const;
+
 public slots:
     void start();
     void stop();
@@ -59,5 +61,5 @@ private:
 
     QQmlApplicationEngine m_engine;
     std::shared_ptr<ThemeConfig> m_themeConfig;
-    std::unique_ptr<LoginModuleController> m_loginModuleController;
+    std::shared_ptr<LoginModuleController> m_loginModuleController;
 };

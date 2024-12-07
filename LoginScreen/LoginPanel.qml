@@ -36,6 +36,7 @@ Item {
 
     property font loginRegularFont: themeConfig ? themeConfig.fontPalette.layer3 : internal.defaultFont
     property font loginGreetingFont: themeConfig ? themeConfig.fontPalette.layer2 : internal.defaultFont
+    property QtObject userModel: null
 
     signal openPanel(string name)
 
