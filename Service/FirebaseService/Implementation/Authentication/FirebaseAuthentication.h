@@ -16,11 +16,12 @@
 
 class AbstractExternalAuthProvider;
 class AbstractInternalAuthProvider;
+class FirebaseGatewayManager;
 
 class FirebaseAuthentication
 {
 public:
-    FirebaseAuthentication();
+    FirebaseAuthentication(const std::shared_ptr<FirebaseGatewayManager>& gatewayManager);
     virtual ~FirebaseAuthentication();
 
     FirebaseAuthentication(const FirebaseAuthentication&) = delete;
@@ -29,6 +30,7 @@ public:
     FirebaseAuthentication& operator=(FirebaseAuthentication&&) = delete;
 
     bool isValid() const;
+    std::weak_ptr<FirebaseGatewayManager> getGatewayManager() const;
 
     bool signIn(AuthProviderType authType,
                const std::string& email = "",
@@ -43,6 +45,7 @@ private:
 
     std::map<AuthProviderType, std::unique_ptr<AbstractExternalAuthProvider>> m_externalAuthProviders;
     std::map<AuthProviderType, std::unique_ptr<AbstractInternalAuthProvider>> m_internalAuthProviders;
+    std::weak_ptr<FirebaseGatewayManager> m_gatewayManager;
 };
 
 #endif // FIREBASEAUTHENTICATION_H

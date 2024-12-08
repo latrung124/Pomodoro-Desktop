@@ -14,6 +14,7 @@
 #include <memory>
 
 class AuthWrapper;
+class FirebaseGatewayManager;
 
 namespace firebase_utils::API_Usage {
 
@@ -26,7 +27,7 @@ class FirebaseSender : public QObject
     Q_OBJECT
 public:
     using FirebaseResMsgData = firebase_utils::API_Usage::FirebaseResMsgData;
-    explicit FirebaseSender(QObject *parent = nullptr);
+    explicit FirebaseSender(const FirebaseGatewayManager *gatewayManager, QObject *parent = nullptr);
     ~FirebaseSender();
 
     void postRequest(const QJsonObject &payload);
@@ -40,6 +41,7 @@ private:
     void endConnection();
 
     std::unique_ptr<AuthWrapper> m_authWrapper;
+    const FirebaseGatewayManager *m_gatewayManager;
 };
 
 #endif // FIREBASESENDER_H

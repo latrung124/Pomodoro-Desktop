@@ -42,8 +42,6 @@ public:
     ServiceManager(const ServiceManager&) = delete;
     ServiceManager& operator=(const ServiceManager&) = delete;
 
-    void disconnectAllServices();
-
     template<ServiceConcreteHelper::IServiceType IService>
     [[nodiscard]] std::shared_ptr<IService> registerService()
     {
@@ -94,8 +92,18 @@ public:
         throw ServiceException("Service not found");
     }
 
+    template <ServiceConcreteHelper::IServiceListenerType IServiceListener>
+    [[nodiscard]] std::shared_ptr<IServiceListener> registerListener()
+    {
+        auto listener = ServiceConcreteHelper::concreteServiceListener<IServiceListener>();
+        return listener;
+    }
+
 private:
     ServiceManager() = default;
+
+    void disconnectAllServices();
+
     std::unordered_map<size_t, std::shared_ptr<IBaseService>> m_services;
 };
 

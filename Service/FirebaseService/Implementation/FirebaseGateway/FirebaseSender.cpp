@@ -13,8 +13,9 @@
 #include <QNetworkRequest>
 #include <QJsonDocument>
 
-FirebaseSender::FirebaseSender(QObject *parent)
+FirebaseSender::FirebaseSender(const FirebaseGatewayManager *gatewayManager, QObject *parent)
     : QObject(parent)
+    , m_gatewayManager(gatewayManager)
 {
 }
 
@@ -51,5 +52,5 @@ void FirebaseSender::onInitWrapper()
 void FirebaseSender::onPostRequestFinished(const FirebaseResMsgData &data)
 {
     qDebug() << "FirebaseSender::onPostRequestFinished() called";
-    FirebaseGatewayManager::instance().onPostRequestFinished(data);
+    m_gatewayManager->onPostRequestFinished(data);
 }

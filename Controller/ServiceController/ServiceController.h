@@ -44,7 +44,11 @@ public:
     }
 
 private:
+    void registerServices();
+    void registerServiceListeners();
     void registerMessageHandlers();
+
+    void registerFirebaseServiceListener();
 
     std::weak_ptr<IFirebaseService> m_firebaseService;
     std::shared_ptr<FirebaseRequestHandler> m_firebaseRequestHandler;

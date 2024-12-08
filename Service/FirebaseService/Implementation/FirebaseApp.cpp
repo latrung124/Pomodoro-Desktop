@@ -7,6 +7,8 @@
 
 #include "FirebaseApp.h"
 #include "Authentication/FirebaseAuthentication.h"
+#include "FirebaseListenerManager.h"
+#include "FirebaseGateway/FirebaseGatewayManager.h"
 #include "FirebaseConfig.h"
 
 #include <QJsonDocument>
@@ -27,9 +29,14 @@ FirebaseApp::FirebaseApp()
         qWarning() << "Failed to initialize FirebaseApp";
         return;
     }
+
     FirebaseConfig::instance().setProjectConfig(m_projectConfig);
 
-    m_auth = std::make_shared<FirebaseAuthentication>();
+    m_gatewayManager = std::make_shared<FirebaseGatewayManager>();
+    m_gatewayManager->init();
+    m_listenerManager = std::make_shared<FirebaseListenerManager>();
+    m_gatewayManager->setFirebaseListenerManager(m_listenerManager);
+    m_auth = std::make_shared<FirebaseAuthentication>(m_gatewayManager);
 }
 
 FirebaseApp::~FirebaseApp()
@@ -69,6 +76,11 @@ bool FirebaseApp::isInitialized() const
 std::weak_ptr<FirebaseAuthentication> FirebaseApp::getAuth() const
 {
     return m_auth;
+}
+
+std::weak_ptr<FirebaseListenerManager> FirebaseApp::getListenerManager() const
+{
+    return m_listenerManager;
 }
 
 bool FirebaseApp::parseConfigJson(ProjectConfig& config)

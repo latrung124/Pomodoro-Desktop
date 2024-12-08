@@ -8,6 +8,8 @@
 #include "ServiceController.h"
 
 #include "Service/ServiceManager/ServiceManager.h"
+#include "Service/FirebaseService/Interface/IFirebaseAuthListener.h"
+#include "Service/FirebaseService/Interface/IFirebaseService.h"
 #include "Handler/Firebase/FirebaseRequestHandler.h"
 #include "Handler/Firebase/FirebaseResponseHandler.h"
 
@@ -24,14 +26,45 @@ ServiceController::~ServiceController()
 
 void ServiceController::start()
 {
-    auto firebaseService = ServiceManager::instance().registerService<IFirebaseService>();
-    m_firebaseService = firebaseService;
+    registerServices();
 
+    // Need register handler before register listener;
     registerMessageHandlers();
+
+    registerServiceListeners();
 }
 
 void ServiceController::stop()
 {
+}
+
+void ServiceController::registerServices()
+{
+    auto firebaseService = ServiceManager::instance().registerService<IFirebaseService>();
+    m_firebaseService = firebaseService;
+}
+
+void ServiceController::registerServiceListeners()
+{
+    registerFirebaseServiceListener();
+}
+
+void ServiceController::registerFirebaseServiceListener()
+{
+    if (m_firebaseService.expired()) {
+        qWarning() << "Firebase service is not available";
+        return;
+    } else {
+        if (auto firebaseService = m_firebaseService.lock(); firebaseService) {
+            auto firebaseAuthListener = ServiceManager::instance().registerListener<IFirebaseAuthListener>();
+            firebaseAuthListener->setCallback([this](const std::any& data) {
+                if (auto handler = getMessageHandler<FirebaseResponseHandler>().lock(); handler) {
+                    handler->enqueueMessage(std::any_cast<FirebaseResponseHandler::FirebaseResMsgData>(data));
+                }
+            });
+            firebaseService->registerListener(std::move(firebaseAuthListener));
+        }
+    }
 }
 
 void ServiceController::registerMessageHandlers()

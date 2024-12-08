@@ -11,7 +11,8 @@
 
 #include <iostream>
 
-FirebaseAuthentication::FirebaseAuthentication()
+FirebaseAuthentication::FirebaseAuthentication(const std::shared_ptr<FirebaseGatewayManager>& gatewayManager)
+    : m_gatewayManager(gatewayManager)
 {
     initializeAuthProvider();
 }
@@ -67,5 +68,10 @@ void FirebaseAuthentication::initializeAuthProvider()
     m_externalAuthProviders[AuthProviderType::Google] = std::make_unique<GoogleAuthProvider>();
 
     // Internal Auth Providers
-    m_internalAuthProviders[AuthProviderType::EmailPassword] = std::make_unique<EmailPwAuthProvider>();
+    m_internalAuthProviders[AuthProviderType::EmailPassword] = std::make_unique<EmailPwAuthProvider>(this);
+}
+
+std::weak_ptr<FirebaseGatewayManager> FirebaseAuthentication::getGatewayManager() const
+{
+    return m_gatewayManager;
 }

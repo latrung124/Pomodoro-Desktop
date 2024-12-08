@@ -23,6 +23,9 @@ public:
     bool connect() override;
     void disconnect() override;
 
+    void registerListener(IBaseServiceListenerPtr listener) override;
+    void unregisterListener(IBaseServiceListenerPtr listener) override;
+
     bool signIn(AuthProviderType authType,
                const std::string &email = "",
                const std::string &password = "") override;

@@ -8,6 +8,8 @@
 #include "FirebaseServiceImpl.h"
 #include "FirebaseApp.h"
 #include "Implementation/Authentication/FirebaseAuthentication.h"
+#include "Interface/IFirebaseAuthListener.h"
+#include "FirebaseListenerManager.h"
 
 #include <QDebug>
 
@@ -71,4 +73,30 @@ bool FirebaseServiceImpl::deleteAccount()
 bool FirebaseServiceImpl::updatePassword(const std::string &newPassword)
 {
     return false;
+}
+
+void FirebaseServiceImpl::registerListener(IBaseServiceListenerPtr listener)
+{
+    auto listenerManager = m_firebaseApp->getListenerManager().lock();
+    if (listenerManager)
+    {
+        listenerManager->registerListener(dynamic_pointer_cast<IFirebaseAuthListener>(listener));
+    }
+    else
+    {
+        qWarning() << "Failed to get FirebaseListenerManager";
+    }
+}
+
+void FirebaseServiceImpl::unregisterListener(IBaseServiceListenerPtr listener)
+{
+    auto listenerManager = m_firebaseApp->getListenerManager().lock();
+    if (listenerManager)
+    {
+        listenerManager->unregisterListener(dynamic_pointer_cast<IFirebaseAuthListener>(listener));
+    }
+    else
+    {
+        qWarning() << "Failed to get FirebaseListenerManager";
+    }
 }

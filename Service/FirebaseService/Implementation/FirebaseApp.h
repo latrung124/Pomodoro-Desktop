@@ -14,6 +14,8 @@
 #include <memory>
 
 class FirebaseAuthentication;
+class FirebaseListenerManager;
+class FirebaseGatewayManager;
 
 class FirebaseApp {
 public:
@@ -26,6 +28,7 @@ public:
     bool isInitialized() const;
 
     std::weak_ptr<FirebaseAuthentication> getAuth() const;
+    std::weak_ptr<FirebaseListenerManager> getListenerManager() const;
 
 private:
     bool parseConfigJson(ProjectConfig& config);
@@ -34,6 +37,8 @@ private:
     std::string m_configJsonStr;
     std::shared_ptr<FirebaseAuthentication> m_auth;
     ProjectConfig m_projectConfig;
+    std::shared_ptr<FirebaseListenerManager> m_listenerManager;
+    std::shared_ptr<FirebaseGatewayManager> m_gatewayManager;
 };
 
 #endif // FIREBASEAPP_H

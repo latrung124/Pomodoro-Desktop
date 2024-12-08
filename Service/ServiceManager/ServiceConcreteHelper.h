@@ -9,6 +9,7 @@
 #define SERVICECONCRETEHELPER_H
 
 #include "FirebaseService/Implementation/FirebaseServiceImpl.h"
+#include "FirebaseService/Implementation/Listener/FirebaseAuthListenerImpl.h"
 
 #include <memory>
 
@@ -28,6 +29,20 @@ namespace ServiceConcreteHelper
         }
         else {
             static_assert(false, "Service not implemented");
+        }
+    }
+
+    template<typename IServiceListener>
+    concept IServiceListenerType = std::derived_from<IServiceListener, IBaseServiceListener>;
+
+    template<IServiceListenerType IServiceListener>
+    requires IServiceListenerType<IServiceListener>
+    std::shared_ptr<IServiceListener> concreteServiceListener()
+    {
+        if constexpr (std::same_as<IServiceListener, IFirebaseAuthListener>) {
+            return std::make_shared<FirebaseAuthListenerImpl>();
+        } else {
+            static_assert(false, "Service listener not implemented");
         }
     }
 }

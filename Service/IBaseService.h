@@ -8,6 +8,7 @@
 #ifndef IBASESERVICE_H
 #define IBASESERVICE_H
 
+#include "IBaseServiceListener.h"
 class IBaseService
 {
 public:
@@ -19,6 +20,9 @@ public:
 
     virtual bool connect() = 0; // call this function to connect to the service before using any other functions
     virtual void disconnect() = 0; // call this function to disconnect from the service
+
+    virtual void registerListener(IBaseServiceListenerPtr listener) = 0;
+    virtual void unregisterListener(IBaseServiceListenerPtr listener) = 0;
 };
 
 #endif // IBASESERVICE_H

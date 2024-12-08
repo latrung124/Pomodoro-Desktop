@@ -3,11 +3,13 @@ add_definitions(-DFIREBASE_CONFIG_PATH="${CMAKE_CURRENT_SOURCE_DIR}/Resources/Fi
 set(FS_HEADER_FILES
     FirebaseUtils.h
     Interface/IFirebaseService.h
+    Interface/IFirebaseAuthListener.h
     Implementation/FirebaseHelper.h
     Implementation/FirebaseApp.h
     Implementation/FirebaseConfig.h
     Implementation/FirebaseServiceImpl.h
     Implementation/FirebasePayloadFactory.h
+    Implementation/FirebaseListenerManager.h
     Implementation/Authentication/FirebaseAuthentication.h
     Implementation/Authentication/AbstractExternalAuthProvider.h
     Implementation/Authentication/AbstractInternalAuthProvider.h
@@ -17,6 +19,7 @@ set(FS_HEADER_FILES
     Implementation/FirebaseGateway/FirebaseSender.h
     Implementation/FirebaseGateway/FirebaseGatewayManager.h
     Implementation/FirebaseGateway/AuthWrapper.h
+    Implementation/Listener/FirebaseAuthListenerImpl.h
 )
 
 set(FS_SOURCE_FILES
@@ -24,6 +27,7 @@ set(FS_SOURCE_FILES
     Implementation/FirebaseConfig.cpp
     Implementation/FirebaseServiceImpl.cpp
     Implementation/FirebasePayloadFactory.cpp
+    Implementation/FirebaseListenerManager.cpp
     Implementation/Authentication/FirebaseAuthentication.cpp
     Implementation/Authentication/EmailPwAuthProvider.cpp
     Implementation/Authentication/GoogleAuthProvider.cpp
@@ -31,6 +35,7 @@ set(FS_SOURCE_FILES
     Implementation/FirebaseGateway/FirebaseSender.cpp
     Implementation/FirebaseGateway/FirebaseGatewayManager.cpp
     Implementation/FirebaseGateway/AuthWrapper.cpp
+    Implementation/Listener/FirebaseAuthListenerImpl.cpp
 )
 
 add_library(FirebaseService

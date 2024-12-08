@@ -6,6 +6,7 @@
 */
 
 #include "Implementation/Authentication/EmailPwAuthProvider.h"
+#include "FirebaseAuthentication.h"
 #include "FirebaseGateway/FirebaseGatewayManager.h"
 #include "FirebasePayloadFactory.h"
 
@@ -15,7 +16,14 @@ bool EmailPwAuthProvider::signIn(const std::string &email, const std::string &pa
 {
     qDebug() << "EmailPwAuthProvider::signIn() called: " << email.c_str() << " " << password.c_str();
     QJsonObject payload = FirebasePayloadFactory::createSignInPayload(email, password);
-    FirebaseGatewayManager::instance().operate(payload); // consider to using helper function to get the instance
+    if (auto gatewayManager = m_firebase->getGatewayManager().lock(); gatewayManager)
+    {
+        gatewayManager->operate(payload);
+    }
+    else
+    {
+        qWarning() << "Failed to get FirebaseGatewayManager";
+    }
     return true;
 }
 
