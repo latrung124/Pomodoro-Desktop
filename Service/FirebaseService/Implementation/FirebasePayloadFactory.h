@@ -28,6 +28,7 @@ public:
     using UpdateProfileResData = firebase_utils::API_Usage::UpdateProfileResData;
     using ExchangeCustomTokenResData = firebase_utils::API_Usage::ExchangeCustomTokenResData;
     using ExchangeRefreshTokenResData = firebase_utils::API_Usage::ExchangeRefreshTokenResData;
+    using FirebaseApi = firebase_utils::API_Usage::FirebaseApi;
 
     static QJsonObject createSignInPayload(const std::string &email, const std::string &password);
     static QJsonObject createSignUpPayload(const std::string &email, const std::string &password);

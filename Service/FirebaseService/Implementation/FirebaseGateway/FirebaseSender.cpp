@@ -38,8 +38,16 @@ void FirebaseSender::endConnection()
 
 void FirebaseSender::postRequest(const QJsonObject &payload)
 {
-    // Need to refactor this part to handle more type of post requests
-    m_authWrapper->postSignIn(payload);
+    using FirebaseApi = firebase_utils::API_Usage::FirebaseApi;
+    uint16_t apiId = payload.value("apiId").toInt();
+    switch (static_cast<FirebaseApi>(apiId))
+    {
+    case FirebaseApi::SignInEmailPassword:
+        m_authWrapper->postSignIn(payload);
+        break;
+    default:
+        break;
+    }
 }
 
 void FirebaseSender::onInitWrapper()

@@ -90,7 +90,7 @@ void AuthWrapper::handleReplyFinished(QRestReply &reply)
             .localId = localId,
             .isRegistered = registered
         };
-        qDebug() << "Post SignIn successful!";
+        qDebug() << "Post SignIn successful! Email: " << email;
         emit postSignInFinished(msgData);
     } else {
         // Error

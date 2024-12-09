@@ -10,6 +10,7 @@
 QJsonObject FirebasePayloadFactory::createSignInPayload(const std::string &email, const std::string &password)
 {
     QJsonObject payload;
+    payload["apiId"] = static_cast<int>(FirebaseApi::SignInEmailPassword);
     payload["email"] = email.c_str();
     payload["password"] = password.c_str();
     return payload;
@@ -18,6 +19,7 @@ QJsonObject FirebasePayloadFactory::createSignInPayload(const std::string &email
 QJsonObject FirebasePayloadFactory::createSignUpPayload(const std::string &email, const std::string &password)
 {
     QJsonObject payload;
+    payload["apiId"] = static_cast<int>(FirebaseApi::SignUpEmailPassword);
     payload["email"] = email.c_str();
     payload["password"] = password.c_str();
     return payload;
@@ -26,6 +28,7 @@ QJsonObject FirebasePayloadFactory::createSignUpPayload(const std::string &email
 QJsonObject FirebasePayloadFactory::createChangePasswordPayload(const std::string &email, const std::string &password)
 {
     QJsonObject payload;
+    payload["apiId"] = static_cast<int>(FirebaseApi::ChangePassword);
     payload["email"] = email.c_str();
     payload["password"] = password.c_str();
     return payload;
@@ -34,6 +37,7 @@ QJsonObject FirebasePayloadFactory::createChangePasswordPayload(const std::strin
 QJsonObject FirebasePayloadFactory::createSendPwResetEmailPayload(const std::string &email)
 {
     QJsonObject payload;
+    payload["apiId"] = static_cast<int>(FirebaseApi::SendPwResetEmail);
     payload["email"] = email.c_str();
     return payload;
 }
@@ -41,6 +45,7 @@ QJsonObject FirebasePayloadFactory::createSendPwResetEmailPayload(const std::str
 QJsonObject FirebasePayloadFactory::createVerifyPwResetCodePayload(const std::string &email, const std::string &code)
 {
     QJsonObject payload;
+    payload["apiId"] = static_cast<int>(FirebaseApi::VerifyPwResetCode);
     payload["email"] = email.c_str();
     payload["code"] = code.c_str();
     return payload;
@@ -49,6 +54,7 @@ QJsonObject FirebasePayloadFactory::createVerifyPwResetCodePayload(const std::st
 QJsonObject FirebasePayloadFactory::createConfirmPwResetPayload(const std::string &email, const std::string &code, const std::string &newPassword)
 {
     QJsonObject payload;
+    payload["apiId"] = static_cast<int>(FirebaseApi::ConfirmPwReset);
     payload["email"] = email.c_str();
     payload["code"] = code.c_str();
     payload["newPassword"] = newPassword.c_str();
@@ -58,6 +64,7 @@ QJsonObject FirebasePayloadFactory::createConfirmPwResetPayload(const std::strin
 QJsonObject FirebasePayloadFactory::createChangeEmailPayload(const std::string &email, const std::string &newEmail)
 {
     QJsonObject payload;
+    payload["apiId"] = static_cast<int>(FirebaseApi::ChangeEmail);
     payload["email"] = email.c_str();
     payload["newEmail"] = newEmail.c_str();
     return payload;
@@ -66,6 +73,7 @@ QJsonObject FirebasePayloadFactory::createChangeEmailPayload(const std::string &
 QJsonObject FirebasePayloadFactory::createUpdateProfilePayload(const std::string &email, const std::string &displayName, const std::string &photoUrl)
 {
     QJsonObject payload;
+    payload["apiId"] = static_cast<int>(FirebaseApi::UpdateProfile);
     payload["email"] = email.c_str();
     payload["displayName"] = displayName.c_str();
     payload["photoUrl"] = photoUrl.c_str();
@@ -75,6 +83,7 @@ QJsonObject FirebasePayloadFactory::createUpdateProfilePayload(const std::string
 QJsonObject FirebasePayloadFactory::createGetUserDataPayload(const std::string &email)
 {
     QJsonObject payload;
+    payload["apiId"] = static_cast<int>(FirebaseApi::GetUserData);
     payload["email"] = email.c_str();
     return payload;
 }
@@ -82,6 +91,7 @@ QJsonObject FirebasePayloadFactory::createGetUserDataPayload(const std::string &
 QJsonObject FirebasePayloadFactory::createExchangeCustomTokenPayload(const std::string &customToken)
 {
     QJsonObject payload;
+    payload["apiId"] = static_cast<int>(FirebaseApi::ExchangeCustomToken);
     payload["customToken"] = customToken.c_str();
     return payload;
 }
@@ -89,6 +99,7 @@ QJsonObject FirebasePayloadFactory::createExchangeCustomTokenPayload(const std::
 QJsonObject FirebasePayloadFactory::createExchangeRefreshTokenPayload(const std::string &refreshToken)
 {
     QJsonObject payload;
+    payload["apiId"] = static_cast<int>(FirebaseApi::ExchangeRefreshToken);
     payload["refreshToken"] = refreshToken.c_str();
     return payload;
 }

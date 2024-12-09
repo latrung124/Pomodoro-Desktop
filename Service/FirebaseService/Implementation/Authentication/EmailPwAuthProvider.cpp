@@ -29,6 +29,16 @@ bool EmailPwAuthProvider::signIn(const std::string &email, const std::string &pa
 
 bool EmailPwAuthProvider::signUp(const std::string &email, const std::string &password)
 {
+    qDebug() << "EmailPwAuthProvider::signUp() called: " << email.c_str() << " " << password.c_str();
+    QJsonObject payload = FirebasePayloadFactory::createSignUpPayload(email, password);
+    if (auto gatewayManager = m_firebase->getGatewayManager().lock(); gatewayManager)
+    {
+        gatewayManager->operate(payload);
+    }
+    else
+    {
+        qWarning() << "Failed to get FirebaseGatewayManager";
+    }
     return true;
 }
 
