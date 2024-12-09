@@ -28,7 +28,7 @@ public:
     virtual bool signOut() = 0;
     virtual bool signUp(const std::string &email, const std::string &password) = 0;
     virtual bool deleteAccount() = 0;
-    virtual bool updatePassword(const std::string &newPassword) = 0;
+    virtual bool updatePassword(const std::string &idToken, const std::string &newPassword) = 0;
 };
 
 #endif // IFIREBASESERVICE_H

@@ -19,7 +19,7 @@ public:
     bool signIn(const std::string &email, const std::string &password) override;
     bool deleteAccount() override;
     bool signUp(const std::string &email, const std::string &password) override;
-    bool updatePassword(const std::string &newPassword) override;
+    bool updatePassword(const std::string& idToken, const std::string &newPassword) override;
 };
 
 #endif // EMAILPWAUTHPROVIDER_H

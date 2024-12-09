@@ -62,6 +62,23 @@ bool FirebaseServiceImpl::signOut()
 
 bool FirebaseServiceImpl::signUp(const std::string &email, const std::string &password)
 {
+    if (m_firebaseApp->isInitialized())
+    {
+        qDebug() << Q_FUNC_INFO << " FirebaseApp is initialized";
+    }
+    else
+    {
+        qWarning() << Q_FUNC_INFO << " FirebaseApp is not initialized";
+        return false;
+    }
+    qDebug() << "FirebaseServiceImpl::signUp() called: " << email.c_str() << " " << password.c_str();
+    if (auto auth = m_firebaseApp->getAuth().lock(); auth)
+    {
+        return auth->signUp(email, password);
+    } else {
+        qWarning() << "Failed to get FirebaseAuthentication";
+    }
+
     return false;
 }
 
@@ -70,8 +87,25 @@ bool FirebaseServiceImpl::deleteAccount()
     return false;
 }
 
-bool FirebaseServiceImpl::updatePassword(const std::string &newPassword)
+bool FirebaseServiceImpl::updatePassword(const std::string &idToken, const std::string &newPassword)
 {
+    if (m_firebaseApp->isInitialized())
+    {
+        qDebug() << Q_FUNC_INFO << " FirebaseApp is initialized";
+    }
+    else
+    {
+        qWarning() << Q_FUNC_INFO << " FirebaseApp is not initialized";
+        return false;
+    }
+    qDebug() << "FirebaseServiceImpl::updatePassword() called: " << newPassword.c_str();
+    if (auto auth = m_firebaseApp->getAuth().lock(); auth)
+    {
+        return auth->updatePassword(idToken, newPassword);
+    } else {
+        qWarning() << "Failed to get FirebaseAuthentication";
+    }
+
     return false;
 }
 

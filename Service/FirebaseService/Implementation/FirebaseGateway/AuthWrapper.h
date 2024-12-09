@@ -32,15 +32,21 @@ public:
     ~AuthWrapper();
 
     void postSignIn(const QJsonObject &payload);
+    void postSignUp(const QJsonObject &payload);
+    void postUpdatePassword(const QJsonObject &payload);
 
     bool sslSupport();
     void setUrl(const QString &url);
 
 signals:
     void postSignInFinished(const FirebaseResMsgData &data);
+    void postSignUpFinished(const FirebaseResMsgData &data);
+    void postUpdatePasswordFinished(const FirebaseResMsgData &data);
 
 private:
-    void handleReplyFinished(QRestReply &reply);
+    void handleSignInReplyFinished(QRestReply &reply);
+    void handleSignUpReplyFinished(QRestReply &reply);
+    void handleUpdatePasswordReplyFinished(QRestReply &reply);
 
     QNetworkAccessManager m_networkManager;
     std::unique_ptr<QNetworkRequestFactory> m_requestFactory;

@@ -47,7 +47,17 @@ bool EmailPwAuthProvider::deleteAccount()
     return true;
 }
 
-bool EmailPwAuthProvider::updatePassword(const std::string &newPassword)
+bool EmailPwAuthProvider::updatePassword(const std::string &idToken, const std::string &newPassword)
 {
+    qDebug() << "EmailPwAuthProvider::updatePassword() called: " << newPassword.c_str();
+    QJsonObject payload = FirebasePayloadFactory::createChangePasswordPayload(idToken, newPassword);
+    if (auto gatewayManager = m_firebase->getGatewayManager().lock(); gatewayManager)
+    {
+        gatewayManager->operate(payload);
+    }
+    else
+    {
+        qWarning() << "Failed to get FirebaseGatewayManager";
+    }
     return true;
 }

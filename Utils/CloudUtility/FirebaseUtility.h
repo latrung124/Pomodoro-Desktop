@@ -38,6 +38,7 @@ struct SignUpData {
 };
 
 struct UpdatePasswordData {
+    std::string idToken;
     std::string newPassword;
 };
 

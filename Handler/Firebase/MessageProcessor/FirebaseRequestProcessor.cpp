@@ -30,7 +30,7 @@ void FirebaseRequestProcessor::operator()(const UpdatePasswordData& data) const
 {
     printf("UpdatePassword request\n");
     if(auto firebaseService =  helper::system::getController<ServiceController>()->getFirebaseService().lock(); firebaseService) {
-        firebaseService->updatePassword(data.newPassword);
+        firebaseService->updatePassword(data.idToken, data.newPassword);
     }
 }
 

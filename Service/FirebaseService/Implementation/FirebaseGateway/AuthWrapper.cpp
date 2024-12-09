@@ -19,6 +19,12 @@
 #include <QtNetwork/qsslsocket.h>
 #endif
 
+namespace {
+
+using FirebaseApi = firebase_utils::API_Usage::FirebaseApi;
+
+}
+
 AuthWrapper::AuthWrapper(QObject *parent)
     : QObject(parent)
     , m_requestFactory(std::make_unique<QNetworkRequestFactory>())
@@ -52,16 +58,49 @@ void AuthWrapper::postSignIn(const QJsonObject &payload)
         return;
     }
 
-    QString path = QString(getFirebaseApiPath(firebase_utils::API_Usage::FirebaseApi::SignInEmailPassword)).arg(apiKey);
+    QString path = QString(getFirebaseApiPath(FirebaseApi::SignInEmailPassword)).arg(apiKey);
     QNetworkRequest request = m_requestFactory->createRequest(path);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json"_L1);
     m_restAccessManager->post(request, QJsonDocument(payload), this, [this](QRestReply &reply) {
-        //print thread id:
-        handleReplyFinished(reply);
+        handleSignInReplyFinished(reply);
     });
 }
 
-void AuthWrapper::handleReplyFinished(QRestReply &reply)
+void AuthWrapper::postSignUp(const QJsonObject &payload)
+{
+    using namespace FirebaseGateway::Helper;
+    QString apiKey = getCurrentApiKey().c_str();
+    if (apiKey.isEmpty()) {
+        qWarning() << "API key is empty";
+        return;
+    }
+
+    QString path = QString(getFirebaseApiPath(FirebaseApi::SignUpEmailPassword)).arg(apiKey);
+    QNetworkRequest request = m_requestFactory->createRequest(path);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json"_L1);
+    m_restAccessManager->post(request, QJsonDocument(payload), this, [this](QRestReply &reply) {
+        handleSignUpReplyFinished(reply);
+    });
+}
+
+void AuthWrapper::postUpdatePassword(const QJsonObject &payload)
+{
+    using namespace FirebaseGateway::Helper;
+    QString apiKey = getCurrentApiKey().c_str();
+    if (apiKey.isEmpty()) {
+        qWarning() << "API key is empty";
+        return;
+    }
+
+    QString path = QString(getFirebaseApiPath(FirebaseApi::ChangePassword)).arg(apiKey);
+    QNetworkRequest request = m_requestFactory->createRequest(path);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json"_L1);
+    m_restAccessManager->post(request, QJsonDocument(payload), this, [this](QRestReply &reply) {
+        handleUpdatePasswordReplyFinished(reply);
+    });
+}
+
+void AuthWrapper::handleSignInReplyFinished(QRestReply &reply)
 {
     using namespace FirebaseGateway::Helper;
     if (reply.error() == QNetworkReply::NoError) {
@@ -111,6 +150,110 @@ void AuthWrapper::handleReplyFinished(QRestReply &reply)
             qDebug() << "Error message:" << errorMessage;
         }
         emit postSignInFinished(FirebaseResMsgData{});
+    }
+}
+
+void AuthWrapper::handleSignUpReplyFinished(QRestReply &reply)
+{
+    using namespace FirebaseGateway::Helper;
+    if (reply.error() == QNetworkReply::NoError) {
+        auto jsonOpt = reply.readJson();
+        if (!jsonOpt.has_value()) {
+            qWarning() << "Failed to parse JSON response";
+            return;
+        }
+        QJsonDocument jsonResponse = jsonOpt.value();
+        QJsonObject jsonObject = jsonResponse.object();
+
+        // Extract fields from the JSON response
+        FirebaseResMsgData msgData;
+        msgData.api = firebase_utils::API_Usage::FirebaseApi::SignUpEmailPassword;
+        auto idToken = jsonObject.value("idToken").toString();
+        auto email = jsonObject.value("email").toString();
+        auto refreshToken = jsonObject.value("refreshToken").toString();
+        auto expiresIn = jsonObject.value("expiresIn").toString();
+        auto localId = jsonObject.value("localId").toString();
+        msgData.data = firebase_utils::API_Usage::SignUpEmailPasswordResData{
+            .idToken = idToken,
+            .email = email,
+            .refreshToken = refreshToken,
+            .expiresIn = expiresIn,
+            .localId = localId,
+        };
+        qDebug() << "Post SignUp successful! Email: " << email;
+        emit postSignUpFinished(msgData);
+    } else {
+        // TODO:Handle error detail later
+        qDebug() << "Post SignUp failed!";
+        qDebug() << "Error:" << reply.errorString();
+
+        auto errorOpt = reply.readJson();
+        if (!errorOpt.has_value()) {
+            qWarning() << "Failed to parse JSON error response";
+            return;
+        }
+        QJsonDocument jsonError = errorOpt.value();
+        QJsonObject jsonObject = jsonError.object();
+        QString errorMessage = jsonObject.value("error").toObject().value("message").toString();
+
+        if (!errorMessage.isEmpty()) {
+            qDebug() << "Error message:" << errorMessage;
+        }
+        emit postSignUpFinished(FirebaseResMsgData{});
+    }
+}
+
+void AuthWrapper::handleUpdatePasswordReplyFinished(QRestReply &replay)
+{
+    using namespace FirebaseGateway::Helper;
+    if (replay.error() == QNetworkReply::NoError) {
+        auto jsonOpt = replay.readJson();
+        if (!jsonOpt.has_value()) {
+            qWarning() << "Failed to parse JSON response";
+            return;
+        }
+        QJsonDocument jsonResponse = jsonOpt.value();
+        QJsonObject jsonObject = jsonResponse.object();
+
+        // Extract fields from the JSON response
+        FirebaseResMsgData msgData;
+        msgData.api = firebase_utils::API_Usage::FirebaseApi::ChangePassword;
+        auto email = jsonObject.value("email").toString();
+        auto localId = jsonObject.value("localId").toString();
+        auto pwHash = jsonObject.value("pwHash").toString();
+        auto providerUserInfos = jsonObject.value("providerUserInfos").toArray();
+        auto idToken = jsonObject.value("idToken").toString();
+        auto refreshToken = jsonObject.value("refreshToken").toString();
+        auto expiresIn = jsonObject.value("expiresIn").toString();
+        msgData.data = firebase_utils::API_Usage::ChangePasswordResData{
+            .email = email,
+            .localId = localId,
+            .pwHash = pwHash,
+            .providerUserInfos = providerUserInfos,
+            .idToken = idToken,
+            .refreshToken = refreshToken,
+            .expiresIn = expiresIn,
+        };
+        qDebug() << "Post UpdatePassword successful! Email: " << email;
+        emit postUpdatePasswordFinished(msgData);
+    } else {
+        // Error
+        qDebug() << "Post UpdatePassword failed!";
+        qDebug() << "Error:" << replay.errorString();
+
+        auto errorOpt = replay.readJson();
+        if (!errorOpt.has_value()) {
+            qWarning() << "Failed to parse JSON error response";
+            return;
+        }
+        QJsonDocument jsonError = errorOpt.value();
+        QJsonObject jsonObject = jsonError.object();
+        QString errorMessage = jsonObject.value("error").toObject().value("message").toString();
+
+        if (!errorMessage.isEmpty()) {
+            qDebug() << "Error message:" << errorMessage;
+        }
+        emit postUpdatePasswordFinished(FirebaseResMsgData{});
     }
 }
 

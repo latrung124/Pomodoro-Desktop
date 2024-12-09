@@ -28,11 +28,19 @@ void FirebaseSender::startConnection()
 {
     connect(m_authWrapper.get(), &AuthWrapper::postSignInFinished,
             this, &FirebaseSender::onPostRequestFinished);
+    connect(m_authWrapper.get(), &AuthWrapper::postSignUpFinished,
+            this, &FirebaseSender::onPostRequestFinished);
+    connect(m_authWrapper.get(), &AuthWrapper::postUpdatePasswordFinished,
+            this, &FirebaseSender::onPostRequestFinished);
 }
 
 void FirebaseSender::endConnection()
 {
     disconnect(m_authWrapper.get(), &AuthWrapper::postSignInFinished,
+               this, &FirebaseSender::onPostRequestFinished);
+    disconnect(m_authWrapper.get(), &AuthWrapper::postSignUpFinished,
+               this, &FirebaseSender::onPostRequestFinished);
+    disconnect(m_authWrapper.get(), &AuthWrapper::postUpdatePasswordFinished,
                this, &FirebaseSender::onPostRequestFinished);
 }
 
@@ -44,6 +52,12 @@ void FirebaseSender::postRequest(const QJsonObject &payload)
     {
     case FirebaseApi::SignInEmailPassword:
         m_authWrapper->postSignIn(payload);
+        break;
+    case FirebaseApi::SignUpEmailPassword:
+        m_authWrapper->postSignUp(payload);
+        break;
+    case FirebaseApi::ChangePassword:
+        m_authWrapper->postUpdatePassword(payload);
         break;
     default:
         break;

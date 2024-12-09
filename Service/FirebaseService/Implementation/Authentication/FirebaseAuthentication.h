@@ -38,7 +38,7 @@ public:
     bool signUp(const std::string& email, const std::string& password);
     bool signOut();
     bool deleteAccount();
-    bool updatePassword(const std::string& newPassword);
+    bool updatePassword(const std::string& idToken, const std::string& newPassword);
 
 private:
     void initializeAuthProvider();

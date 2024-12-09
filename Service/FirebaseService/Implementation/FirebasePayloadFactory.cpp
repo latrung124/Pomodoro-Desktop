@@ -25,11 +25,11 @@ QJsonObject FirebasePayloadFactory::createSignUpPayload(const std::string &email
     return payload;
 }
 
-QJsonObject FirebasePayloadFactory::createChangePasswordPayload(const std::string &email, const std::string &password)
+QJsonObject FirebasePayloadFactory::createChangePasswordPayload(const std::string &idToken, const std::string &password)
 {
     QJsonObject payload;
     payload["apiId"] = static_cast<int>(FirebaseApi::ChangePassword);
-    payload["email"] = email.c_str();
+    payload["idToken"] = idToken.c_str();
     payload["password"] = password.c_str();
     return payload;
 }

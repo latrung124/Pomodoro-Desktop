@@ -32,7 +32,7 @@ public:
 
     static QJsonObject createSignInPayload(const std::string &email, const std::string &password);
     static QJsonObject createSignUpPayload(const std::string &email, const std::string &password);
-    static QJsonObject createChangePasswordPayload(const std::string &email, const std::string &password);
+    static QJsonObject createChangePasswordPayload(const std::string &idToken, const std::string &password);
     static QJsonObject createSendPwResetEmailPayload(const std::string &email);
     static QJsonObject createVerifyPwResetCodePayload(const std::string &email, const std::string &code);
     static QJsonObject createConfirmPwResetPayload(const std::string &email, const std::string &code, const std::string &newPassword);

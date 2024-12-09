@@ -56,9 +56,9 @@ bool FirebaseAuthentication::deleteAccount()
     return m_internalAuthProviders[AuthProviderType::EmailPassword]->deleteAccount();
 }
 
-bool FirebaseAuthentication::updatePassword(const std::string& newPassword)
+bool FirebaseAuthentication::updatePassword(const std::string &idToken, const std::string& newPassword)
 {
-    return m_internalAuthProviders[AuthProviderType::EmailPassword]->updatePassword(newPassword);
+    return m_internalAuthProviders[AuthProviderType::EmailPassword]->updatePassword(idToken, newPassword);
 }
 
 void FirebaseAuthentication::initializeAuthProvider()
