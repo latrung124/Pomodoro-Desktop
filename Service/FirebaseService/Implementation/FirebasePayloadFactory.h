@@ -28,6 +28,7 @@ public:
     using UpdateProfileResData = firebase_utils::API_Usage::UpdateProfileResData;
     using ExchangeCustomTokenResData = firebase_utils::API_Usage::ExchangeCustomTokenResData;
     using ExchangeRefreshTokenResData = firebase_utils::API_Usage::ExchangeRefreshTokenResData;
+    using GoogleAccessTokenResData = firebase_utils::API_Usage::GoogleAccessTokenResData;
     using FirebaseApi = firebase_utils::API_Usage::FirebaseApi;
 
     static QJsonObject createSignInPayload(const std::string &email, const std::string &password);
@@ -41,6 +42,7 @@ public:
     static QJsonObject createGetUserDataPayload(const std::string &email);
     static QJsonObject createExchangeCustomTokenPayload(const std::string &customToken);
     static QJsonObject createExchangeRefreshTokenPayload(const std::string &refreshToken);
+    static QJsonObject createSignInWithGooglePayload(const std::string &accessToken = "");
 
     static SignInEmailPasswordResData parseSignInEmailPasswordResPayload(const QJsonObject &payload);
     static SignUpEmailPasswordResData parseSignUpEmailPasswordResPayload(const QJsonObject &payload);
@@ -53,6 +55,7 @@ public:
     static UpdateProfileResData parseUpdateProfileResPayload(const QJsonObject &payload);
     static ExchangeCustomTokenResData parseExchangeCustomTokenResPayload(const QJsonObject &payload);
     static ExchangeRefreshTokenResData parseExchangeRefreshTokenResPayload(const QJsonObject &payload);
+    static GoogleAccessTokenResData parseGoogleAccessTokenResPayload(const QJsonObject &payload);
 };
 
 #endif // FIREBASEPAYLOADFACTORY_H

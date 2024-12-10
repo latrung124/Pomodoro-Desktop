@@ -6,25 +6,24 @@
 */
 
 #include "GoogleAuthProvider.h"
-#include "Implementation/Authentication/GoogleOAuth.h"
+#include "FirebaseAuthentication.h"
+#include "FirebaseGateway/FirebaseGatewayManager.h"
+#include "FirebasePayloadFactory.h"
 
-GoogleAuthProvider::GoogleAuthProvider(QObject *parent)
-    : AbstractExternalAuthProvider(parent)
-    , m_googleOAuth(std::make_unique<GoogleOAuth>())
-{
-    QObject::connect(m_googleOAuth.get(), &GoogleOAuth::googleAccessTokenReceived,
-                    this, &GoogleAuthProvider::onGoogleAccessTokenReceived);
-}
+#include <QJsonObject>
+#include <QDebug>
 
 bool GoogleAuthProvider::signIn()
 {
-    if (m_googleOAuth->requestAccessToken()) {
-        return true;
+    qDebug() << "GoogleAuthProvider::signIn() called";
+    QJsonObject payload = FirebasePayloadFactory::createSignInWithGooglePayload();
+    if (auto gatewayManager = m_firebase->getGatewayManager().lock(); gatewayManager)
+    {
+        gatewayManager->operate(payload);
+    }
+    else
+    {
+        qWarning() << "Failed to get FirebaseGatewayManager";
     }
     return true;
-}
-
-void GoogleAuthProvider::onGoogleAccessTokenReceived(const GoogleAccessToken& accessToken)
-{
-    // Exchange the access token for a Firebase credential
 }

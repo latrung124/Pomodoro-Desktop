@@ -42,6 +42,7 @@ enum class FirebaseApi : uint16_t {
     GetUserData,
     ExchangeCustomToken,
     ExchangeRefreshToken,
+    SignInWithGoogle,
 };
 
 const QHash<FirebaseApi, QString> gFirebaseApiPath {
@@ -57,6 +58,7 @@ const QHash<FirebaseApi, QString> gFirebaseApiPath {
     {FirebaseApi::GetUserData, "/v1/accounts:lookup?key=%1"},
     {FirebaseApi::ExchangeCustomToken, "/v1/accounts:signInWithCustomToken?key=%1"},
     {FirebaseApi::ExchangeRefreshToken, "/v1/token?key=%1"},
+    {FirebaseApi::SignInWithGoogle, ""},
 };
 
 struct ExchangeCustomTokenResData {
@@ -162,6 +164,14 @@ struct GetUserDataResData {
     bool isCustomAuth;
 };
 
+struct GoogleAccessTokenResData {
+    QString accessToken;
+    QString tokenType;
+    QString expiresIn;
+    QString refreshToken;
+    QString scope;
+};
+
 struct FirebaseResMsgData {
     FirebaseApi api;
     std::variant<ExchangeCustomTokenResData,
@@ -175,7 +185,8 @@ struct FirebaseResMsgData {
                  ConfirmPwResetResData,
                  ChangeEmailResData,
                  UpdateProfileResData,
-                 GetUserDataResData> data;
+                 GetUserDataResData,
+                 GoogleAccessTokenResData> data;
 };
 
 } // namespace API_Usage
@@ -264,14 +275,6 @@ struct OAuthConfig {
     std::string platform;
 };
 
-struct GoogleAccessToken {
-    std::string accessToken;
-    std::string tokenType;
-    std::string expiresIn;
-    std::string refreshToken;
-    std::string scope;
-};
-
 const std::string gGoogleOAuthScope = "scope=email%20profile";
 const std::string gGoogleOAuthResponseType = "response_type=code";
 const std::string gGoogleOAuthState = "state=security_token%3D138r5719ru3e1%26url%3Dhttps%3A%2F%2Foauth2.example.com%2Ftoken";
@@ -282,10 +285,8 @@ const std::string gGoogleOAuthState = "state=security_token%3D138r5719ru3e1%26ur
 
 using AuthProviderType = firebase_utils::authentication::AuthProviderType;
 using OAuthConfig = firebase_utils::authentication::OAuthConfig;
-using GoogleAccessToken = firebase_utils::authentication::GoogleAccessToken;
 using ProjectConfig = firebase_utils::config::ProjectConfig;
 
-Q_DECLARE_METATYPE(GoogleAccessToken);
 Q_DECLARE_METATYPE(firebase_utils::API_Usage::FirebaseResMsgData);
 
 #endif // FIREBASEUTILS_H

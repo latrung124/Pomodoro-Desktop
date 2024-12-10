@@ -8,14 +8,15 @@
 #ifndef ABSTRACTEXTERNALAUTHPROVIDER_H
 #define ABSTRACTEXTERNALAUTHPROVIDER_H
 
-#include <QObject>
+class FirebaseAuthentication;
 
-class AbstractExternalAuthProvider : public QObject
+class AbstractExternalAuthProvider
 {
-    Q_OBJECT
 public:
-    AbstractExternalAuthProvider(QObject* parent = nullptr)
-        : QObject(parent) {}
+    AbstractExternalAuthProvider(const FirebaseAuthentication *firebaseAuth)
+        : m_firebase(firebaseAuth)
+    {
+    }
     virtual ~AbstractExternalAuthProvider() = default;
 
     AbstractExternalAuthProvider(const AbstractExternalAuthProvider&) = delete;
@@ -24,6 +25,9 @@ public:
     AbstractExternalAuthProvider& operator=(AbstractExternalAuthProvider&&) = delete;
 
     virtual bool signIn() = 0;
+
+protected:
+    const FirebaseAuthentication *m_firebase;
 };
 
 #endif // ABSTRACTEXTERNALAUTHPROVIDER_H

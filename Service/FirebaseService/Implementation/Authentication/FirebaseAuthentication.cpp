@@ -65,7 +65,7 @@ void FirebaseAuthentication::initializeAuthProvider()
 {
     // Initialize the authentication provider
     // External Auth Providers
-    m_externalAuthProviders[AuthProviderType::Google] = std::make_unique<GoogleAuthProvider>();
+    m_externalAuthProviders[AuthProviderType::Google] = std::make_unique<GoogleAuthProvider>(this);
 
     // Internal Auth Providers
     m_internalAuthProviders[AuthProviderType::EmailPassword] = std::make_unique<EmailPwAuthProvider>(this);

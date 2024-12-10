@@ -7,6 +7,7 @@
 
 #include "FirebaseSender.h"
 #include "FirebaseGateway/AuthWrapper.h"
+#include "FirebaseGateway/GoogleOAuthWrapper.h"
 #include "FirebaseUtils.h"
 #include "FirebaseGateway/FirebaseGatewayManager.h"
 
@@ -32,6 +33,8 @@ void FirebaseSender::startConnection()
             this, &FirebaseSender::onPostRequestFinished);
     connect(m_authWrapper.get(), &AuthWrapper::postUpdatePasswordFinished,
             this, &FirebaseSender::onPostRequestFinished);
+    connect(m_googleOAuthWrapper.get(), &GoogleOAuthWrapper::googleAuthenticationSuccess,
+            this, &FirebaseSender::onPostOAuthRequestFinished);
 }
 
 void FirebaseSender::endConnection()
@@ -59,6 +62,9 @@ void FirebaseSender::postRequest(const QJsonObject &payload)
     case FirebaseApi::ChangePassword:
         m_authWrapper->postUpdatePassword(payload);
         break;
+    case FirebaseApi::SignInWithGoogle:
+        m_googleOAuthWrapper->signIn();
+        break;
     default:
         break;
     }
@@ -67,6 +73,7 @@ void FirebaseSender::postRequest(const QJsonObject &payload)
 void FirebaseSender::onInitWrapper()
 {
     m_authWrapper = std::make_unique<AuthWrapper>();
+    m_googleOAuthWrapper = std::make_unique<GoogleOAuthWrapper>();
 
     startConnection();
 }
@@ -74,5 +81,11 @@ void FirebaseSender::onInitWrapper()
 void FirebaseSender::onPostRequestFinished(const FirebaseResMsgData &data)
 {
     qDebug() << "FirebaseSender::onPostRequestFinished() called";
+    m_gatewayManager->onPostRequestFinished(data);
+}
+
+void FirebaseSender::onPostOAuthRequestFinished(const FirebaseResMsgData &data)
+{
+    qDebug() << "FirebaseSender::onPostOAuthRequestFinished() called";
     m_gatewayManager->onPostRequestFinished(data);
 }

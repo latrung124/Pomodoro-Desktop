@@ -26,13 +26,3 @@ OAuthConfig FirebaseConfig::getOAuthConfig() const
 {
     return m_oauthConfig;
 }
-
-void FirebaseConfig::setGoogleAccessToken(const GoogleAccessToken &token)
-{
-    m_googleAccessToken = token;
-}
-
-GoogleAccessToken FirebaseConfig::getGoogleAccessToken() const
-{
-    return m_googleAccessToken;
-}

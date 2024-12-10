@@ -104,6 +104,14 @@ QJsonObject FirebasePayloadFactory::createExchangeRefreshTokenPayload(const std:
     return payload;
 }
 
+QJsonObject FirebasePayloadFactory::createSignInWithGooglePayload(const std::string &accessToken)
+{
+    QJsonObject payload;
+    payload["apiId"] = static_cast<int>(FirebaseApi::SignInWithGoogle);
+    payload["accessToken"] = accessToken.c_str();
+    return payload;
+}
+
 FirebasePayloadFactory::SignInEmailPasswordResData FirebasePayloadFactory::parseSignInEmailPasswordResPayload(const QJsonObject &payload)
 {
     SignInEmailPasswordResData resPayload;
@@ -216,5 +224,16 @@ FirebasePayloadFactory::ExchangeRefreshTokenResData FirebasePayloadFactory::pars
     resPayload.idToken = payload["idToken"].toString();
     resPayload.refreshToken = payload["refreshToken"].toString();
     resPayload.expiresIn = payload["expiresIn"].toString();
+    return resPayload;
+}
+
+FirebasePayloadFactory::GoogleAccessTokenResData FirebasePayloadFactory::parseGoogleAccessTokenResPayload(const QJsonObject &payload)
+{
+    GoogleAccessTokenResData resPayload;
+    resPayload.accessToken = payload["accessToken"].toString();
+    resPayload.tokenType = payload["tokenType"].toString();
+    resPayload.expiresIn = payload["expiresIn"].toString();
+    resPayload.refreshToken = payload["refreshToken"].toString();
+    resPayload.scope = payload["scope"].toString();
     return resPayload;
 }

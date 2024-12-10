@@ -27,6 +27,7 @@ struct FirebaseResponseProcessor {
     void operator()(const ChangeEmailResData& data) const;
     void operator()(const UpdateProfileResData& data) const;
     void operator()(const GetUserDataResData& data) const;
+    void operator()(const GoogleAccessTokenResData& data) const;
 };
 
 #endif // FIREBASERESPONSEPROCESSOR_H

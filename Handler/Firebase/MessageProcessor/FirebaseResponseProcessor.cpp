@@ -81,3 +81,8 @@ void FirebaseResponseProcessor::operator()(const GetUserDataResData& data) const
 {
     printf("GetUserData response\n");
 }
+
+void FirebaseResponseProcessor::operator()(const GoogleAccessTokenResData& data) const
+{
+    printf("GetUserData response\n");
+}

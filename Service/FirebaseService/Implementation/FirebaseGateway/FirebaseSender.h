@@ -14,6 +14,7 @@
 #include <memory>
 
 class AuthWrapper;
+class GoogleOAuthWrapper;
 class FirebaseGatewayManager;
 
 namespace firebase_utils::API_Usage {
@@ -35,12 +36,14 @@ public:
 public slots:
     void onInitWrapper();
     void onPostRequestFinished(const FirebaseResMsgData &data);
+    void onPostOAuthRequestFinished(const FirebaseResMsgData &data);
 
 private:
     void startConnection();
     void endConnection();
 
     std::unique_ptr<AuthWrapper> m_authWrapper;
+    std::unique_ptr<GoogleOAuthWrapper> m_googleOAuthWrapper;
     const FirebaseGatewayManager *m_gatewayManager;
 };
 

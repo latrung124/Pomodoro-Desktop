@@ -28,15 +28,11 @@ public:
     void setOAuthConfig(const OAuthConfig &config);
     OAuthConfig getOAuthConfig() const;
 
-    void setGoogleAccessToken(const GoogleAccessToken &token);
-    GoogleAccessToken getGoogleAccessToken() const;
-
 private:
     FirebaseConfig() = default;
 
     std::optional<ProjectConfig> m_projectConfig;
     OAuthConfig m_oauthConfig;
-    GoogleAccessToken m_googleAccessToken;
 };
 
 #endif // FIREBASECONFIG_H

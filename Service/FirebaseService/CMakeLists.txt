@@ -15,10 +15,11 @@ set(FS_HEADER_FILES
     Implementation/Authentication/AbstractInternalAuthProvider.h
     Implementation/Authentication/EmailPwAuthProvider.h
     Implementation/Authentication/GoogleAuthProvider.h
-    Implementation/Authentication/GoogleOAuth.h
     Implementation/FirebaseGateway/FirebaseSender.h
     Implementation/FirebaseGateway/FirebaseGatewayManager.h
     Implementation/FirebaseGateway/AuthWrapper.h
+    Implementation/FirebaseGateway/OAuthWrapper.h
+    Implementation/FirebaseGateway/GoogleOAuthWrapper.h
     Implementation/Listener/FirebaseAuthListenerImpl.h
 )
 
@@ -31,10 +32,10 @@ set(FS_SOURCE_FILES
     Implementation/Authentication/FirebaseAuthentication.cpp
     Implementation/Authentication/EmailPwAuthProvider.cpp
     Implementation/Authentication/GoogleAuthProvider.cpp
-    Implementation/Authentication/GoogleOAuth.cpp
     Implementation/FirebaseGateway/FirebaseSender.cpp
     Implementation/FirebaseGateway/FirebaseGatewayManager.cpp
     Implementation/FirebaseGateway/AuthWrapper.cpp
+    Implementation/FirebaseGateway/GoogleOAuthWrapper.cpp
     Implementation/Listener/FirebaseAuthListenerImpl.cpp
 )
 
@@ -57,4 +58,5 @@ target_link_libraries(FirebaseService
     PUBLIC
     Qt6::Core
     Qt6::Network
-    Qt6::Gui)
+    Qt6::Gui
+    Qt6::NetworkAuth)
