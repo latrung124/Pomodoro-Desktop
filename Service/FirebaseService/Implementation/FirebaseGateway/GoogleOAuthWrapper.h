@@ -29,6 +29,7 @@ signals:
 private slots:
     void handleAuthStatusChanged(const QAbstractOAuth::Status& status);
     void handleTokenReceived();
+    void handleRequestFailed(const QAbstractOAuth::Error& error);
 
 private:
     bool loadConfig();

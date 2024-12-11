@@ -82,7 +82,8 @@ void GoogleOAuthWrapper::setupOAuth2()
     m_oauth2->setClientIdentifierSharedKey(oauthConfig.clientSecret.c_str());
     m_oauth2->setAuthorizationUrl(QUrl(oauthConfig.authUri.c_str()));
     m_oauth2->setAccessTokenUrl(QUrl(oauthConfig.tokenUri.c_str()));
-    m_oauth2->setScope("email%20profile");
+    m_oauth2->setScope("email profile");
+    m_oauth2->setContentType(QAbstractOAuth::ContentType::WwwFormUrlEncoded);
 
     m_replyHandler = new QOAuthHttpServerReplyHandler(8080, this);
     m_oauth2->setReplyHandler(m_replyHandler);
@@ -93,10 +94,29 @@ void GoogleOAuthWrapper::setupOAuth2()
         &QDesktopServices::openUrl);
     connect(m_oauth2, &QOAuth2AuthorizationCodeFlow::granted,
         this, &GoogleOAuthWrapper::handleTokenReceived);
+    connect(m_oauth2, &QOAuth2AuthorizationCodeFlow::requestFailed,
+        this, &GoogleOAuthWrapper::handleRequestFailed);
+}
+
+void GoogleOAuthWrapper::handleRequestFailed(const QAbstractOAuth::Error& error)
+{
+    std::cerr << "Request failed: " << static_cast<int>(error) << std::endl;
 }
 
 void GoogleOAuthWrapper::handleAuthStatusChanged(const QAbstractOAuth::Status& status)
 {
+    switch (status) {
+    case QAbstractOAuth::Status::NotAuthenticated:
+        break;
+    case QAbstractOAuth::Status::TemporaryCredentialsReceived:
+        // Handle temporary credentials if needed
+        break;
+    case QAbstractOAuth::Status::Granted:
+        // Already handled in granted signal
+        break;
+    default:
+        break;
+    }
 }
 
 void GoogleOAuthWrapper::handleTokenReceived()
