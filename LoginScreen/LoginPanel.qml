@@ -407,6 +407,11 @@ Item {
                         iconSize: 20
                         Layout.fillWidth: true
                         backgroundColor: "#333333"
+
+                        onClicked: function() {
+                            console.log("Sign in with Google Button clicked");
+                            loginModuleController.onSignIn(AuthenticationType.Google, "", "");
+                        }
                     }
                 }
             }
