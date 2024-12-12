@@ -22,6 +22,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Basic
 import QtQuick.Layouts
+import App.Enums 1.0
 
 import CommonComponent
 
@@ -35,7 +36,7 @@ Item {
 
     property font loginRegularFont: themeConfig ? themeConfig.fontPalette.layer3 : internal.defaultFont
     property font loginGreetingFont: themeConfig ? themeConfig.fontPalette.layer2 : internal.defaultFont
-    property bool isErrorLogin: false
+    property QtObject userModel: null
 
     signal openPanel(string name)
 
@@ -130,7 +131,7 @@ Item {
                                 id: errorLoginText
 
                                 text: qsTr("*Invalid login or password")
-                                visible: isErrorLogin
+                                visible: false
                                 anchors.left: emailTitleText.right
                                 anchors.leftMargin: 10
                                 anchors.verticalCenter: parent.verticalCenter
@@ -147,6 +148,7 @@ Item {
                         CustomTextField {
                             id: emailTextField
 
+                            echoMode: TextInput.Normal
                             backgroundText: qsTr("Email or phone number")
                             Layout.alignment: Qt.AlignTop
                         }
@@ -190,7 +192,7 @@ Item {
                                 id: errorPwText
 
                                 text: qsTr("*Invalid login or password")
-                                visible: isErrorLogin
+                                visible: false
                                 anchors.left: pwTitleText.right
                                 anchors.leftMargin: 10
                                 anchors.verticalCenter: parent.verticalCenter
@@ -357,6 +359,11 @@ Item {
                                 horizontalAlignment: Text.AlignHCenter
                             }
                         }
+
+                        onClicked: {
+                            console.log("Sign In Button clicked");
+                            internal.signInButtonClicked();
+                        }
                     }
                 }
             }
@@ -400,6 +407,11 @@ Item {
                         iconSize: 20
                         Layout.fillWidth: true
                         backgroundColor: "#333333"
+
+                        onClicked: function() {
+                            console.log("Sign in with Google Button clicked");
+                            loginModuleController.onSignIn(AuthenticationType.Google, "", "");
+                        }
                     }
                 }
             }
@@ -504,5 +516,27 @@ Item {
         property double footerLayoutHeight: 220.5
         property int headerLayoutHeight: 80
         property int contentLayoutHeight: 244
+
+        function isValidEmail(email) {
+            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(email);
+        }
+
+        function isValidPassword(password) {
+            // Example: Password must be at least 6 characters long
+            return password.length >= 6;
+        }
+
+        function signInButtonClicked() {
+            var isValidLoginAndPassword = internal.isValidEmail(emailTextField.text) && internal.isValidPassword(pwTextField.text);
+            errorLoginText.visible = !isValidLoginAndPassword;
+            errorPwText.visible = !isValidLoginAndPassword;
+            if (isValidLoginAndPassword) {
+                loginModuleController.onSignIn(AuthenticationType.EmailAndPassword,
+                                               emailTextField.text, pwTextField.text);
+            } else {
+                console.log("Invalid login or password");
+            }
+        }
     }
 }

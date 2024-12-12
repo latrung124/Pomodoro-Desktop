@@ -18,9 +18,11 @@
  * Author: La Trung
  */
 
-#include <QQmlContext>
-
 #include "Controller/ModuleController/LoginModuleController.h"
+#include "Core/Helper/Firebase/FirebaseRequestHelper.h"
+
+#include <QQmlContext>
+#include <QDebug>
 
 LoginModuleController::LoginModuleController(QQmlContext *context, QObject *parent)
     : BaseModuleController(context, parent)
@@ -44,4 +46,28 @@ void LoginModuleController::close()
 
 void LoginModuleController::initSettings()
 {
+    m_userModel = std::make_shared<UserModel>();
+}
+
+std::weak_ptr<UserModel> LoginModuleController::getUserModel() const
+{
+    return m_userModel;
+}
+
+void LoginModuleController::onSignIn(const AuthenticationType &authType
+                                    , const QString &email, const QString &password)
+{
+    qDebug() << "Sign in request for user" << email;
+    m_userModel->setEmail(email);
+    helper::firebase::constructSignInRequest(authType, email.toStdString(), password.toStdString());
+}
+
+void LoginModuleController::onSignUp(const QString &email, const QString &password)
+{
+    qDebug() << "Sign up request for user" << email;
+}
+
+void LoginModuleController::onSignOut()
+{
+    qDebug() << "Sign out request";
 }

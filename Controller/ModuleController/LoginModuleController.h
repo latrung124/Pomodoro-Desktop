@@ -21,11 +21,14 @@
 #pragma once
 
 #include "Controller/ModuleController/BaseModuleController.h"
+#include "Utils/CloudUtility/FirebaseUtility.h"
+#include "Model/Authentication/UserModel.h"
+
+#include <memory>
 
 class LoginModuleController : public BaseModuleController
 {
     Q_OBJECT
-
 public:
     explicit LoginModuleController(QQmlContext *context, QObject *parent = nullptr);
     ~LoginModuleController();
@@ -34,4 +37,14 @@ public:
     void close() override;
 
     void initSettings() override;
+
+    std::weak_ptr<UserModel> getUserModel() const;
+
+public slots:
+    void onSignIn(const AuthenticationType &authType, const QString &email, const QString &password);
+    void onSignUp(const QString &email, const QString &password);
+    void onSignOut();
+
+private:
+    std::shared_ptr<UserModel> m_userModel;
 };

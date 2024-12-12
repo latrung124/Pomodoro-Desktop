@@ -20,22 +20,25 @@
 
 #pragma once
 
+#include "ThemeConfig/ThemeConfig.h"
+#include "BaseController.h"
+
 #include <QObject>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QResource>
+
 #include <memory>
 
-#include "ThemeConfig/ThemeConfig.h"
-
 class LoginModuleController;
-class SystemController : public QObject
+class SystemController : public BaseController
 {
     Q_OBJECT
-
 public:
     SystemController(QObject *parent = nullptr);
     ~SystemController();
+
+    std::weak_ptr<LoginModuleController> getLoginModuleController() const;
 
 public slots:
     void start();
@@ -46,14 +49,17 @@ signals:
 
 private:
     void init();
+    void initModuleControllers();
     void cleanup();
     void setupConnections();
 
     void themeSetup();
-    void loadModule();
-    void initModuleControllers();
+
+    void loadModules();
+    void loadModels();
+    void loadLoginModels(QObject *loginScreen);
 
     QQmlApplicationEngine m_engine;
     std::shared_ptr<ThemeConfig> m_themeConfig;
-    std::unique_ptr<LoginModuleController> m_loginModuleController;
+    std::shared_ptr<LoginModuleController> m_loginModuleController;
 };

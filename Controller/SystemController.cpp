@@ -23,7 +23,7 @@
 #include "Controller/ModuleController/LoginModuleController.h"
 
 SystemController::SystemController(QObject *parent)
-    : QObject(parent)
+    : BaseController(parent)
 {
     init();
 }
@@ -35,17 +35,20 @@ SystemController::~SystemController()
 
 void SystemController::start()
 {
-    loadModule();
+    loadModules();
+    loadModels();
 }
 
 void SystemController::stop()
 {
+    cleanup();
     m_engine.quit();
 }
 
 void SystemController::init()
 {
     themeSetup();
+    initModuleControllers();
 }
 
 void SystemController::cleanup()
@@ -57,7 +60,7 @@ void SystemController::setupConnections()
     QObject::connect(&m_engine, &QQmlApplicationEngine::quit, this, &SystemController::quit);
 }
 
-void SystemController::loadModule()
+void SystemController::loadModules()
 {
     // Load LoginScreen module
     using namespace Utils::SystemScreenSettings;
@@ -76,6 +79,36 @@ void SystemController::themeSetup()
 void SystemController::initModuleControllers()
 {
     // Create an instance of LoginModuleController
-    m_loginModuleController = std::make_unique<LoginModuleController>(m_engine.rootContext());
+    m_loginModuleController = std::make_shared<LoginModuleController>(m_engine.rootContext());
     m_loginModuleController->initSettings();
+}
+
+void SystemController::loadModels()
+{
+    auto objList = m_engine.rootObjects();
+    for (auto obj : objList) {
+        if (obj->objectName() == "loginScreen") {
+            auto loginScreen = obj->findChild<QObject*>("loginScreen");
+            loadLoginModels(loginScreen);
+        }
+    }
+}
+
+void SystemController::loadLoginModels(QObject *loginScreen)
+{
+    if (!loginScreen) {
+        return;
+    }
+
+    auto userModel = m_loginModuleController->getUserModel().lock();
+    if (!userModel) {
+        return;
+    }
+
+    loginScreen->setProperty("userModel", QVariant::fromValue(userModel.get()));
+}
+
+std::weak_ptr<LoginModuleController> SystemController::getLoginModuleController() const
+{
+    return m_loginModuleController;
 }
