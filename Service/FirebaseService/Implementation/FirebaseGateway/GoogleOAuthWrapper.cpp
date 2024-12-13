@@ -9,7 +9,8 @@
 
 #include <QNetworkReply>
 #include <QDesktopServices>
-#include <QAbstractOAuth>
+#include <QNetworkRequest>
+#include <QUrlQuery>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <iostream>
@@ -17,23 +18,29 @@
 
 GoogleOAuthWrapper::GoogleOAuthWrapper(QObject* parent)
     : OAuthWrapper(parent)
+    , m_tcpServer(nullptr)
+    , m_loadedConfig(false)
 {
-    if (loadConfig()) {
-        setupOAuth2();
-    } else {
-        std::cerr << "Failed to load Google OAuth config" << std::endl;
-    }
+    m_loadedConfig = loadConfig();
 }
 
 GoogleOAuthWrapper::~GoogleOAuthWrapper()
 {
-    delete m_oauth2;
-    delete m_replyHandler;
 }
 
 void GoogleOAuthWrapper::signIn()
 {
-    m_oauth2->grant();
+    if (!m_loadedConfig) {
+        return;
+    }
+
+    if (!openListenServer()) {
+        return;
+    }
+
+    if (!requestAccessToken()) {
+        return;
+    }
 }
 
 bool GoogleOAuthWrapper::loadConfig()
@@ -67,93 +74,135 @@ bool GoogleOAuthWrapper::loadConfig()
     return true;
 }
 
-void GoogleOAuthWrapper::setupOAuth2()
+quint16 GoogleOAuthWrapper::getPort() const
 {
-    m_oauth2 = new QOAuth2AuthorizationCodeFlow(this);
+    return m_port;
+}
 
-    if (!m_oauthConfig.has_value()) {
-        qWarning() << "No oauth config!";
-        return;
+std::string GoogleOAuthWrapper::generateAuthorizationUrl()
+{
+    using namespace firebase_utils::authentication;
+    auto config = m_oauthConfig.value();
+    std::string authorizationUrl = config.authUri + '?';
+    authorizationUrl += gGoogleOAuthScope;
+    authorizationUrl += '&';
+    authorizationUrl += gGoogleOAuthResponseType;
+    authorizationUrl += '&';
+    authorizationUrl += gGoogleOAuthState;
+    authorizationUrl += '&';
+    authorizationUrl +=  "redirect_uri=http://localhost:";
+    authorizationUrl += std::to_string(getPort());
+    authorizationUrl += '&';
+    authorizationUrl += "client_id=";
+    authorizationUrl += config.clientId;
+    std::cout << "Authorization URL: " << authorizationUrl << std::endl;
+    return authorizationUrl;
+}
+
+bool GoogleOAuthWrapper::openBrowser(const QUrl& authorizationUrl)
+{
+    return QDesktopServices::openUrl(authorizationUrl);
+}
+
+bool GoogleOAuthWrapper::openListenServer()
+{
+    m_tcpServer = new QTcpServer();
+    if (m_tcpServer->listen(QHostAddress::LocalHost)) {
+        m_port = m_tcpServer->serverPort();
+        std::cout << "Listening on port " << m_port << " for authorization code..." << std::endl;
+        auto responseHandler = [this]() {
+            QTcpSocket *client = m_tcpServer->nextPendingConnection();
+            client->waitForReadyRead();
+            QString response = client->readAll();
+            // Extract the authorization code from the URL
+            QStringList lines = response.split("\r\n");
+            QString firstLine = lines.first();
+            QRegularExpression codeRegex("code=([^&\\s]+)");
+            QRegularExpressionMatch match = codeRegex.match(firstLine);
+            if (match.hasMatch()) {
+                QString authorizationCode = match.captured(1);
+                qDebug() << "Authorization Code:" << authorizationCode;
+                // Respond to the browser
+                client->write("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n"
+                              "<html><body><h1>Authorization Successful</h1>"
+                              "<p>You can close this window.</p></body></html>");
+                client->disconnectFromHost();
+                // Pass the code to the next step
+                if (exchangeCodeForToken(authorizationCode.toStdString())) {
+                    std::cout << "Successfully exchanged authorization code for access token" << std::endl;
+                } else {
+                    std::cerr << "Failed to exchange authorization code for access token" << std::endl;
+                }
+            } else {
+                std::cerr << "Failed to extract authorization code" << std::endl;
+            }
+            client->close();
+            client->deleteLater();
+            m_tcpServer->close();
+            m_tcpServer->deleteLater();
+        };
+        QObject::connect(m_tcpServer, &QTcpServer::newConnection, responseHandler);
+    } else {
+        std::cerr << "Failed to listen on port" << std::endl;
+        return false;
     }
 
-    auto oauthConfig = m_oauthConfig.value();
-
-    m_oauth2->setClientIdentifier(oauthConfig.clientId.c_str());
-    m_oauth2->setClientIdentifierSharedKey(oauthConfig.clientSecret.c_str());
-    m_oauth2->setAuthorizationUrl(QUrl(oauthConfig.authUri.c_str()));
-    m_oauth2->setAccessTokenUrl(QUrl(oauthConfig.tokenUri.c_str()));
-    m_oauth2->setScope("email profile");
-    m_oauth2->setContentType(QAbstractOAuth::ContentType::WwwFormUrlEncoded);
-
-    m_replyHandler = new QOAuthHttpServerReplyHandler(8080, this);
-    m_oauth2->setReplyHandler(m_replyHandler);
-
-    connect(m_oauth2, &QOAuth2AuthorizationCodeFlow::statusChanged,
-        this, &GoogleOAuthWrapper::handleAuthStatusChanged);
-    connect(m_oauth2, &QOAuth2AuthorizationCodeFlow::authorizeWithBrowser,
-        &QDesktopServices::openUrl);
-    connect(m_oauth2, &QOAuth2AuthorizationCodeFlow::granted,
-        this, &GoogleOAuthWrapper::handleTokenReceived);
-    connect(m_oauth2, &QOAuth2AuthorizationCodeFlow::requestFailed,
-        this, &GoogleOAuthWrapper::handleRequestFailed);
+    return true;
 }
 
-void GoogleOAuthWrapper::handleRequestFailed(const QAbstractOAuth::Error& error)
+bool GoogleOAuthWrapper::requestAccessToken()
 {
-    std::cerr << "Request failed: " << static_cast<int>(error) << std::endl;
-}
-
-void GoogleOAuthWrapper::handleAuthStatusChanged(const QAbstractOAuth::Status& status)
-{
-    switch (status) {
-    case QAbstractOAuth::Status::NotAuthenticated:
-        break;
-    case QAbstractOAuth::Status::TemporaryCredentialsReceived:
-        // Handle temporary credentials if needed
-        break;
-    case QAbstractOAuth::Status::Granted:
-        // Already handled in granted signal
-        break;
-    default:
-        break;
+    std::cout << "Requesting authorization code from Google..." << std::endl;
+    QUrl authUrl(QString::fromStdString(generateAuthorizationUrl()));
+    QUrlQuery query(authUrl);
+    authUrl.setQuery(query);
+    if (openBrowser(authUrl)) {
+        std::cout << "Browser opened to request authorization code" << std::endl;
+    } else {
+        std::cerr << "Failed to open browser" << std::endl;
+        return false;
     }
+
+    return true;
 }
 
-void GoogleOAuthWrapper::handleTokenReceived()
+bool GoogleOAuthWrapper::exchangeCodeForToken(const std::string& authorizationCode)
 {
-    using namespace firebase_utils::API_Usage;
-    m_accessToken = m_oauth2->token();
-    GoogleAccessTokenResData token;
-    token.accessToken = "accessToken";
-    FirebaseResMsgData msgData{
-        .api = FirebaseApi::SignInWithGoogle,
-        .data = token,
-    };
-    emit googleAuthenticationSuccess(msgData);
-
-    getUserInfo();
-}
-
-void GoogleOAuthWrapper::getUserInfo()
-{
-    QUrl url("https://www.googleapis.com/oauth2/v2/userinfo");
-    auto reply = m_oauth2->get(url);
-
-    connect(reply, &QNetworkReply::finished, this, [reply, this]() {
+    std::cout << "Exchanging authorization code for access token..." << std::endl;
+    auto config = m_oauthConfig.value();
+    QUrl tokenUrl(QString::fromStdString(config.tokenUri));
+    QNetworkRequest request(tokenUrl);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    QUrlQuery postData;
+    postData.addQueryItem("code", QString::fromStdString(authorizationCode));
+    postData.addQueryItem("client_id", QString::fromStdString(config.clientId));
+    postData.addQueryItem("client_secret", QString::fromStdString(config.clientSecret));
+    postData.addQueryItem("redirect_uri", QString::fromStdString("http://localhost:" + std::to_string(getPort())));
+    postData.addQueryItem("grant_type", "authorization_code");
+    m_networkManager.post(request, postData.toString(QUrl::FullyEncoded).toUtf8());
+    auto replyHandler = [this](QNetworkReply *reply) {
         if (reply->error() != QNetworkReply::NoError) {
-            std::cerr << "Failed to get user info" << std::endl;
+            std::cerr << "Failed to exchange authorization code for access token" << std::endl;
             return;
         }
-
-        const auto data = reply->readAll();
-        const auto jsonDoc = QJsonDocument::fromJson(data);
-        const auto jsonObj = jsonDoc.object();
-
-        if (jsonObj.contains("email")) {
-            const QString email = jsonObj["email"].toString();
-            std::cout << "Email: " << email.toStdString() << std::endl;
-        }
-
+        QByteArray response = reply->readAll();
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
+        QJsonObject jsonObj = jsonDoc.object();
+        QString accessToken = jsonObj["access_token"].toString();
+        qDebug() << "Access Token: " << accessToken;
+        m_googleAccessToken.accessToken = accessToken;
+        m_googleAccessToken.tokenType = jsonObj["token_type"].toString();
+        m_googleAccessToken.expiresIn = jsonObj["expires_in"].toString();
+        m_googleAccessToken.refreshToken = jsonObj["refresh_token"].toString();
+        m_googleAccessToken.scope = jsonObj["scope"].toString();
         reply->deleteLater();
-    });
+
+        emit googleAuthenticationSuccess({
+            .api = FirebaseApi::SignInWithGoogle,
+            .data = m_googleAccessToken,
+        });
+    };
+    QObject::connect(&m_networkManager, &QNetworkAccessManager::finished, replyHandler);
+
+    return true;
 }
