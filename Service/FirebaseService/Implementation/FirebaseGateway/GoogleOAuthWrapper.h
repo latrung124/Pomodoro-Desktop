@@ -10,6 +10,9 @@
 
 #include "FirebaseUtils.h"
 #include "FirebaseGateway/OAuthWrapper.h"
+#include <QUrl>
+#include <QNetworkAccessManager>
+#include <QTcpServer>
 
 #include <optional>
 
@@ -18,6 +21,9 @@ class GoogleOAuthWrapper : public OAuthWrapper
     Q_OBJECT
 public:
     using FirebaseResMsgData = firebase_utils::API_Usage::FirebaseResMsgData;
+    using GoogleAccessTokenResData = firebase_utils::API_Usage::GoogleAccessTokenResData;
+    using FirebaseApi = firebase_utils::API_Usage::FirebaseApi;
+
     GoogleOAuthWrapper(QObject* parent = nullptr);
     ~GoogleOAuthWrapper();
 
@@ -26,18 +32,21 @@ public:
 signals:
     void googleAuthenticationSuccess(const FirebaseResMsgData &data);
 
-private slots:
-    void handleAuthStatusChanged(const QAbstractOAuth::Status& status);
-    void handleTokenReceived();
-    void handleRequestFailed(const QAbstractOAuth::Error& error);
-
 private:
     bool loadConfig();
-    void setupOAuth2();
-    void getUserInfo();
+    bool requestAccessToken();
+    bool openListenServer();
+    bool openBrowser(const QUrl& authorizationUrl);
+    bool exchangeCodeForToken(const std::string& authorizationCode);
+    std::string generateAuthorizationUrl();
+    quint16 getPort() const;
 
     std::optional<OAuthConfig> m_oauthConfig;
-    QString m_accessToken;
+    QNetworkAccessManager m_networkManager;
+    QTcpServer* m_tcpServer;
+    GoogleAccessTokenResData m_googleAccessToken;
+    quint16 m_port;
+    bool m_loadedConfig;
 };
 
 #endif // GOOGLEOAUTHWRAPPER_H
