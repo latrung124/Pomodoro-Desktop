@@ -18,6 +18,8 @@ qt_standard_project_setup(REQUIRES 6.5)
 
 qt_add_executable(untitled
   main.cpp
+  GuiApplication.h
+  GuiApplication.cpp
 
   Utils/CommonSettingsDefine.h
   Utils/CloudUtility/AuthenticationType.h

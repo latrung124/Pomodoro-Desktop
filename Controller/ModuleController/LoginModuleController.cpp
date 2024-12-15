@@ -20,6 +20,8 @@
 
 #include "Controller/ModuleController/LoginModuleController.h"
 #include "Core/Helper/Firebase/FirebaseRequestHelper.h"
+#include "Core/Helper/ControllerHelper.h"
+#include "Controller/SystemController.h"
 
 #include <QQmlContext>
 #include <QDebug>
@@ -42,11 +44,18 @@ void LoginModuleController::open()
 
 void LoginModuleController::close()
 {
+    emit closeModule();
 }
 
 void LoginModuleController::initSettings()
 {
     m_userModel = std::make_shared<UserModel>();
+}
+
+void LoginModuleController::setupConnections()
+{
+    auto systemController = helper::system::getController<SystemController>();
+    connect(this, &LoginModuleController::closeModule, systemController.get(), &SystemController::stop);
 }
 
 std::weak_ptr<UserModel> LoginModuleController::getUserModel() const

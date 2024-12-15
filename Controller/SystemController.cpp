@@ -24,8 +24,10 @@
 
 SystemController::SystemController(QObject *parent)
     : BaseController(parent)
+    , m_engine(new QQmlApplicationEngine(this))
 {
     init();
+    setupConnections();
 }
 
 SystemController::~SystemController()
@@ -37,12 +39,12 @@ void SystemController::start()
 {
     loadModules();
     loadModels();
+    setupConnections();
 }
 
 void SystemController::stop()
 {
     cleanup();
-    m_engine.quit();
 }
 
 void SystemController::init()
@@ -53,18 +55,24 @@ void SystemController::init()
 
 void SystemController::cleanup()
 {
+    m_loginModuleController->deleteLater();
+    m_themeConfig->deleteLater();
+    m_engine->deleteLater();
 }
 
 void SystemController::setupConnections()
 {
-    QObject::connect(&m_engine, &QQmlApplicationEngine::quit, this, &SystemController::quit);
+    if (!m_loginModuleController) {
+        return;
+    }
+    m_loginModuleController->setupConnections();
 }
 
 void SystemController::loadModules()
 {
     // Load LoginScreen module
     using namespace Utils::SystemScreenSettings;
-    m_engine.loadFromModule(moduleSettingsMap[LoginScreen].modulePath
+    m_engine->loadFromModule(moduleSettingsMap[LoginScreen].modulePath
                             , moduleSettingsMap[LoginScreen].moduleName);
 }
 
@@ -73,19 +81,19 @@ void SystemController::themeSetup()
     // Create an instance of ThemeConfig
     m_themeConfig = std::make_shared<ThemeConfig>();
     // Expose ThemeConfig to QML
-    m_engine.rootContext()->setContextProperty("themeConfig", m_themeConfig.get());
+    m_engine->rootContext()->setContextProperty("themeConfig", m_themeConfig.get());
 }
 
 void SystemController::initModuleControllers()
 {
     // Create an instance of LoginModuleController
-    m_loginModuleController = std::make_shared<LoginModuleController>(m_engine.rootContext());
+    m_loginModuleController = std::make_shared<LoginModuleController>(m_engine->rootContext());
     m_loginModuleController->initSettings();
 }
 
 void SystemController::loadModels()
 {
-    auto objList = m_engine.rootObjects();
+    auto objList = m_engine->rootObjects();
     for (auto obj : objList) {
         if (obj->objectName() == "loginScreen") {
             auto loginScreen = obj->findChild<QObject*>("loginScreen");

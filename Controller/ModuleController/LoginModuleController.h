@@ -33,14 +33,18 @@ public:
     explicit LoginModuleController(QQmlContext *context, QObject *parent = nullptr);
     ~LoginModuleController();
 
-    void open() override;
-    void close() override;
-
     void initSettings() override;
+    void setupConnections() override;
 
     std::weak_ptr<UserModel> getUserModel() const;
 
+signals:
+    void closeModule();
+
 public slots:
+    void open() override;
+    void close() override;
+
     void onSignIn(const AuthenticationType &authType, const QString &email, const QString &password);
     void onSignUp(const QString &email, const QString &password);
     void onSignOut();

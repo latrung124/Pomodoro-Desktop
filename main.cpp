@@ -3,6 +3,7 @@
 #include "Controller/SystemController.h"
 #include "Controller/ServiceController/ServiceController.h"
 #include "Utils/CloudUtility/AuthenticationType.h"
+#include "GuiApplication.h"
 
 static void registerTypes()
 {
@@ -14,22 +15,29 @@ static void registerTypes()
         "Cannot create AuthenticationType in QML. Access enums only.");
 }
 
+static QGuiApplication* app = nullptr;
+
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
+    app = new QGuiApplication(argc, argv);
+    GuiApplication::setInstance(app);
 
     Q_INIT_RESOURCE(ThemeResources);
     registerTypes();
+
+    QCoreApplication::setApplicationName("Totodoro");
+    QCoreApplication::setOrganizationName("Luminary");
+    QCoreApplication::setApplicationVersion(QT_VERSION_STR);
 
     helper::system::addController<SystemController>();
     helper::system::addController<ServiceController>();
 
     auto systemController = helper::system::getController<SystemController>();
-    QObject::connect(systemController.get(), &SystemController::quit, &app, &QGuiApplication::quit);
+    QObject::connect(systemController.get(), &SystemController::quit, app, &QGuiApplication::quit);
     systemController->start();
 
     auto serviceController = helper::system::getController<ServiceController>();
     serviceController->start();
 
-    return app.exec();
+    return app->exec();
 }

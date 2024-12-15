@@ -31,10 +31,13 @@ public:
     BaseModuleController(QQmlContext *context, QObject *parent = nullptr) : m_context(context) {};
     virtual ~BaseModuleController() {};
 
+public slots:
     virtual void open() = 0;
     virtual void close() = 0;
 
 protected:
     virtual void initSettings() = 0;
+    virtual void setupConnections() = 0;
+
     QQmlContext *m_context;
 };

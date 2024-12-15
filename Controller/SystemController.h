@@ -59,7 +59,7 @@ private:
     void loadModels();
     void loadLoginModels(QObject *loginScreen);
 
-    QQmlApplicationEngine m_engine;
+    QQmlApplicationEngine* m_engine;
     std::shared_ptr<ThemeConfig> m_themeConfig;
     std::shared_ptr<LoginModuleController> m_loginModuleController;
 };
