@@ -16,16 +16,16 @@ qt_add_qml_module(LoginScreen
     OUTPUT_DIRECTORY LoginScreen
     QML_FILES
         LoginScreen.qml
-        LoginPanel.qml
-        UserRegistrationPanel.qml
-        ForgotPasswordPanel.qml
-        AccountPage.qml
-        PasswordPage.qml
-        ThankyouPage.qml
-        EnterYourEmailPage.qml
-        OTPVerificationPage.qml
-        ResetPasswordPage.qml
-        PasswordResetSuccessPage.qml
+        Panels/LoginPanel.qml
+        Panels/UserRegistrationPanel.qml
+        Panels/ForgotPasswordPanel.qml
+        Panels/Pages/AccountPage.qml
+        Panels/Pages/PasswordPage.qml
+        Panels/Pages/ThankyouPage.qml
+        Panels/Pages/EnterYourEmailPage.qml
+        Panels/Pages/OTPVerificationPage.qml
+        Panels/Pages/ResetPasswordPage.qml
+        Panels/Pages/PasswordResetSuccessPage.qml
     RESOURCES
         "Resources/arrow-left-large.png"
         "Resources/showcase-image.png"

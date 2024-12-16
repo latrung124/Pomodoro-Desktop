@@ -46,6 +46,15 @@ Item {
         anchors.fill: parent
         color: "#FFFFFF"
     }
+
+    LoadingAnimation {
+        id: loadingAnimation
+
+        anchors.centerIn: parent
+        visible: false
+        width: 50
+        height: 50
+    }
     
     ColumnLayout {
         id: panelLayout
@@ -362,7 +371,8 @@ Item {
 
                         onClicked: {
                             console.log("Sign In Button clicked");
-                            internal.signInButtonClicked();
+                            internal.startLoadingAnimation();
+                            // internal.signInButtonClicked();
                         }
                     }
                 }
@@ -505,6 +515,18 @@ Item {
         }
     }
 
+    Timer {
+        id: loadingTimer
+
+        interval: 10000
+        running: false
+        repeat: false
+
+        onTriggered: {
+            internal.endLoadingAnimation();
+        }
+    }
+
     QtObject {
         id: internal
 
@@ -516,6 +538,20 @@ Item {
         property double footerLayoutHeight: 220.5
         property int headerLayoutHeight: 80
         property int contentLayoutHeight: 244
+        property bool isLoading: false
+
+        function startLoadingAnimation() {
+            loadingAnimation.visible = true;
+            loadingAnimation.isRunning = true;
+            panelLayout.visible = false;
+            loadingTimer.start();
+        }
+
+        function endLoadingAnimation() {
+            loadingAnimation.visible = false;
+            loadingAnimation.isRunning = false;
+            panelLayout.visible = true;
+        }
 
         function isValidEmail(email) {
             var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
