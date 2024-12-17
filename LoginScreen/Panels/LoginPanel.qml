@@ -39,6 +39,18 @@ Item {
     property QtObject userModel: null
 
     signal openPanel(string name)
+    signal responseSignIn()
+
+    onResponseSignIn: {
+        console.log("LoginPanel onResponseSignIn: email: " + userModel.email + " isAuthorized: " + userModel.isAuthorized);
+        internal.endLoadingAnimation();
+        if (!userModel.isAuthorized) {
+            internal.showErrorMessage(true);
+        } else {
+            internal.showErrorMessage(false);
+            // TODO: Navigate to Home Screen
+        }
+    }
 
     Rectangle {
         id: backgroundRect
@@ -372,7 +384,7 @@ Item {
                         onClicked: {
                             console.log("Sign In Button clicked");
                             internal.startLoadingAnimation();
-                            // internal.signInButtonClicked();
+                            internal.signInButtonClicked();
                         }
                     }
                 }
@@ -563,10 +575,14 @@ Item {
             return password.length >= 6;
         }
 
+        function showErrorMessage(isVisible) {
+            errorLoginText.visible = isVisible;
+            errorPwText.visible = isVisible;
+        }
+
         function signInButtonClicked() {
             var isValidLoginAndPassword = internal.isValidEmail(emailTextField.text) && internal.isValidPassword(pwTextField.text);
-            errorLoginText.visible = !isValidLoginAndPassword;
-            errorPwText.visible = !isValidLoginAndPassword;
+            showErrorMessage(!isValidLoginAndPassword);
             if (isValidLoginAndPassword) {
                 loginModuleController.onSignIn(AuthenticationType.EmailAndPassword,
                                                emailTextField.text, pwTextField.text);

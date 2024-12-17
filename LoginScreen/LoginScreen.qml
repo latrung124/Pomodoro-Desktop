@@ -128,6 +128,11 @@ ApplicationWindow {
         }
     }
 
+    function onResponseSignIn() {
+        console.log("LoginScreen onResponseSignIn()");
+        loginPanel.responseSignIn();
+    }
+
     QtObject {
         id: internal
 

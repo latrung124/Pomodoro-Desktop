@@ -58,9 +58,28 @@ void LoginModuleController::setupConnections()
     connect(this, &LoginModuleController::closeModule, systemController.get(), &SystemController::stop);
 }
 
+void LoginModuleController::setLoginScreen(QObject *loginScreen)
+{
+    if (!loginScreen) {
+        return;
+    }
+    m_loginScreen = loginScreen;
+
+    loadModels();
+}
+
 std::weak_ptr<UserModel> LoginModuleController::getUserModel() const
 {
     return m_userModel;
+}
+
+void LoginModuleController::loadModels()
+{
+    if (!m_userModel) {
+        return;
+    }
+
+    m_loginScreen->setProperty("userModel", QVariant::fromValue(m_userModel.get()));
 }
 
 void LoginModuleController::onSignIn(const AuthenticationType &authType
@@ -79,4 +98,13 @@ void LoginModuleController::onSignUp(const QString &email, const QString &passwo
 void LoginModuleController::onSignOut()
 {
     qDebug() << "Sign out request";
+}
+
+void LoginModuleController::onResponseSignIn()
+{
+    if (m_loginScreen) {
+        QMetaObject::invokeMethod(m_loginScreen, "onResponseSignIn");
+    } else {
+        qDebug() << "LoginModuleController:: onResponseSignIn: loginScreen is null";
+    }
 }

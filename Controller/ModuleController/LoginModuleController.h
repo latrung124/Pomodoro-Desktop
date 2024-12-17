@@ -37,6 +37,7 @@ public:
     void setupConnections() override;
 
     std::weak_ptr<UserModel> getUserModel() const;
+    void setLoginScreen(QObject *loginScreen);
 
 signals:
     void closeModule();
@@ -48,7 +49,11 @@ public slots:
     void onSignIn(const AuthenticationType &authType, const QString &email, const QString &password);
     void onSignUp(const QString &email, const QString &password);
     void onSignOut();
+    void onResponseSignIn();
 
 private:
+    void loadModels();
+
     std::shared_ptr<UserModel> m_userModel;
+    QObject *m_loginScreen = nullptr;
 };

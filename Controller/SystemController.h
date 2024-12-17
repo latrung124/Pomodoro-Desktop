@@ -57,7 +57,6 @@ private:
 
     void loadModules();
     void loadModels();
-    void loadLoginModels(QObject *loginScreen);
 
     QQmlApplicationEngine* m_engine;
     std::shared_ptr<ThemeConfig> m_themeConfig;

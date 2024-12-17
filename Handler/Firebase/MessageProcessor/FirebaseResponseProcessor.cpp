@@ -10,6 +10,8 @@
 #include "Controller/SystemController.h"
 #include "Controller/ModuleController/LoginModuleController.h"
 
+#include <QMetaObject>
+
 void FirebaseResponseProcessor::operator()(const ExchangeCustomTokenResData& data) const
 {
     printf("ExchangeCustomToken response\n");
@@ -34,6 +36,7 @@ void FirebaseResponseProcessor::operator()(const SignInEmailPasswordResData& dat
         } else {
             userModel->updateModel("", false);
         }
+        QMetaObject::invokeMethod(loginModuleController.get(), &LoginModuleController::onResponseSignIn);
     }
 }
 
