@@ -133,6 +133,11 @@ ApplicationWindow {
         loginPanel.responseSignIn();
     }
 
+    function onResponseSignUp() {
+        console.log("LoginScreen onResponseSignUp()");
+        loginPanel.responseSignUp();
+    }
+
     QtObject {
         id: internal
 

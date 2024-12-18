@@ -18,6 +18,46 @@ UserModel::~UserModel()
 {
 }
 
+void UserModel::update(const UserModel &userModel)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+    setAuthenticationType(userModel.authenticationType());
+    setDisplayName(userModel.displayName());
+    setEmail(userModel.email());
+    setPassword(userModel.password());
+    setIsAuthorized(userModel.isAuthorized());
+}
+
+void UserModel::setAuthenticationType(AuthenticationType authenticationType)
+{
+    if (m_authenticationType == authenticationType) {
+        return;
+    }
+
+    m_authenticationType = authenticationType;
+    emit authenticationTypeChanged();
+}
+
+AuthenticationType UserModel::authenticationType() const
+{
+    return m_authenticationType;
+}
+
+void UserModel::setDisplayName(const QString &displayName)
+{
+    if (m_displayName == displayName) {
+        return;
+    }
+
+    m_displayName = displayName;
+    emit displayNameChanged();
+}
+
+QString UserModel::displayName() const
+{
+    return m_displayName;
+}
+
 void UserModel::setEmail(const QString &email)
 {
     if (m_email == email) {
@@ -30,8 +70,22 @@ void UserModel::setEmail(const QString &email)
 
 QString UserModel::email() const
 {
-    std::lock_guard<std::mutex> lock(m_mutex);
     return m_email;
+}
+
+void UserModel::setPassword(const QString &password)
+{
+    if (m_password == password) {
+        return;
+    }
+
+    m_password = password;
+    emit passwordChanged();
+}
+
+QString UserModel::password() const
+{
+    return m_password;
 }
 
 void UserModel::setIsAuthorized(bool isAuthorized)
@@ -46,13 +100,5 @@ void UserModel::setIsAuthorized(bool isAuthorized)
 
 bool UserModel::isAuthorized() const
 {
-    std::lock_guard<std::mutex> lock(m_mutex);
     return m_isAuthorized;
-}
-
-void UserModel::updateModel(const QString &email, bool isAuthorized)
-{
-    std::lock_guard<std::mutex> lock(m_mutex);
-    setEmail(email);
-    setIsAuthorized(isAuthorized);
 }

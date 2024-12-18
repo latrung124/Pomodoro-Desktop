@@ -82,17 +82,46 @@ void LoginModuleController::loadModels()
     m_loginScreen->setProperty("userModel", QVariant::fromValue(m_userModel.get()));
 }
 
+void LoginModuleController::setDisplayName(const QString &displayName)
+{
+    if (!m_userModel) {
+        return;
+    }
+
+    m_userModel->setDisplayName(displayName);
+}
+
+void LoginModuleController::setEmail(const QString &email)
+{
+    if (!m_userModel) {
+        return;
+    }
+
+    m_userModel->setEmail(email);
+}
+
+void LoginModuleController::setPassword(const QString &password)
+{
+    if (!m_userModel) {
+        return;
+    }
+
+    m_userModel->setPassword(password);
+}
+
 void LoginModuleController::onSignIn(const AuthenticationType &authType
                                     , const QString &email, const QString &password)
 {
     qDebug() << "Sign in request for user" << email;
+    m_userModel->setAuthenticationType(authType);
     m_userModel->setEmail(email);
     helper::firebase::constructSignInRequest(authType, email.toStdString(), password.toStdString());
 }
 
-void LoginModuleController::onSignUp(const QString &email, const QString &password)
+void LoginModuleController::onSignUp()
 {
-    qDebug() << "Sign up request for user" << email;
+    qDebug() << "Sign up request for user";
+    helper::firebase::constructSignUpRequest(m_userModel->email().toStdString(), m_userModel->password().toStdString());
 }
 
 void LoginModuleController::onSignOut()
@@ -106,5 +135,14 @@ void LoginModuleController::onResponseSignIn()
         QMetaObject::invokeMethod(m_loginScreen, "onResponseSignIn");
     } else {
         qDebug() << "LoginModuleController:: onResponseSignIn: loginScreen is null";
+    }
+}
+
+void LoginModuleController::onResponseSignUp()
+{
+    if (m_loginScreen) {
+        QMetaObject::invokeMethod(m_loginScreen, "onResponseSignUp");
+    } else {
+        qDebug() << "LoginModuleController:: onResponseSignUp: loginScreen is null";
     }
 }

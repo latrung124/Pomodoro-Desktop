@@ -46,10 +46,16 @@ public slots:
     void open() override;
     void close() override;
 
+    void setDisplayName(const QString &displayName);
+    void setEmail(const QString &email);
+    void setPassword(const QString &password);
+
     void onSignIn(const AuthenticationType &authType, const QString &email, const QString &password);
-    void onSignUp(const QString &email, const QString &password);
+    void onSignUp();
     void onSignOut();
+
     void onResponseSignIn();
+    void onResponseSignUp();
 
 private:
     void loadModels();

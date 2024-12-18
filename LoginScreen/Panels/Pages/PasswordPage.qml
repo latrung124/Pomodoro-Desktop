@@ -274,6 +274,7 @@ Item {
                         }
 
                         onClicked: function() {
+                            loginModuleController.onSignUp();
                             pageStack.nextPage("ThankyouPage");
                         }
                     }

@@ -31,18 +31,32 @@ void FirebaseResponseProcessor::operator()(const SignInEmailPasswordResData& dat
     }
 
     if (auto userModel = loginModuleController->getUserModel().lock(); userModel) {
-        if (data.email != "") {
-            userModel->updateModel(data.email, true);
-        } else {
-            userModel->updateModel("", false);
-        }
-        QMetaObject::invokeMethod(loginModuleController.get(), &LoginModuleController::onResponseSignIn);
+        UserModel model;
+        model.setAuthenticationType(AuthenticationType::EmailAndPassword);
+        model.setEmail(data.email);
+        model.setIsAuthorized(!data.email.isEmpty());
+        userModel->update(model);
     }
+
+    QMetaObject::invokeMethod(loginModuleController.get(), &LoginModuleController::onResponseSignIn);
 }
 
 void FirebaseResponseProcessor::operator()(const SignUpEmailPasswordResData& data) const
 {
     printf("SignUpEmailPassword response\n");
+    auto loginModuleController = ControllerManager::instance().getController<SystemController>()->getLoginModuleController().lock();
+    if (!loginModuleController) {
+        return;
+    }
+
+    if (auto userModel = loginModuleController->getUserModel().lock(); userModel) {
+        UserModel model;
+        model.setEmail(data.email);
+        model.setIsAuthorized(!data.email.isEmpty());
+        userModel->update(model);
+    }
+
+    QMetaObject::invokeMethod(loginModuleController.get(), &LoginModuleController::onResponseSignUp);
 }
 
 void FirebaseResponseProcessor::operator()(const SignInAnounymousResData& data) const

@@ -40,6 +40,7 @@ Item {
 
     signal openPanel(string name)
     signal responseSignIn()
+    signal responseSignUp()
 
     onResponseSignIn: {
         console.log("LoginPanel onResponseSignIn: email: " + userModel.email + " isAuthorized: " + userModel.isAuthorized);
@@ -50,6 +51,10 @@ Item {
             internal.showErrorMessage(false);
             // TODO: Navigate to Home Screen
         }
+    }
+
+    onResponseSignUp: function() {
+        console.log("LoginPanel onResponseSignUp: email: " + userModel.email);
     }
 
     Rectangle {

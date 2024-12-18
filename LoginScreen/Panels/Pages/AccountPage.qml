@@ -156,6 +156,7 @@ Item {
                         CustomTextField {
                             id: nicknameTextField
 
+                            echoMode: TextInput.Normal
                             backgroundText: qsTr("Your nickname - No contain special characters")
                             Layout.alignment: Qt.AlignTop
                         }
@@ -214,8 +215,9 @@ Item {
                         }
 
                         CustomTextField {
-                            id: pwTextField
+                            id: emailTextField
 
+                            echoMode: TextInput.Normal
                             backgroundText: qsTr("Your email")
                             Layout.alignment: Qt.AlignTop
                         }
@@ -269,6 +271,8 @@ Item {
                         }
 
                         onClicked: function() {
+                            loginModuleController.setDisplayName(nicknameTextField.text);
+                            loginModuleController.setEmail(emailTextField.text);
                             pageStack.nextPage("PasswordPage");
                         }
                     }
