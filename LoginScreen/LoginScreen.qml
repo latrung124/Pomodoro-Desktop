@@ -135,7 +135,13 @@ ApplicationWindow {
 
     function onResponseSignUp() {
         console.log("LoginScreen onResponseSignUp()");
-        loginPanel.responseSignUp();
+        // Extract the base name without .qml extension
+        var source = panelLoader.source.toString().replace(".qml", "");
+        if (source === "UserRegistrationPanel") {
+            panelLoader.item.responseSignUp();
+        } else {
+            console.log("panelLoader.source is not UserRegistrationPanel: " + source);
+        }
     }
 
     QtObject {

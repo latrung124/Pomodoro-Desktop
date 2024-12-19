@@ -34,6 +34,7 @@ Item {
     objectName: "UserRegistrationPanel"
 
     signal closePanel()
+    signal responseSignUp()
 
     function panelAppearTrans() {
         console.log("pageAppearTrans() x: " + x + " y: " + y);
@@ -43,6 +44,15 @@ Item {
     function panelDisappearTrans() {
         console.log("pageDisappearTrans() x: " + x + " y: " + y);
         pageDisappearAnim.start();
+    }
+
+    onResponseSignUp: function() {
+        console.log("UserRegistrationPanel onResponseSignUp()");
+        if (pageStack.currentItem.objectName === "PasswordPage") {
+            pageStack.currentItem.responseSignUp();
+        } else {
+            console.log("pageStack.currentItem is not PasswordPage: " + pageStack.currentItem.objectName);
+        }
     }
 
     StackView {

@@ -56,6 +56,7 @@ void constructSignUpRequest(const std::string &email, const std::string &passwor
             handler->enqueueMessage(Utils::Cloud::Firebase::MessageData{data});
         }
     });
+    requestThread.detach();
 }
 
 } // namespace firebase

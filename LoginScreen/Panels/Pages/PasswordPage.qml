@@ -40,13 +40,30 @@ Item {
     property bool isPasswordValid: true
     property bool isConfirmPasswordValid: true
 
+    signal responseSignUp()
+
+    onResponseSignUp: function() {
+        console.log("Password Page onResponseSignUp!");
+        internal.endLoadingAnimation();
+        pageStack.nextPage("ThankyouPage");
+    }
+
     Rectangle {
         id: backgroundRect
 
         anchors.fill: parent
         color: "#FFFFFF"
     }
-    
+
+    LoadingAnimation {
+        id: loadingAnimation
+
+        anchors.centerIn: parent
+        visible: false
+        width: 50
+        height: 50
+    }
+
     ColumnLayout {
         id: panelLayout
 
@@ -223,6 +240,9 @@ Item {
                             backgroundText: qsTr("Confirm your password")
                             Layout.alignment: Qt.AlignTop
                             isPassword: true
+                            onTextChanged: function() {
+                                internal.showErrorMessage(pwTextField.text, confirmPwTextField.text);
+                            }
                         }
                     }
                 }
@@ -274,8 +294,7 @@ Item {
                         }
 
                         onClicked: function() {
-                            loginModuleController.onSignUp();
-                            pageStack.nextPage("ThankyouPage");
+                            internal.signUpButtonClicked();
                         }
                     }
                 }
@@ -328,6 +347,18 @@ Item {
         console.log("Password Page onCompleted!");
     }
 
+    Timer {
+        id: loadingTimer
+
+        interval: 10000
+        running: false
+        repeat: false
+
+        onTriggered: {
+            internal.endLoadingAnimation();
+        }
+    }
+
     QtObject {
         id: internal
 
@@ -339,5 +370,40 @@ Item {
         property double footerLayoutHeight: 116
         property int headerLayoutHeight: 80
         property int contentLayoutHeight: 244
+
+        function startLoadingAnimation() {
+            loadingAnimation.visible = true;
+            loadingAnimation.isRunning = true;
+            panelLayout.visible = false;
+            loadingTimer.start();
+        }
+
+        function endLoadingAnimation() {
+            loadingAnimation.visible = false;
+            loadingAnimation.isRunning = false;
+            panelLayout.visible = true;
+        }
+
+        function isValidPassword(password) {
+            return password.length >= 6;
+        }
+
+        function isValidConfirmPassword(password, confirmPassword) {
+            return password === confirmPassword;
+        }
+
+        function showErrorMessage(password, confirmPassword) {
+            pwErrorText.visible = !isValidPassword(password);
+            confirmPwErrorText.visible = !isValidConfirmPassword(password, confirmPassword);
+        }
+
+        function signUpButtonClicked() {
+            if (internal.isValidPassword(pwTextField.text)
+            && internal.isValidConfirmPassword(pwTextField.text, confirmPwTextField.text)) {
+                loginModuleController.onSignUp();
+            } else {
+                showErrorMessage(true);
+            }
+        }
     }
 }
